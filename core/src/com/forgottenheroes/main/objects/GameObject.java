@@ -69,7 +69,7 @@ public abstract class GameObject {
         else return null;
     }
 
-    public int[] getGridCoords(int x, int y){
+    public static int[] getGridCoords(int x, int y){
         Map map = FHeroes.getMap();
         if(map.getX() < x && x < map.getX() + map.getWidth() && map.getY() < y && y < map.getY() + map.getHeight()){
             int[] coords = new int[2];
@@ -82,7 +82,7 @@ public abstract class GameObject {
 
     public void setGridCoords(int[] coords){
         Map map = FHeroes.getMap();
-        x = coords[0] * map.getGridSize() + FHeroes.getMap().getX() + map.getGridSize() / 2;
-        y = coords[1] * map.getGridSize() + FHeroes.getMap().getY() + map.getGridSize() / 2;
+        x = coords[0] * map.getGridSize() + map.getX() + map.getGridSize() / 2;
+        y = coords[1] * map.getGridSize() + map.getY() + map.getGridSize() / 2;
     }
 }

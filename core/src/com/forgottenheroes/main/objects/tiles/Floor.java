@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.forgottenheroes.main.FHeroes;
 import com.forgottenheroes.main.objects.Map;
 
-public class Floor extends TileObject{
+public class Floor extends GridObject{
     public Floor(Tile tile){
         super(tile);
         Map map = FHeroes.getMap();

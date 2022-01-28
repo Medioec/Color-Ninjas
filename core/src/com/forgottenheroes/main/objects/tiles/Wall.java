@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.forgottenheroes.main.FHeroes;
 import com.forgottenheroes.main.objects.Map;
 
-public class Wall extends TileObject{
+public class Wall extends GridObject{
 
     public Wall(Tile tile) {
         super(tile);

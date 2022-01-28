@@ -55,11 +55,11 @@ public class Map extends GameObject{
         for(int i = 0; i < getVSize(); i++){
             for(int j = 0; j < getHSize(); j++){
                 Tile tile = new Tile(i, j);
-                tile.addTileObject(new Floor(tile));
+                tile.addGridObject(new Floor(tile));
                 objectManager.addToTileList(tile);
                 for(int[] coord:wallList){
                     if(coord[0] == i && coord[1] == j){
-                        tile.addTileObject(new Wall(tile));
+                        tile.addGridObject(new Wall(tile));
                     }
                 }
             }
