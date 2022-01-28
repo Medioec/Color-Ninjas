@@ -19,6 +19,9 @@ public class Wall extends TileObject{
         game.getShapeRenderer().setColor(Color.GRAY);
         game.getShapeRenderer().set(ShapeType.Filled);
         game.getShapeRenderer().rect(getX(), getY(), getWidth(), getHeight());
+        game.getShapeRenderer().setColor(Color.BLACK);
+        game.getShapeRenderer().set(ShapeType.Line);
+        game.getShapeRenderer().rect(getX(), getY(), getWidth(), getHeight());
     }
     
 }
