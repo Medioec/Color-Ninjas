@@ -5,6 +5,7 @@ import java.util.Iterator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 //import com.badlogic.gdx.audio.Music;
 //import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -19,14 +20,12 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.forgottenheroes.main.objects.Leaderboard;
 import com.forgottenheroes.main.objects.Map;
 import com.forgottenheroes.main.objects.ObjectManager;
+import com.forgottenheroes.main.objects.Scoreboard;
 
-public class GameScreen implements Screen {
-
-	final FHeroes game;
-	private OrthographicCamera camera;
-	private Viewport viewport;
+public class GameScreen extends DisplayScreen {
 	
 	/*Texture dropImage;
 	Texture bucketImage;
@@ -38,15 +37,14 @@ public class GameScreen implements Screen {
 	long lastDropTime;
 	int dropsGathered;*/
 
-	public GameScreen(final FHeroes game, OrthographicCamera camera, Viewport viewport) {
-		this.game = game;
-		this.camera = camera;
-		this.viewport = viewport;
-		FHeroes.setObjectManager(new ObjectManager());
+	public GameScreen(final FHeroes game, Viewport viewport, OrthographicCamera camera) {
+		super(game, viewport, camera);
 		game.setShapeRenderer(new ShapeRenderer());
 		game.getShapeRenderer().setAutoShapeType(true);
-		FHeroes.setMap(new Map(FHeroes.getObjectManager()));
-		FHeroes.getMap().generateMap1();
+		FHeroes.getObjectManager().setMap(new Map());
+		FHeroes.getObjectManager().getMap().generateMap1();
+		FHeroes.getObjectManager().setLeaderboard(new Leaderboard());
+		FHeroes.getObjectManager().setScoreboard(new Scoreboard());
 
 		// load the images for the droplet and the bucket, 64x64 pixels each
 		//dropImage = new Texture(Gdx.files.internal("droplet.png"));
@@ -92,37 +90,37 @@ public class GameScreen implements Screen {
 		// blue and alpha component in the range [0,1]
 		// of the color to be used to clear the screen.
 		ScreenUtils.clear(0, 0, 0.5f, 0);
-		viewport.apply();
+		getViewport().apply();
 		//ScreenUtils.clear(0.4f, 0.6f, 1f, 1);
 		// tell the camera to update its matrices.
-		camera.update();
+		getOrthographicCamera().update();
 
 		// tell the SpriteBatch to render in the
 		// coordinate system specified by the camera.
-		game.getSpriteBatch().setProjectionMatrix(camera.combined);
+		game.getSpriteBatch().setProjectionMatrix(getOrthographicCamera().combined);
 		// begin a new batch and draw the bucket and
 		// all drops
-		game.getSpriteBatch().begin();
+		//game.getSpriteBatch().begin();
 		//FHeroes.font.draw(FHeroes.batch, "Drops Collected: ", 0, 480);
 		/*game.batch.draw(bucketImage, bucket.x, bucket.y);
 		for (Rectangle raindrop : raindrops) {
 			game.batch.draw(dropImage, raindrop.x, raindrop.y);
 		}*/
-		game.getSpriteBatch().end();
-
-		game.getShapeRenderer().setProjectionMatrix(camera.combined);
+		//game.getSpriteBatch().end();
+		Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
+		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+		game.getShapeRenderer().setProjectionMatrix(getOrthographicCamera().combined);
 		game.getShapeRenderer().begin();
 		game.getShapeRenderer().set(ShapeType.Filled);
 		game.getShapeRenderer().setColor(0.4f, 0.6f, 1, 1);
 		game.getShapeRenderer().rect(0, 0, FHeroes.INIT_WIDTH, FHeroes.INIT_HEIGHT);
-		FHeroes.getObjectManager().render(game);
 		game.getShapeRenderer().end();
-
+		FHeroes.getObjectManager().render(game);
 		// process user input
 		if (Gdx.input.isTouched()) {
 			Vector3 touchPos = new Vector3();
 			touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-			camera.unproject(touchPos);
+			getOrthographicCamera().unproject(touchPos);
 			//bucket.x = touchPos.x - 64 / 2;
 		}
 		if (Gdx.input.isKeyPressed(Keys.LEFT)){}
@@ -159,7 +157,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		viewport.update(width, height);
+		getViewport().update(width, height);
 	}
 
 	@Override

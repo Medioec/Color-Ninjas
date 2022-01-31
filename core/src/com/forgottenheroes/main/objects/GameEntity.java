@@ -7,16 +7,25 @@ public abstract class GameEntity extends GameObject{
     private int velY;
 
     public GameEntity(){
+        super();
         velX = 0;
         velY = 0;
         FHeroes.getObjectManager().addToEntityList(this);
     }
 
     public GameEntity(int[] coords){
+        super();
         velX = 0;
         velY = 0;
         this.setGridCoords(coords);
         FHeroes.getObjectManager().addToEntityList(this);
+    }
+
+    public GameEntity(int x, int y, int velX, int velY){
+        this.setX(x);
+        this.setY(y);
+        this.velX = velX;
+        this.velY = velY;
     }
     
     public abstract void render(FHeroes game);

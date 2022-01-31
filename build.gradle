@@ -37,6 +37,13 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
+
+    allprojects {
+        tasks.withType(JavaCompile) {
+            sourceCompatibility = '1.8'
+            targetCompatibility = '1.8'
+        }
+    }
 }
 
 project(":desktop") {

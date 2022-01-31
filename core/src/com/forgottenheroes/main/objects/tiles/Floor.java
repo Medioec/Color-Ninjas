@@ -5,22 +5,26 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.forgottenheroes.main.FHeroes;
 import com.forgottenheroes.main.objects.Map;
 
-public class Floor extends GridObject{
+public class Floor extends TileObject{
     public Floor(Tile tile){
         super(tile);
-        Map map = FHeroes.getMap();
+        Map map = FHeroes.getObjectManager().getMap();
         setWidth(map.getGridSize());
         setHeight(map.getGridSize());
+        setDisplayPriority(0);
+        setPassable(true);
     }
     //to replace shaperenderer shapes with actual textures
     @Override
     public void render(FHeroes game) {
+        game.getShapeRenderer().begin();
         game.getShapeRenderer().setColor(Color.WHITE);
         game.getShapeRenderer().set(ShapeType.Filled);
         game.getShapeRenderer().rect(getX(), getY(), getWidth(), getHeight());
         game.getShapeRenderer().setColor(Color.BLACK);
         game.getShapeRenderer().set(ShapeType.Line);
         game.getShapeRenderer().rect(getX(), getY(), getWidth(), getHeight());
+        game.getShapeRenderer().end();
     }
     
 }

@@ -8,26 +8,21 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class MainMenuScreen implements Screen {
+public class MainMenuScreen extends DisplayScreen {
 
-	final FHeroes game;
 	private GameScreen gameScreen;
-	private Viewport viewport;
-	private OrthographicCamera camera;
 
 	public MainMenuScreen(final FHeroes game, OrthographicCamera camera, Viewport viewport) {
-		this.game = game;
-		this.camera = camera;
-		this.viewport = viewport;
+		super(game, viewport, camera);
 	}
 
 	@Override
 	public void render(float delta) {
 		ScreenUtils.clear(0, 0, 0.2f, 1);
 
-        viewport.apply();
-		camera.update();
-		game.getSpriteBatch().setProjectionMatrix(camera.combined);
+        getViewport().apply();
+		getOrthographicCamera().update();
+		game.getSpriteBatch().setProjectionMatrix(getOrthographicCamera().combined);
 		game.getSpriteBatch().begin();
 		game.getBitmapFont().getData().setScale(3);
 		game.getBitmapFont().draw(game.getSpriteBatch(), "Menu Placeholder", 100, 600);
@@ -35,7 +30,7 @@ public class MainMenuScreen implements Screen {
 
 		if (Gdx.input.isTouched()) {
 			
-            gameScreen = new GameScreen(game, camera, viewport);
+            gameScreen = new GameScreen(game, getViewport(), getOrthographicCamera());
             game.setScreen(gameScreen);
 			game.setGameState(GameState.GAMERUNNING);
 			dispose();
@@ -44,7 +39,7 @@ public class MainMenuScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-        viewport.update(width, height);
+        getViewport().update(width, height);
 	}
 
 	@Override

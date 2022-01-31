@@ -15,9 +15,10 @@ public class Map extends GameObject{
     private int hSize; //vertical size
     private ObjectManager objectManager;
     private static int gridSize;
+    private static int numberOfPlayers;
 
-    public Map(ObjectManager objectManager){
-        this.objectManager = objectManager;
+    public Map(){
+        this.objectManager = FHeroes.getObjectManager();
     }
 
     @Override
@@ -47,6 +48,7 @@ public class Map extends GameObject{
         gridSize = 64;
         setHSize(9);
         setVSize(9);
+        setNumberOfPlayers(2);
         int[] player1Coords = {0, 0};
         int[] player2Coords = {8, 8};
         int[][] wallList = { {1, 1}, {1, 2}, {1, 3}, {2, 1}, {3,1}, {7, 1}, {7, 2}, {7, 3}, {6, 1}, {5, 1}, 
@@ -55,17 +57,21 @@ public class Map extends GameObject{
         for(int i = 0; i < getVSize(); i++){
             for(int j = 0; j < getHSize(); j++){
                 Tile tile = new Tile(i, j);
-                tile.addGridObject(new Floor(tile));
+                tile.addTileObject(new Floor(tile));
                 objectManager.addToTileList(tile);
                 for(int[] coord:wallList){
                     if(coord[0] == i && coord[1] == j){
-                        tile.addGridObject(new Wall(tile));
+                        tile.addTileObject(new Wall(tile));
                     }
                 }
             }
         }
         Player player1 = new Player(player1Coords, Color.RED, PlayerNumber.PLAYER1);
         Player player2 = new Player(player2Coords, Color.BLUE, PlayerNumber.PLAYER2);
+        HealthDisplay p1Health = new HealthDisplay(player1);
+        HealthDisplay p2Health = new HealthDisplay(player2);
+        objectManager.addToObjectList(p1Health);
+        objectManager.addToObjectList(p2Health);
     }
 
     public int getVSize(){
@@ -100,5 +106,13 @@ public class Map extends GameObject{
             return tile.isPassable();
         }
         return false;
+    }
+
+    public void setNumberOfPlayers(int n){
+        numberOfPlayers = n;
+    }
+
+    public int getNumberOfPlayers(){
+        return numberOfPlayers;
     }
 }

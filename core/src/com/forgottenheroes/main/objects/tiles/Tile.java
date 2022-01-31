@@ -5,38 +5,38 @@ import java.util.ArrayList;
 import com.forgottenheroes.main.FHeroes;
 
 public class Tile extends GridObject{
-    private ArrayList<GridObject> gridObjectList;
+    private ArrayList<TileObject> tileObjectList;
 
     public Tile(int x, int y){
         super(x, y);
-        gridObjectList = new ArrayList<GridObject>();
+        tileObjectList = new ArrayList<TileObject>();
     }
 
     @Override
     public void render(FHeroes game) {
-        for(int i = 0; i < gridObjectList.size(); i++){
-            GridObject object = gridObjectList.get(i);
+        for(int i = 0; i < tileObjectList.size(); i++){
+            TileObject object = tileObjectList.get(i);
             object.render(game);
         }
     }
 
-    public ArrayList<GridObject> getGridObjectList(){
-        return gridObjectList;
+    public ArrayList<TileObject> getTileObjectList(){
+        return tileObjectList;
     }
 
-    public void addGridObject(GridObject gridObject){
-        gridObjectList.add(gridObject);
+    public void addTileObject(TileObject tileObject){
+        tileObjectList.add(tileObject);
     }
 
-    public void removeGridObject(GridObject gridObject){
-        gridObjectList.remove(gridObject);
+    public void removeTileObject(TileObject tileObject){
+        tileObjectList.remove(tileObject);
     }
 
     public boolean isPassable(){
         boolean isFloor = false;
         boolean isWall = false;
-        for(int i = 0; i < gridObjectList.size(); i++){
-            GridObject object = gridObjectList.get(i);
+        for(int i = 0; i < tileObjectList.size(); i++){
+            TileObject object = tileObjectList.get(i);
             if(object != null){
                 if(object instanceof Floor){
                     isFloor = true;

@@ -1,78 +1,83 @@
 package com.forgottenheroes.main.objects;
 
+import java.util.ArrayList;
+import java.lang.Math;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.forgottenheroes.main.Equipment;
 import com.forgottenheroes.main.FHeroes;
+import com.forgottenheroes.main.Pickup;
 
 public class Player extends GameEntity{
-    private int moveSpeed;
+    private PlayerNumber playerNumber;
+    private String name;
     private Color color;
-    private PlayerNumber pNumber;
+    private int score;
+    private int wins;
+    private int hp;
+    private int maxHP;
+    private int attack;
+    private int atkRange;
+    private int atkWidth;
+    private int moveSpeed;
+    private Direction currentDirection;
     
-    public static enum PlayerNumber{
+    private ArrayList<Equipment> inventory;
+    private ArrayList<int[]> killData;
+    
+    public enum PlayerNumber{
         PLAYER1,
-        PLAYER2;
+        PLAYER2
     }
 
-    public Player(int[] spawncoords, Color color, PlayerNumber pNumber){
+    public enum Direction{
+        N,
+        NE,
+        E,
+        SE,
+        S,
+        SW,
+        W,
+        NW
+    }
+
+    public Player(int[] spawncoords, Color color, PlayerNumber playerNumber){
         super(spawncoords);
         setGridCoords(spawncoords);
         setHeight(40);
         setWidth(40);
-        moveSpeed = 5;
+        setHp(200);
+        setMaxHP(200);
+        setName("player");
+        setScore(0);
+        setWins(0);
+        setAttack(10);
+        setAtkRange(100);
+        setAtkWidth(50);
+        setMoveSpeed(5);
         this.color = color;
-        this.pNumber = pNumber;
+        this.playerNumber = playerNumber;
     }
 
     @Override
     public void render(FHeroes game) {
-        initVel();
-        switch(pNumber) {
-            case PLAYER1:
-                if(Gdx.input.isKeyPressed(Keys.UP)){
-                    addVelXY(0, moveSpeed);
-                }
-                if(Gdx.input.isKeyPressed(Keys.DOWN)){
-                    addVelXY(0, -moveSpeed);
-                }
-                if(Gdx.input.isKeyPressed(Keys.LEFT)){
-                    addVelXY(-moveSpeed, 0);
-                }
-                if(Gdx.input.isKeyPressed(Keys.RIGHT)){
-                    addVelXY(moveSpeed, 0);
-                }
-            break;
-            case PLAYER2:
-                if(Gdx.input.isKeyPressed(Keys.W)){
-                    addVelXY(0, moveSpeed);
-                }
-                if(Gdx.input.isKeyPressed(Keys.S)){
-                    addVelXY(0, -moveSpeed);
-                }
-                if(Gdx.input.isKeyPressed(Keys.A)){
-                    addVelXY(-moveSpeed, 0);
-                }
-                if(Gdx.input.isKeyPressed(Keys.D)){
-                    addVelXY(moveSpeed, 0);
-                }
-            break;
-        }
-        
         if(isValidXMovement()) updateXPos();
         if(isValidYMovement()) updateYPos();
+        game.getShapeRenderer().begin();
         game.getShapeRenderer().setColor(color);
         game.getShapeRenderer().set(ShapeType.Filled);
         game.getShapeRenderer().circle(getX(), getY(), getHeight() / 2);
-
+        game.getShapeRenderer().end();
     }
     
     public boolean isValidXMovement(){
         int newX = getX() + getVelX();
         int newY = getY();
         int[] coords = getGridCoords(newX, newY);
-        if(coords != null) return FHeroes.getMap().isPassable(coords);
+        if(coords != null) return FHeroes.getObjectManager().getMap().isPassable(coords);
         else return false;
     }
 
@@ -80,7 +85,202 @@ public class Player extends GameEntity{
         int newX = getX();
         int newY = getY() + getVelY();
         int[] coords = getGridCoords(newX, newY);
-        if(coords != null) return FHeroes.getMap().isPassable(coords);
+        if(coords != null) return FHeroes.getObjectManager().getMap().isPassable(coords);
         else return false;
+    }
+
+    public void updateDirection(){
+        if(getVelX() > 0){
+            if(getVelY() > 0){
+                setCurrentDirection(Direction.NE);
+            }
+            else if(getVelY() < 0){
+                setCurrentDirection(Direction.SE);
+            }
+            else {
+                setCurrentDirection(Direction.E);
+            }
+        }
+        else if(getVelX() < 0){
+            if(getVelY() > 0){
+                setCurrentDirection(Direction.NW);
+            }
+            else if(getVelY() < 0){
+                setCurrentDirection(Direction.SW);
+            }
+            else {
+                setCurrentDirection(Direction.W);
+            }
+        }
+        else {
+            if(getVelY() > 0){
+                setCurrentDirection(Direction.N);
+            }
+            else if(getVelY() < 0){
+                setCurrentDirection(Direction.S);
+            }
+        }
+    }
+
+    public void addPowerup(Pickup powerup){
+
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    public int getMaxHP() {
+        return maxHP;
+    }
+
+    public void setMaxHP(int maxHP) {
+        this.maxHP = maxHP;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getWins() {
+        return wins;
+    }
+
+    public void setWins(int wins) {
+        this.wins = wins;
+    }
+
+    public int getAttack() {
+        return attack;
+    }
+
+    public void setAttack(int attack) {
+        this.attack = attack;
+    }
+
+    public int getAtkRange() {
+        return atkRange;
+    }
+
+    public void setAtkRange(int atkRange) {
+        this.atkRange = atkRange;
+    }
+
+    public int getAtkWidth() {
+        return atkWidth;
+    }
+
+    public void setAtkWidth(int atkWidth) {
+        this.atkWidth = atkWidth;
+    }
+
+    public int getMoveSpeed() {
+        return moveSpeed;
+    }
+
+    public void setMoveSpeed(int moveSpeed) {
+        this.moveSpeed = moveSpeed;
+    }
+
+    public void setCurrentDirection(Direction currentDirection) {
+        this.currentDirection = currentDirection;
+    }
+
+    public Direction getCurrentDirection() {
+        if(currentDirection != null){
+            return currentDirection;
+        }
+        else {
+            return Direction.S;
+        }
+    }
+
+    public PlayerNumber getPlayerNumber() {
+        return playerNumber;
+    }
+
+    public void performAttack(Direction dir){
+        new AttackSwing(this);
+        int damage;
+        double[] dirv;
+        double[] posv = {0,0};
+        switch(dir){
+            case E:
+                dirv = new double[]{1,0};
+                break;
+            case N:
+                dirv = new double[]{0,1};
+                break;
+            case NE:
+                dirv = new double[]{1,1};
+                break;
+            case NW:
+                dirv = new double[]{-1,1};
+                break;
+            case S:
+                dirv = new double[]{0,-1};
+                break;
+            case SE:
+                dirv = new double[]{1,-1};
+                break;
+            case SW:
+                dirv = new double[]{-1,-1};
+                break;
+            case W:
+                dirv = new double[]{-1,0};
+                break;
+            default:
+                dirv = new double[]{0,0};
+                break;
+        }
+        double[] orthodirv = {-dirv[1], dirv[0]};
+        ArrayList<Player> playerList = FHeroes.getObjectManager().getPlayerList();
+        double magdirv = Math.sqrt(Math.pow(dirv[0], 2) + Math.pow(dirv[1], 2));
+        double[] unitdirv = {dirv[0] / magdirv, dirv[1] / magdirv};
+        double magorthodirv = Math.sqrt(Math.pow(orthodirv[0], 2) + Math.pow(orthodirv[1], 2));
+        double[] unitorthodirv = {orthodirv[0] / magorthodirv, orthodirv[1] / magorthodirv};
+        for(Player player:playerList){
+            if(player.getPlayerNumber() != this.getPlayerNumber()){
+                posv[0] = player.getX() - this.getX();
+                posv[1] = player.getY() - this.getY();
+                int projdirv = (int)(unitdirv[0] * posv[0] + unitdirv[1] * posv[1]);
+                if(0 < projdirv && projdirv < player.getAtkRange()){
+                    int projorthodirv = (int)(unitorthodirv[0] * posv[0] + unitorthodirv[1] * posv[1]);
+                    if(Math.abs(projorthodirv) < player.getAtkWidth()){
+                        if(player.getHp() - this.getAttack() < 0){
+                            damage = player.getHp();
+                            player.setHp(0);
+                        }
+                        else{
+                            player.setHp(player.getHp() - this.getAttack());
+                            damage = this.getAttack();
+                        }
+                        this.score += damage;
+                        new DamageNumbers(player.getX() - 10, player.getY() + 50, 0, 1, damage);
+                        damage = 0;
+                    }
+                }
+            }
+        }
     }
 }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.forgottenheroes.main.objects.Map;
@@ -12,28 +13,30 @@ import com.forgottenheroes.main.objects.ObjectManager;
 
 public class FHeroes extends Game {
 
+	private GameState gameState;
+
 	private SpriteBatch batch;
 	private BitmapFont font;
 	private ShapeRenderer shapeRenderer;
-	private static Map map;
-	private static ObjectManager objectManager;
-	private GameState gameState;
 	private Viewport viewport;
 	private OrthographicCamera camera;
-	private MainMenuScreen mainMenuScreen;
+
+	private static ObjectManager objectManager;
+
 	public static final int INIT_HEIGHT = 720;
 	public static final int INIT_WIDTH = INIT_HEIGHT / 9 * 16;
 
+	//sets up the game window and display main menu
 	public void create() {
 		batch = new SpriteBatch();
-		// Use LibGDX's default Arial font.
 		font = new BitmapFont();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, INIT_WIDTH, INIT_HEIGHT);
 		viewport = new FitViewport(INIT_WIDTH, INIT_HEIGHT);
-		mainMenuScreen = new MainMenuScreen(this, camera, viewport);
-		mainMenuScreen.resize(INIT_WIDTH, INIT_HEIGHT);
-		this.setScreen(mainMenuScreen);
+		objectManager = new ObjectManager(this);
+		objectManager.setMainMenuScreen(new MainMenuScreen(this, camera, viewport));
+		objectManager.getMainMenuScreen().resize(INIT_WIDTH, INIT_HEIGHT);
+		setScreen(objectManager.getMainMenuScreen());
 		setGameState(GameState.MAINMENU);
 	}
 
@@ -64,14 +67,6 @@ public class FHeroes extends Game {
 
 	public void setShapeRenderer(ShapeRenderer shapeRenderer){
 		this.shapeRenderer = shapeRenderer;
-	}
-
-	public static Map getMap(){
-		return map;
-	}
-
-	public static void setMap(Map map){
-		FHeroes.map = map;
 	}
 
 	public static ObjectManager getObjectManager(){
