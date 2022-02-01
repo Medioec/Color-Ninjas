@@ -59,6 +59,32 @@ public class Player extends GameEntity{
         NW
     }
 
+    public Player(int playerNumber){
+        super();
+        setHeight(40);
+        setWidth(40);
+        setMaxHP(200);
+        setHp(getMaxHP());
+        setScore(0);
+        setWins(0);
+        setAttack(40);
+        setAtkRange(100);
+        setAtkWidth(40);
+        setMoveSpeed(5);
+        setState(State.IDLE);
+        switch(playerNumber){
+            case 1:
+            color = Color.RED;
+            setName("Player 1");
+            break;
+            case 2:
+            color = Color.BLUE;
+            setName("Player 2");
+            break;
+        }
+        this.playerNumber = playerNumber;
+    }
+
     public Player(int[] spawncoords, Color color, int playerNumber){
         super(spawncoords);
         setGridCoords(spawncoords);
@@ -202,6 +228,10 @@ public class Player extends GameEntity{
 
     public Color getColor() {
         return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     public int getScore() {

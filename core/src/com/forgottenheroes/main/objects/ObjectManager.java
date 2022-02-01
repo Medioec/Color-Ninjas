@@ -6,10 +6,15 @@ import javax.print.attribute.standard.DialogTypeSelection;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.forgottenheroes.main.ChatbotScreen;
 import com.forgottenheroes.main.DisplayScreen;
 import com.forgottenheroes.main.FHeroes;
+import com.forgottenheroes.main.GameScreen;
 import com.forgottenheroes.main.GameState;
 import com.forgottenheroes.main.Keyboard;
+import com.forgottenheroes.main.MainMenuScreen;
 import com.forgottenheroes.main.Reset;
 import com.forgottenheroes.main.objects.Player.PlayerNumber;
 import com.forgottenheroes.main.objects.tiles.Tile;
@@ -22,8 +27,9 @@ public class ObjectManager {
 
     private FHeroes game;
     private Map map;
-    private DisplayScreen gameScreen;
-    private DisplayScreen mainMenuScreen;
+    private GameScreen gameScreen;
+    private MainMenuScreen mainMenuScreen;
+    private ChatbotScreen chatbotScreen;
     private Keyboard keyboard;
     private Leaderboard leaderboard;
     private Scoreboard scoreboard;
@@ -41,6 +47,7 @@ public class ObjectManager {
         entityList = new ArrayList<GameEntity>();
         objectList = new ArrayList<GameObject>();
         keyboard = new Keyboard(game);
+        Gdx.input.setInputProcessor(keyboard);
     }
 
     public void render(FHeroes game){
@@ -74,6 +81,14 @@ public class ObjectManager {
         this.popup = popup;
     }
 
+    public Keyboard getKeyboard() {
+        return keyboard;
+    }
+
+    public void setKeyboard(Keyboard keyboard) {
+        this.keyboard = keyboard;
+    }
+
     public FHeroes getGame() {
         return game;
     }
@@ -102,20 +117,28 @@ public class ObjectManager {
         this.map = map;
     }
 
-    public DisplayScreen getGameScreen() {
+    public GameScreen getGameScreen() {
         return gameScreen;
     }
 
-    public void setGameScreen(DisplayScreen gameScreen) {
+    public void setGameScreen(GameScreen gameScreen) {
         this.gameScreen = gameScreen;
     }
 
-    public DisplayScreen getMainMenuScreen() {
+    public MainMenuScreen getMainMenuScreen() {
         return mainMenuScreen;
     }
 
-    public void setMainMenuScreen(DisplayScreen mainMenuScreen) {
+    public void setMainMenuScreen(MainMenuScreen mainMenuScreen) {
         this.mainMenuScreen = mainMenuScreen;
+    }
+
+    public ChatbotScreen getChatbotScreen() {
+        return chatbotScreen;
+    }
+
+    public void setChatbotScreen(ChatbotScreen chatbotScreen) {
+        this.chatbotScreen = chatbotScreen;
     }
 
     public ArrayList<Tile> getTileList(){
@@ -265,12 +288,13 @@ public class ObjectManager {
         }
         if(isGameOver()){
             roundOverTime = TimeUtils.millis();
-            setPopup(new Popup("Game Over", "Press any key..."));
+            Popup popup = new Popup("Game Over", "Esc to return to menu, any other key for rematch...", "");
+            popup.setTextScale(1.4f);
             game.setGameState(GameState.GAMEOVER);
         } else {
             roundOverTime = TimeUtils.millis();
             game.setGameState(GameState.ROUNDENDPAUSE);
-            setPopup(new Popup("Round Over", "Next round starting soon..."));
+            setPopup(new Popup("Round Over", "Next round starting soon...", ""));
         }
         
     }

@@ -39,8 +39,9 @@ public class GameScreen extends DisplayScreen {
 
 	public GameScreen(final FHeroes game, Viewport viewport, OrthographicCamera camera) {
 		super(game, viewport, camera);
-		game.setShapeRenderer(new ShapeRenderer());
-		game.getShapeRenderer().setAutoShapeType(true);
+		//game.setShapeRenderer(new ShapeRenderer());
+		//game.getShapeRenderer().setAutoShapeType(true);
+		FHeroes.getObjectManager().setGameScreen(this);
 		FHeroes.getObjectManager().setMap(new Map());
 		FHeroes.getObjectManager().setLeaderboard(new Leaderboard());
 		FHeroes.getObjectManager().setScoreboard(new Scoreboard());

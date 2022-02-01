@@ -73,11 +73,18 @@ public class Map extends GameObject{
                 }
             }
         }
-        Player player1 = new Player(getPlayer1InitPos(), Color.RED, 1);
-        player1.setName("Player 1");
+        Player player1 = FHeroes.getObjectManager().getPlayerByNumber(1);
+        Player player2 = FHeroes.getObjectManager().getPlayerByNumber(2);
+        if(player1 == null || player2 == null){
+            player1 = new Player(getPlayer1InitPos(), Color.RED, 1);
+            player1.setName("Player 1");
+            player2 = new Player(getPlayer2InitPos(), Color.BLUE, 2);
+            player2.setName("Player 2");
+        } else {
+            player1.setGridCoords(getPlayer1InitPos());
+            player2.setGridCoords(getPlayer2InitPos());
+        }
         player1.setInitPos(getPlayer1InitPos());
-        Player player2 = new Player(getPlayer2InitPos(), Color.BLUE, 2);
-        player2.setName("Player 2");
         player2.setInitPos(getPlayer2InitPos());
         HealthDisplay p1Health = new HealthDisplay(player1);
         HealthDisplay p2Health = new HealthDisplay(player2);

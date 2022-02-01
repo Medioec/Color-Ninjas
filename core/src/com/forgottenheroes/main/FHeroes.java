@@ -30,14 +30,19 @@ public class FHeroes extends Game {
 	public void create() {
 		batch = new SpriteBatch();
 		font = new BitmapFont();
+		shapeRenderer = new ShapeRenderer();
+		shapeRenderer.setAutoShapeType(true);
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, INIT_WIDTH, INIT_HEIGHT);
 		viewport = new FitViewport(INIT_WIDTH, INIT_HEIGHT);
 		objectManager = new ObjectManager(this);
 		objectManager.setMainMenuScreen(new MainMenuScreen(this, camera, viewport));
-		objectManager.getMainMenuScreen().resize(INIT_WIDTH, INIT_HEIGHT);
-		setScreen(objectManager.getMainMenuScreen());
-		setGameState(GameState.MAINMENU);
+		objectManager.setChatbotScreen(new ChatbotScreen(this, viewport, camera));
+		//objectManager.getMainMenuScreen().resize(INIT_WIDTH, INIT_HEIGHT);
+		//setScreen(objectManager.getMainMenuScreen());
+		setScreen(objectManager.getChatbotScreen());
+		//setGameState(GameState.MAINMENU);
+		setGameState(GameState.CHATBOT);
 	}
 
 	public void render() {
