@@ -11,7 +11,7 @@ public abstract class GameObject {
     private int width;
     private int height;
     private int objectID;
-    private Sprite sprite;
+    private Texture texture;
     private static int nextID = 1;
 
     public GameObject(){
@@ -61,12 +61,12 @@ public abstract class GameObject {
         this.objectID = objectID;
     }
 
-    public Sprite getSprite() {
-        return sprite;
+    public Texture getTexture() {
+        return texture;
 }
 
-    public void setSprite(Sprite sprite) {
-        this.sprite = sprite;
+    public void setTexture(Texture texture) {
+        this.texture = texture;
     }
 
     public int[] getGridCoords(){

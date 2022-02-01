@@ -13,11 +13,11 @@ public class HealthDisplay extends GameObject{
         setWidth(300);
         setHeight(100);
         switch(player.getPlayerNumber()){
-            case PLAYER1:
+            case 1:
                 setX(0);
                 setY(0);
                 break;
-            case PLAYER2:
+            case 2:
                 setX(FHeroes.INIT_WIDTH - getWidth());
                 setY(FHeroes.INIT_HEIGHT - getHeight());
                 break;
@@ -45,7 +45,7 @@ public class HealthDisplay extends GameObject{
         game.getBitmapFont().setColor(player.getColor());
         game.getBitmapFont().draw(game.getSpriteBatch(), player.getName(), getX() + 30, getY() + 90);
         game.getBitmapFont().setColor(new Color(0f, 0f, 0f, 1f));
-        game.getBitmapFont().draw(game.getSpriteBatch(), String.valueOf(player.getHp()), getX() + 125, getY() + 42);
+        game.getBitmapFont().draw(game.getSpriteBatch(), String.valueOf(player.getHp()) + "/" + String.valueOf(player.getMaxHP()), getX() + getWidth()/16*6, getY() + 42);
 
         game.getSpriteBatch().end();
     }

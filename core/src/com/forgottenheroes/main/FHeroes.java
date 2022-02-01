@@ -85,6 +85,12 @@ public class FHeroes extends Game {
 		this.gameState = gameState;
 	}
 
+	public boolean isGameState(GameState state){
+		if(getGameState() == state){
+			return true;
+		} else return false;
+	}
+
 	public Viewport getViewport(){
 		return viewport;
 	}

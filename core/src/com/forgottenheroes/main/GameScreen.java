@@ -42,9 +42,9 @@ public class GameScreen extends DisplayScreen {
 		game.setShapeRenderer(new ShapeRenderer());
 		game.getShapeRenderer().setAutoShapeType(true);
 		FHeroes.getObjectManager().setMap(new Map());
-		FHeroes.getObjectManager().getMap().generateMap1();
 		FHeroes.getObjectManager().setLeaderboard(new Leaderboard());
 		FHeroes.getObjectManager().setScoreboard(new Scoreboard());
+		FHeroes.getObjectManager().getMap().generateMap1();
 
 		// load the images for the droplet and the bucket, 64x64 pixels each
 		//dropImage = new Texture(Gdx.files.internal("droplet.png"));
@@ -123,9 +123,9 @@ public class GameScreen extends DisplayScreen {
 			getOrthographicCamera().unproject(touchPos);
 			//bucket.x = touchPos.x - 64 / 2;
 		}
-		if (Gdx.input.isKeyPressed(Keys.LEFT)){}
+		//if (Gdx.input.isKeyPressed(Keys.LEFT)){}
 			//bucket.x -= 200 * Gdx.graphics.getDeltaTime();
-		if (Gdx.input.isKeyPressed(Keys.RIGHT)){}
+		//if (Gdx.input.isKeyPressed(Keys.RIGHT)){}
 			//bucket.x += 200 * Gdx.graphics.getDeltaTime();
 		/*
 		// make sure the bucket stays within the screen bounds

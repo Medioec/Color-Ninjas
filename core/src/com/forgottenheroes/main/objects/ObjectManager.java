@@ -5,9 +5,12 @@ import java.util.ArrayList;
 import javax.print.attribute.standard.DialogTypeSelection;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.forgottenheroes.main.DisplayScreen;
 import com.forgottenheroes.main.FHeroes;
+import com.forgottenheroes.main.GameState;
 import com.forgottenheroes.main.Keyboard;
+import com.forgottenheroes.main.Reset;
 import com.forgottenheroes.main.objects.Player.PlayerNumber;
 import com.forgottenheroes.main.objects.tiles.Tile;
 
@@ -24,6 +27,11 @@ public class ObjectManager {
     private Keyboard keyboard;
     private Leaderboard leaderboard;
     private Scoreboard scoreboard;
+    private GameObject popup;
+
+    private long roundOverTime;
+
+    private final int ROUNDRESETMS = 3000;
     
 
     public ObjectManager(FHeroes game){
@@ -36,6 +44,9 @@ public class ObjectManager {
     }
 
     public void render(FHeroes game){
+        if(game.getGameState() == GameState.ROUNDENDPAUSE){
+            startNewRound();
+        }
         clearRemovalQueue();
         keyboard.checkKeyPress();
         for(int i = 0; i < tileList.size(); i++){
@@ -53,6 +64,18 @@ public class ObjectManager {
         }
         leaderboard.render(game);
         scoreboard.render(game);
+    }
+
+    public GameObject getPopup() {
+        return popup;
+    }
+
+    public void setPopup(GameObject popup) {
+        this.popup = popup;
+    }
+
+    public FHeroes getGame() {
+        return game;
     }
 
     public Leaderboard getLeaderboard() {
@@ -131,7 +154,7 @@ public class ObjectManager {
         return null;
     }
 
-    public Player getPlayerByNumber(PlayerNumber number){
+    public Player getPlayerByNumber(int number){
         for(int i = 0; i < entityList.size(); i++){
             GameEntity entity = entityList.get(i);
             try{
@@ -203,5 +226,76 @@ public class ObjectManager {
         tileList.clear();
         entityList.clear();
         objectList.clear();
+    }
+
+    public boolean checkRoundOver(){
+        int remainingPlayers = 0;
+        for(int i = 0; i < entityList.size(); i++){
+            GameEntity entity = entityList.get(i);
+            try{
+                Player player = (Player) entity;
+                if(!player.checkPlayerDefeated()){
+                    remainingPlayers ++;
+                };
+            }
+            catch (ClassCastException e){
+                continue;
+            }
+        }
+        if(remainingPlayers > 0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public void setRoundOver(){
+        for(int i = 0; i < entityList.size(); i++){
+            GameEntity entity = entityList.get(i);
+            try{
+                Player player = (Player) entity;
+                if(!player.checkPlayerDefeated()){
+                    player.setWins(player.getWins() + 1);
+                };
+            }
+            catch (ClassCastException e){
+                continue;
+            }
+        }
+        if(isGameOver()){
+            roundOverTime = TimeUtils.millis();
+            setPopup(new Popup("Game Over", "Press any key..."));
+            game.setGameState(GameState.GAMEOVER);
+        } else {
+            roundOverTime = TimeUtils.millis();
+            game.setGameState(GameState.ROUNDENDPAUSE);
+            setPopup(new Popup("Round Over", "Next round starting soon..."));
+        }
+        
+    }
+
+    public void startNewRound(){
+        if(TimeUtils.millis() - roundOverTime > ROUNDRESETMS){
+            FHeroes.getObjectManager().getMap().resetMap(FHeroes.getObjectManager().getMap().getCurrentMap(), Reset.NEWROUND);
+            game.setGameState(GameState.GAMERUNNING);
+            removeObject(getPopup());
+        }
+    }
+
+    public boolean isGameOver(){
+        int[] highest = getLeaderboard().getHighestWins();
+        if(highest[1] >= map.getRoundsToWin()){
+            return true;
+        }
+        return false;
+    }
+
+    public void startNewGame(){
+        if(TimeUtils.millis() - roundOverTime > ROUNDRESETMS){
+            FHeroes.getObjectManager().getMap().resetMap(FHeroes.getObjectManager().getMap().getCurrentMap(), Reset.NEWGAME);
+            game.setGameState(GameState.GAMERUNNING);
+            removeObject(getPopup());
+        }
     }
 }
