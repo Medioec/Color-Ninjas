@@ -3,8 +3,6 @@ package com.forgottenheroes.main.objects;
 import java.util.ArrayList;
 import java.lang.Math;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.TimeUtils;

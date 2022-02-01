@@ -1,6 +1,5 @@
 package com.forgottenheroes.main.objects;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.TitlePaneLayout;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;

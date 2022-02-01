@@ -2,17 +2,11 @@ package com.forgottenheroes.main;
 
 import java.util.ArrayList;
 
-import javax.xml.stream.events.StartDocument;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.forgottenheroes.main.objects.ObjectManager;
 import com.forgottenheroes.main.objects.Player;
 import com.forgottenheroes.main.objects.Popup;
 
@@ -63,8 +57,6 @@ public class ChatbotScreen extends DisplayScreen{
 
     @Override
     public void show() {
-        // TODO Auto-generated method stub
-        
     }
 
     @Override
@@ -93,20 +85,14 @@ public class ChatbotScreen extends DisplayScreen{
 
     @Override
     public void pause() {
-        // TODO Auto-generated method stub
-        
     }
 
     @Override
     public void resume() {
-        // TODO Auto-generated method stub
-        
     }
 
     @Override
     public void hide() {
-        // TODO Auto-generated method stub
-        
     }
 
     @Override

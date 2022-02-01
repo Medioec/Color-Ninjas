@@ -2,21 +2,16 @@ package com.forgottenheroes.main.objects;
 
 import java.util.ArrayList;
 
-import javax.print.attribute.standard.DialogTypeSelection;
 
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.forgottenheroes.main.ChatbotScreen;
-import com.forgottenheroes.main.DisplayScreen;
 import com.forgottenheroes.main.FHeroes;
 import com.forgottenheroes.main.GameScreen;
 import com.forgottenheroes.main.GameState;
 import com.forgottenheroes.main.Keyboard;
 import com.forgottenheroes.main.MainMenuScreen;
 import com.forgottenheroes.main.Reset;
-import com.forgottenheroes.main.objects.Player.PlayerNumber;
 import com.forgottenheroes.main.objects.tiles.Tile;
 
 public class ObjectManager {

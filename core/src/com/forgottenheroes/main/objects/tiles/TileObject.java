@@ -1,7 +1,5 @@
 package com.forgottenheroes.main.objects.tiles;
 
-import com.forgottenheroes.main.FHeroes;
-
 public abstract class TileObject extends GridObject{
 
     private int priority; //highest priority displayed on top

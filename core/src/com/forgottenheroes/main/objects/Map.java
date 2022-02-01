@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.Color;
 import com.forgottenheroes.main.FHeroes;
 import com.forgottenheroes.main.Reset;
-import com.forgottenheroes.main.objects.Player.PlayerNumber;
 import com.forgottenheroes.main.objects.tiles.Floor;
 import com.forgottenheroes.main.objects.tiles.Tile;
 import com.forgottenheroes.main.objects.tiles.Wall;

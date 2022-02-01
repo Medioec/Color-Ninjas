@@ -1,7 +1,6 @@
 package com.forgottenheroes.main.objects;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.forgottenheroes.main.FHeroes;
 
 public abstract class GameObject {

@@ -14,8 +14,7 @@ public class Pickup extends GridObject{
 
     @Override
     public void render(FHeroes game) {
-        // TODO Auto-generated method stub
-        
+        //TODO work on this
     }
 
     public static enum Type{
