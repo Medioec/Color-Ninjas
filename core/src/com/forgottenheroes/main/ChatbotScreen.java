@@ -2,9 +2,11 @@ package com.forgottenheroes.main;
 
 import java.util.ArrayList;
 
-
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.forgottenheroes.main.objects.Player;
@@ -64,7 +66,15 @@ public class ChatbotScreen extends DisplayScreen{
         ScreenUtils.clear(0, 0, 0.2f, 1);
         getViewport().apply();
 		getOrthographicCamera().update();
+        Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
+		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		game.getSpriteBatch().setProjectionMatrix(getOrthographicCamera().combined);
+        game.getShapeRenderer().setProjectionMatrix(getOrthographicCamera().combined);
+        game.getShapeRenderer().begin();
+		game.getShapeRenderer().set(ShapeType.Filled);
+		game.getShapeRenderer().setColor(0.4f, 0.6f, 1, 1);
+		game.getShapeRenderer().rect(0, 0, FHeroes.INIT_WIDTH, FHeroes.INIT_HEIGHT);
+		game.getShapeRenderer().end();
         game.getBitmapFont().setColor(Color.WHITE);
         FHeroes.getObjectManager().getKeyboard().checkKeyPress();
         user.setText(input);
@@ -141,6 +151,8 @@ public class ChatbotScreen extends DisplayScreen{
             chatbotDoNext();
         } else if(isInputColor(input)){
             chatbotDoColor();
+        } else if(cmpString(input, "exit")){
+            chatbotDoExit();
         } else chatbotDoName();
         return 0;
     }
@@ -261,5 +273,9 @@ public class ChatbotScreen extends DisplayScreen{
             }            
         }
         input = "";
+    }
+
+    public void chatbotDoExit(){
+        Gdx.app.exit();
     }
 }

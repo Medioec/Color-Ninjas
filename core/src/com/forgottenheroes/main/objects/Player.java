@@ -117,7 +117,7 @@ public class Player extends GameEntity{
     }
     
     public boolean isValidXMovement(){
-        if(getState() != State.DEFEATED){
+        if(!checkPlayerDefeated() && !isAttacking()){
             int newX = getX() + getVelX();
             int newY = getY();
             int[] coords = getGridCoords(newX, newY);
@@ -130,7 +130,7 @@ public class Player extends GameEntity{
     }
 
     public boolean isValidYMovement(){
-        if(getState() != State.DEFEATED){
+        if(!checkPlayerDefeated() && !isAttacking()){
             int newX = getX();
             int newY = getY() + getVelY();
             int[] coords = getGridCoords(newX, newY);

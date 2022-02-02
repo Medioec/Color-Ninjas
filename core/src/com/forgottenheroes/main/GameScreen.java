@@ -32,9 +32,9 @@ public class GameScreen extends DisplayScreen {
 		getOrthographicCamera().update();
 		// tell the SpriteBatch to render in the
 		// coordinate system specified by the camera.
-		game.getSpriteBatch().setProjectionMatrix(getOrthographicCamera().combined);
 		Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+		game.getSpriteBatch().setProjectionMatrix(getOrthographicCamera().combined);
 		game.getShapeRenderer().setProjectionMatrix(getOrthographicCamera().combined);
 		game.getShapeRenderer().begin();
 		game.getShapeRenderer().set(ShapeType.Filled);

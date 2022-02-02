@@ -285,6 +285,7 @@ public class ObjectManager {
             roundOverTime = TimeUtils.millis();
             Popup popup = new Popup("Game Over", "Esc to return to menu, any other key for rematch...", "");
             popup.setTextScale(1.4f);
+            setPopup(popup);
             game.setGameState(GameState.GAMEOVER);
         } else {
             roundOverTime = TimeUtils.millis();
