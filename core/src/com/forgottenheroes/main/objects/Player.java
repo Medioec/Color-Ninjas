@@ -33,7 +33,7 @@ public class Player extends GameEntity{
     private ArrayList<Equipment> inventory;
     private ArrayList<int[]> killData;
 
-    private final int ATTACKCDMS = 300;
+    private final int ATTACKCDMS = 500;
     
     public enum PlayerNumber{
         PLAYER1,
