@@ -8,7 +8,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.forgottenheroes.main.Equipment;
 import com.forgottenheroes.main.FHeroes;
+import com.forgottenheroes.main.GameState;
 import com.forgottenheroes.main.Pickup;
+import com.forgottenheroes.main.objects.tiles.Floor;
 
 public class Player extends GameEntity{
     private int playerNumber;
@@ -27,13 +29,14 @@ public class Player extends GameEntity{
     private int atkWidth;
     private int moveSpeed;
     private long lastAttackTime;
-    
-    
-    
-    private ArrayList<Equipment> inventory;
-    private ArrayList<int[]> killData;
+    private long lastRevealTime;
+    private long lastDamagedTime;
+    private int[] currentGridCoord;
+    private boolean visible;
 
     private final int ATTACKCDMS = 500;
+    private final int REVEALMS = 1000;
+    private final int STUNMS = 1000;
     
     public enum PlayerNumber{
         PLAYER1,
@@ -67,7 +70,7 @@ public class Player extends GameEntity{
         setWins(0);
         setAttack(40);
         setAtkRange(100);
-        setAtkWidth(40);
+        setAtkWidth(50);
         setMoveSpeed(5);
         setState(State.IDLE);
         switch(playerNumber){
@@ -103,17 +106,25 @@ public class Player extends GameEntity{
     }
 
     @Override
-    public void render(FHeroes game) {
-        if(getState() != State.DEFEATED){
-            if(isValidXMovement()) updateXPos();
-            if(isValidYMovement()) updateYPos();
-            game.getShapeRenderer().begin();
-            game.getShapeRenderer().setColor(color);
-            game.getShapeRenderer().set(ShapeType.Filled);
-            game.getShapeRenderer().circle(getX(), getY(), getHeight() / 2);
-            game.getShapeRenderer().end();
+    public void render(float delta) {
+        if(FHeroes.getGameState() != GameState.MAINMENU){
+            autoHidePlayer();
+            if(getState() != State.DEFEATED){
+                if(isValidXMovement()) updateXPos();
+                if(isValidYMovement()) updateYPos();
+                convertTile();
+                if(visible){
+                    FHeroes.getObjectManager().getShapeRenderer().begin();
+                    FHeroes.getObjectManager().getShapeRenderer().setColor(Color.BLACK);
+                    FHeroes.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
+                    FHeroes.getObjectManager().getShapeRenderer().circle(getX(), getY(), getHeight() / 2);
+                    FHeroes.getObjectManager().getShapeRenderer().setColor(color);
+                    FHeroes.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
+                    FHeroes.getObjectManager().getShapeRenderer().circle(getX(), getY(), getHeight() / 2 - 2);
+                    FHeroes.getObjectManager().getShapeRenderer().end();
+                }
+            }
         }
-
     }
     
     public boolean isValidXMovement(){
@@ -191,6 +202,12 @@ public class Player extends GameEntity{
         setGridCoords(getInitPos());
         setHp(getMaxHP());
         setScore(0);
+        FHeroes.getObjectManager().getPlayerByNumber(1).revealPlayer();
+        FHeroes.getObjectManager().getPlayerByNumber(1).setCurrentGridCoord(new int[] {-1,-1});
+        FHeroes.getObjectManager().getPlayerByNumber(2).revealPlayer();
+        FHeroes.getObjectManager().getPlayerByNumber(2).setCurrentGridCoord(new int[] {-1,-1});
+        FHeroes.getObjectManager().setLastScoring(TimeUtils.millis());
+        FHeroes.getObjectManager().resetTileOwners();
     }
 
     public void resetToNewGame(){
@@ -198,6 +215,12 @@ public class Player extends GameEntity{
         setHp(getMaxHP());
         setScore(0);
         setWins(0);
+        FHeroes.getObjectManager().getPlayerByNumber(1).revealPlayer();
+        FHeroes.getObjectManager().getPlayerByNumber(1).setCurrentGridCoord(new int[] {-1,-1});
+        FHeroes.getObjectManager().getPlayerByNumber(2).revealPlayer();
+        FHeroes.getObjectManager().getPlayerByNumber(2).setCurrentGridCoord(new int[] {-1,-1});
+        FHeroes.getObjectManager().setLastScoring(TimeUtils.millis());
+        FHeroes.getObjectManager().resetTileOwners();
     }
 
     public String getName() {
@@ -313,8 +336,24 @@ public class Player extends GameEntity{
         return playerNumber;
     }
 
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public int[] getCurrentGridCoord() {
+        return currentGridCoord;
+    }
+
+    public void setCurrentGridCoord(int[] currentGridCoord) {
+        this.currentGridCoord = currentGridCoord;
+    }
+
     public void performAttack(Direction dir){
-        if(!isAttacking()){
+        if(!isAttacking() && TimeUtils.millis() - lastDamagedTime > STUNMS){
             startAttackCD();
             new AttackSwing(this);
             int damage;
@@ -375,7 +414,7 @@ public class Player extends GameEntity{
                             this.score += damage;
                             new DamageNumbers(target.getX() - 10, target.getY() + 50, 0, 1, damage);
                             damage = 0;
-                            
+                            target.damageStun();
                         }
                     }
                     if(target.checkPlayerDefeated()){
@@ -392,6 +431,7 @@ public class Player extends GameEntity{
     public void startAttackCD(){
         setLastAttackTime(TimeUtils.millis());
         setState(State.ATTACKING);
+        revealPlayer();
     }
 
     public boolean isAttacking(){
@@ -412,5 +452,41 @@ public class Player extends GameEntity{
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void updatePos() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void convertTile(){
+        if(currentGridCoord == null){
+            currentGridCoord = new int[] {-1,-1};
+        }
+        int[] temp = currentGridCoord;
+        currentGridCoord = getGridCoords();
+        if(temp[1] != currentGridCoord[1] || temp[0] != currentGridCoord[0]){
+            Floor floor = FHeroes.getObjectManager().getTile(currentGridCoord).getFloor();
+            if(floor != null){
+                floor.changeOwner(playerNumber);
+            }
+        }
+    }
+
+    public void revealPlayer(){
+        setVisible(true);
+        lastRevealTime = TimeUtils.millis();
+    }
+
+    public void autoHidePlayer(){
+        if(TimeUtils.millis() - lastRevealTime > REVEALMS){
+            setVisible(false);
+        }
+    }
+
+    public void damageStun(){
+        revealPlayer();
+        lastDamagedTime = TimeUtils.millis();
     }
 }

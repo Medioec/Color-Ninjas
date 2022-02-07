@@ -1,8 +1,9 @@
 package com.forgottenheroes.main.objects;
 
 import com.forgottenheroes.main.FHeroes;
+import com.forgottenheroes.main.interfaces.MoveableInterface;
 
-public abstract class GameEntity extends GameObject{
+public abstract class GameEntity extends GameObject implements MoveableInterface{
     private int velX;
     private int velY;
 
@@ -28,7 +29,7 @@ public abstract class GameEntity extends GameObject{
         this.velY = velY;
     }
     
-    public abstract void render(FHeroes game);
+    public abstract void render(float delta);
 
     public void initVel(){
         velX = velY = 0;

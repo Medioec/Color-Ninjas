@@ -18,21 +18,27 @@ public class DamageNumbers extends GameEntity{
     }
 
     @Override
-    public void render(FHeroes game) {
-        game.getSpriteBatch().begin();
+    public void render(float delta) {
+        FHeroes.getObjectManager().getSpriteBatch().begin();
 
-        game.getBitmapFont().getData().setScale(1);
-        game.getBitmapFont().setColor(new Color(1f, 0f, 0f, 1f));
-        game.getBitmapFont().draw(game.getSpriteBatch(), "-" + String.valueOf(damage), getX(), getY());
-        game.getBitmapFont().getData().setScale(2);
+        FHeroes.getObjectManager().getBitmapFont().getData().setScale(1);
+        FHeroes.getObjectManager().getBitmapFont().setColor(new Color(1f, 0f, 0f, 1f));
+        FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), "-" + String.valueOf(damage), getX(), getY());
+        FHeroes.getObjectManager().getBitmapFont().getData().setScale(2);
         this.updateYPos();
-        game.getSpriteBatch().end();
+        FHeroes.getObjectManager().getSpriteBatch().end();
         if(TimeUtils.millis() - spawnTime > FADEMS){
             FHeroes.getObjectManager().queueForRemoval(this);
         }
     }
 
     public void updateVelY(){
+        
+    }
+
+    @Override
+    public void updatePos() {
+        // TODO Auto-generated method stub
         
     }
     

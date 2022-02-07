@@ -6,18 +6,12 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.forgottenheroes.main.objects.ObjectManager;
 
 public class FHeroes extends Game {
 
-	private GameState gameState;
-
-	private SpriteBatch batch;
-	private BitmapFont font;
-	private ShapeRenderer shapeRenderer;
-	private Viewport viewport;
-	private OrthographicCamera camera;
+	private static GameState gameState;
+	private static FHeroes game;
 
 	private static ObjectManager objectManager;
 
@@ -26,21 +20,21 @@ public class FHeroes extends Game {
 
 	//sets up the game window and display main menu
 	public void create() {
-		batch = new SpriteBatch();
-		font = new BitmapFont();
-		shapeRenderer = new ShapeRenderer();
-		shapeRenderer.setAutoShapeType(true);
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, INIT_WIDTH, INIT_HEIGHT);
-		viewport = new FitViewport(INIT_WIDTH, INIT_HEIGHT);
+		game = this;
 		objectManager = new ObjectManager(this);
-		objectManager.setMainMenuScreen(new MainMenuScreen(this, camera, viewport));
-		objectManager.setChatbotScreen(new ChatbotScreen(this, viewport, camera));
-		//objectManager.getMainMenuScreen().resize(INIT_WIDTH, INIT_HEIGHT);
-		//setScreen(objectManager.getMainMenuScreen());
-		setScreen(objectManager.getChatbotScreen());
-		//setGameState(GameState.MAINMENU);
-		setGameState(GameState.CHATBOT);
+
+		objectManager.setSpriteBatch(new SpriteBatch());
+		objectManager.setBitmapFont(new BitmapFont());
+		objectManager.setShapeRenderer(new ShapeRenderer());
+		objectManager.getShapeRenderer().setAutoShapeType(true);
+		objectManager.setCamera(new OrthographicCamera());
+		objectManager.getCamera().setToOrtho(false, INIT_WIDTH, INIT_HEIGHT);
+		objectManager.setViewport(new FitViewport(INIT_WIDTH, INIT_HEIGHT, objectManager.getCamera()));
+		
+		objectManager.setMainMenuScreen(new MainMenuScreen());
+		
+		setScreen(objectManager.getMainMenuScreen());
+		setGameState(GameState.MAINMENU);
 	}
 
 	public void render() {
@@ -48,30 +42,9 @@ public class FHeroes extends Game {
 	}
 
 	public void dispose() {
-		batch.dispose();
-		font.dispose();
 	}
-
-
-
-
+	
 	//Getters and setters
-	public SpriteBatch getSpriteBatch(){
-		return batch;
-	}
-
-	public BitmapFont getBitmapFont(){
-		return font;
-	}
-
-	public ShapeRenderer getShapeRenderer(){
-		return shapeRenderer;
-	}
-
-	public void setShapeRenderer(ShapeRenderer shapeRenderer){
-		this.shapeRenderer = shapeRenderer;
-	}
-
 	public static ObjectManager getObjectManager(){
 		return objectManager;
 	}
@@ -80,33 +53,21 @@ public class FHeroes extends Game {
 		objectManager = om;
 	}
 
-	public GameState getGameState(){
+	public static FHeroes getGame() {
+		return game;
+	}
+
+	public static GameState getGameState(){
 		return gameState;
 	}
 
-	public void setGameState(GameState gameState){
-		this.gameState = gameState;
+	public static void setGameState(GameState state){
+		gameState = state;
 	}
 
-	public boolean isGameState(GameState state){
+	public static boolean isGameState(GameState state){
 		if(getGameState() == state){
 			return true;
 		} else return false;
-	}
-
-	public Viewport getViewport(){
-		return viewport;
-	}
-
-	public void setViewPort(Viewport viewport){
-		this.viewport = viewport;
-	}
-
-	public OrthographicCamera getOrthoGraphicCamera(){
-		return camera;
-	}
-
-	public void setOrthographicCamera(OrthographicCamera camera){
-		this.camera = camera;
 	}
 }

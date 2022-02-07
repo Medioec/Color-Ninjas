@@ -13,10 +13,10 @@ public class Tile extends GridObject{
     }
 
     @Override
-    public void render(FHeroes game) {
+    public void render(float delta) {
         for(int i = 0; i < tileObjectList.size(); i++){
             TileObject object = tileObjectList.get(i);
-            object.render(game);
+            object.render(delta);
         }
     }
 
@@ -30,6 +30,17 @@ public class Tile extends GridObject{
 
     public void removeTileObject(TileObject tileObject){
         tileObjectList.remove(tileObject);
+    }
+
+    public Floor getFloor(){
+        for(int i = 0; i < tileObjectList.size(); i++){
+            TileObject object = tileObjectList.get(i);
+            if(object instanceof Floor){
+                Floor floor = (Floor) object;
+                return floor;
+            }
+        }
+        return null;
     }
 
     public boolean isPassable(){

@@ -13,7 +13,7 @@ public class Pickup extends GridObject{
     }
 
     @Override
-    public void render(FHeroes game) {
+    public void render(float delta) {
         //TODO work on this
     }
 

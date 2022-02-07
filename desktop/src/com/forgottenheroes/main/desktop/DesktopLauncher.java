@@ -9,6 +9,7 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.foregroundFPS = 60;
+		config.useGL30 = true;
 		new LwjglApplication(new FHeroes(), config);
 		Gdx.graphics.setWindowedMode(FHeroes.INIT_WIDTH, FHeroes.INIT_HEIGHT);
 	}

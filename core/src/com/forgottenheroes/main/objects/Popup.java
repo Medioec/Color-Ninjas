@@ -32,35 +32,35 @@ public class Popup extends GameObject{
         setTextScale(2);
         setSmallTextScale(1.5f);
         setTextYOffset(0);
-        FHeroes.getObjectManager().getGame().getBitmapFont().getData().setScale(getTitleScale());
-        GlyphLayout layout = new GlyphLayout(FHeroes.getObjectManager().getGame().getBitmapFont(), title);
+        FHeroes.getObjectManager().getBitmapFont().getData().setScale(getTitleScale());
+        GlyphLayout layout = new GlyphLayout(FHeroes.getObjectManager().getBitmapFont(), title);
         setTitleWidth(layout.width);
-        FHeroes.getObjectManager().getGame().getBitmapFont().getData().setScale(getTextScale());
-        layout = new GlyphLayout(FHeroes.getObjectManager().getGame().getBitmapFont(), text);
+        FHeroes.getObjectManager().getBitmapFont().getData().setScale(getTextScale());
+        layout = new GlyphLayout(FHeroes.getObjectManager().getBitmapFont(), text);
         setTextWidth(layout.width);
-        FHeroes.getObjectManager().getGame().getBitmapFont().getData().setScale(getSmallTextScale());
-        layout = new GlyphLayout(FHeroes.getObjectManager().getGame().getBitmapFont(), smallText);
+        FHeroes.getObjectManager().getBitmapFont().getData().setScale(getSmallTextScale());
+        layout = new GlyphLayout(FHeroes.getObjectManager().getBitmapFont(), smallText);
         setSmallTextWidth(layout.width);
         FHeroes.getObjectManager().addToObjectList(this);
     }
 
     @Override
-    public void render(FHeroes game) {
-        game.getShapeRenderer().begin();
+    public void render(float delta) {
+        FHeroes.getObjectManager().getShapeRenderer().begin();
         updateTextWidth();
-        game.getShapeRenderer().set(ShapeType.Filled);
-        game.getShapeRenderer().setColor(new Color(.2f, .2f, .4f, 1f));
-        game.getShapeRenderer().rect(getX(), getY(), getWidth(), getHeight());
-        game.getShapeRenderer().end();
-        game.getSpriteBatch().begin();
-        game.getBitmapFont().setColor(new Color(1,1,1,1));
-        game.getBitmapFont().getData().setScale(getTitleScale());
-        game.getBitmapFont().draw(game.getSpriteBatch(), getTitle(), getX() + (getWidth() - getTitleWidth()) / 2, getY() + getHeight()/16*12);
-        game.getBitmapFont().getData().setScale(getTextScale());
-        game.getBitmapFont().draw(game.getSpriteBatch(), getText(), getX() + (getWidth() - getTextWidth()) / 2, getY() + getTextYOffset() + getHeight()/16*6);
-        game.getBitmapFont().getData().setScale(getSmallTextScale());
-        game.getBitmapFont().draw(game.getSpriteBatch(), getSmallText(), getX() + (getWidth() - getSmallTextWidth()) / 2, getY() + getHeight()/16*3);
-        game.getSpriteBatch().end();
+        FHeroes.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
+        FHeroes.getObjectManager().getShapeRenderer().setColor(new Color(.2f, .2f, .4f, 1f));
+        FHeroes.getObjectManager().getShapeRenderer().rect(getX(), getY(), getWidth(), getHeight());
+        FHeroes.getObjectManager().getShapeRenderer().end();
+        FHeroes.getObjectManager().getSpriteBatch().begin();
+        FHeroes.getObjectManager().getBitmapFont().setColor(new Color(1,1,1,1));
+        FHeroes.getObjectManager().getBitmapFont().getData().setScale(getTitleScale());
+        FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), getTitle(), getX() + (getWidth() - getTitleWidth()) / 2, getY() + getHeight()/16*12);
+        FHeroes.getObjectManager().getBitmapFont().getData().setScale(getTextScale());
+        FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), getText(), getX() + (getWidth() - getTextWidth()) / 2, getY() + getTextYOffset() + getHeight()/16*6);
+        FHeroes.getObjectManager().getBitmapFont().getData().setScale(getSmallTextScale());
+        FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), getSmallText(), getX() + (getWidth() - getSmallTextWidth()) / 2, getY() + getHeight()/16*3);
+        FHeroes.getObjectManager().getSpriteBatch().end();
     }
 
     public void setText(String title, String text, String smallText){
@@ -150,15 +150,15 @@ public class Popup extends GameObject{
     }
 
     public void updateTextWidth(){
-        BitmapFont font = FHeroes.getObjectManager().getGame().getBitmapFont();
+        BitmapFont font = FHeroes.getObjectManager().getBitmapFont();
         font.getData().setScale(getTitleScale());
-        GlyphLayout layout = new GlyphLayout(FHeroes.getObjectManager().getGame().getBitmapFont(), title);
+        GlyphLayout layout = new GlyphLayout(FHeroes.getObjectManager().getBitmapFont(), title);
         setTitleWidth(layout.width);
         font.getData().setScale(getTextScale());
-        layout = new GlyphLayout(FHeroes.getObjectManager().getGame().getBitmapFont(), text);
+        layout = new GlyphLayout(FHeroes.getObjectManager().getBitmapFont(), text);
         setTextWidth(layout.width);
         font.getData().setScale(getSmallTextScale());
-        layout = new GlyphLayout(FHeroes.getObjectManager().getGame().getBitmapFont(), smallText);
+        layout = new GlyphLayout(FHeroes.getObjectManager().getBitmapFont(), smallText);
         setSmallTextWidth(layout.width);
     }
 }

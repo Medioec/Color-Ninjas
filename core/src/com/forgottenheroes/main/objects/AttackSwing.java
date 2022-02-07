@@ -29,7 +29,8 @@ public class AttackSwing extends GameObject{
         setY(player.getY() - getHeight() / 2);
         originX = 0;
         originY = getTexture().getHeight() / 2;
-        scaleX = scaleY = 1;
+        scaleX = 1;
+        scaleY = 2;
         rotation = rotateToPlayerDirection(player);
         srcX = 0;
         srcY = 0;
@@ -43,10 +44,10 @@ public class AttackSwing extends GameObject{
     }
 
     @Override
-    public void render(FHeroes game) {
-        game.getSpriteBatch().begin();
-        game.getSpriteBatch().draw(getTexture(), getX(), getY(), originX, originY, getWidth(), getHeight(), scaleX, scaleY, rotation, srcX, srcY, srcWidth, srcHeight, flipX, flipY);
-        game.getSpriteBatch().end();
+    public void render(float delta) {
+        FHeroes.getObjectManager().getSpriteBatch().begin();
+        FHeroes.getObjectManager().getSpriteBatch().draw(getTexture(), getX(), getY(), originX, originY, getWidth(), getHeight(), scaleX, scaleY, rotation, srcX, srcY, srcWidth, srcHeight, flipX, flipY);
+        FHeroes.getObjectManager().getSpriteBatch().end();
         if(TimeUtils.millis() - spawnTime > FADEMS){
             FHeroes.getObjectManager().queueForRemoval(this);
         }

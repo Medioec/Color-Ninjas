@@ -17,15 +17,15 @@ public class Wall extends TileObject{
     }
     //to replace shaperenderer shapes with actual textures
     @Override
-    public void render(FHeroes game) {
-        game.getShapeRenderer().begin();
-        game.getShapeRenderer().setColor(Color.GRAY);
-        game.getShapeRenderer().set(ShapeType.Filled);
-        game.getShapeRenderer().rect(getX(), getY(), getWidth(), getHeight());
-        game.getShapeRenderer().setColor(Color.BLACK);
-        game.getShapeRenderer().set(ShapeType.Line);
-        game.getShapeRenderer().rect(getX(), getY(), getWidth(), getHeight());
-        game.getShapeRenderer().end();
+    public void render(float delta) {
+        FHeroes.getObjectManager().getShapeRenderer().begin();
+        FHeroes.getObjectManager().getShapeRenderer().setColor(Color.GRAY);
+        FHeroes.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
+        FHeroes.getObjectManager().getShapeRenderer().rect(getX(), getY(), getWidth(), getHeight());
+        FHeroes.getObjectManager().getShapeRenderer().setColor(Color.BLACK);
+        FHeroes.getObjectManager().getShapeRenderer().set(ShapeType.Line);
+        FHeroes.getObjectManager().getShapeRenderer().rect(getX(), getY(), getWidth(), getHeight());
+        FHeroes.getObjectManager().getShapeRenderer().end();
     }
     
 }

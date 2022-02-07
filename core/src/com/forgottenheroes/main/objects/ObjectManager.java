@@ -4,8 +4,12 @@ import java.util.ArrayList;
 
 
 import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.Gdx;
-import com.forgottenheroes.main.ChatbotScreen;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.forgottenheroes.main.FHeroes;
 import com.forgottenheroes.main.GameScreen;
 import com.forgottenheroes.main.GameState;
@@ -20,20 +24,26 @@ public class ObjectManager {
     private ArrayList<GameObject> objectList;
     private ArrayList<GameObject> removalQueue;
 
+    private SpriteBatch spriteBatch;
+	private BitmapFont bitmapFont;
+	private ShapeRenderer shapeRenderer;
+	private Viewport viewport;
+	private OrthographicCamera camera;
+
     private FHeroes game;
     private Map map;
     private GameScreen gameScreen;
     private MainMenuScreen mainMenuScreen;
-    private ChatbotScreen chatbotScreen;
     private Keyboard keyboard;
     private Leaderboard leaderboard;
     private Scoreboard scoreboard;
     private GameObject popup;
 
     private long roundOverTime;
+    private long lastScoring;
 
     private final int ROUNDRESETMS = 3000;
-    
+    private final int SCOREINTERVALMS = 1000;
 
     public ObjectManager(FHeroes game){
         this.game = game;
@@ -41,31 +51,86 @@ public class ObjectManager {
         tileList = new ArrayList<Tile>();
         entityList = new ArrayList<GameEntity>();
         objectList = new ArrayList<GameObject>();
-        keyboard = new Keyboard(game);
+        keyboard = new Keyboard();
         Gdx.input.setInputProcessor(keyboard);
     }
 
-    public void render(FHeroes game){
-        if(game.getGameState() == GameState.ROUNDENDPAUSE){
+    public void render(float delta){
+        if(FHeroes.getGameState() == GameState.ROUNDENDPAUSE){
             startNewRound();
+        }
+        if(FHeroes.isGameState(GameState.GAMERUNNING)){
+            if(TimeUtils.millis() - lastScoring > SCOREINTERVALMS){
+                addTileScores();
+            }
         }
         clearRemovalQueue();
         keyboard.checkKeyPress();
         for(int i = 0; i < tileList.size(); i++){
             Tile tile = tileList.get(i);
-            tile.render(game);
+            tile.render(delta);
         }
         sortEntitiesByY();
         for(int i = 0; i < entityList.size(); i++){
             GameEntity entity = entityList.get(i);
-            entity.render(game);
+            entity.render(delta);
         }
         for(int i = 0; i < objectList.size(); i++){
             GameObject object = objectList.get(i);
-            object.render(game);
+            object.render(delta);
         }
-        leaderboard.render(game);
-        scoreboard.render(game);
+    }
+
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
+
+    public void setCamera(OrthographicCamera camera) {
+        this.camera = camera;
+    }
+
+    public BitmapFont getBitmapFont() {
+        return bitmapFont;
+    }
+
+    public void setBitmapFont(BitmapFont bitmapFont) {
+        this.bitmapFont = bitmapFont;
+    }
+
+    public ArrayList<GameObject> getObjectList() {
+        return objectList;
+    }
+
+    public void setEntityList(ArrayList<GameEntity> entityList) {
+        this.entityList = entityList;
+    }
+
+    public int getROUNDRESETMS() {
+        return ROUNDRESETMS;
+    }
+    
+    public ShapeRenderer getShapeRenderer() {
+        return shapeRenderer;
+    }
+
+    public void setShapeRenderer(ShapeRenderer shapeRenderer) {
+        this.shapeRenderer = shapeRenderer;
+    }
+
+    public SpriteBatch getSpriteBatch() {
+        return spriteBatch;
+    }
+
+    public void setSpriteBatch(SpriteBatch spriteBatch) {
+        this.spriteBatch = spriteBatch;
+    }
+
+    public Viewport getViewport() {
+        return viewport;
+    }
+
+    public void setViewport(Viewport viewport) {
+        this.viewport = viewport;
     }
 
     public GameObject getPopup() {
@@ -128,14 +193,6 @@ public class ObjectManager {
         this.mainMenuScreen = mainMenuScreen;
     }
 
-    public ChatbotScreen getChatbotScreen() {
-        return chatbotScreen;
-    }
-
-    public void setChatbotScreen(ChatbotScreen chatbotScreen) {
-        this.chatbotScreen = chatbotScreen;
-    }
-
     public ArrayList<Tile> getTileList(){
         return tileList;
     }
@@ -144,8 +201,12 @@ public class ObjectManager {
         return entityList;
     }
 
-    public ArrayList<GameObject> getUiList() {
-        return objectList;
+    public long getLastScoring() {
+        return lastScoring;
+    }
+
+    public void setLastScoring(long lastScoring) {
+        this.lastScoring = lastScoring;
     }
 
     public void addToTileList(Tile tile){
@@ -286,10 +347,10 @@ public class ObjectManager {
             Popup popup = new Popup("Game Over", "Esc to return to menu, any other key for rematch...", "");
             popup.setTextScale(1.4f);
             setPopup(popup);
-            game.setGameState(GameState.GAMEOVER);
+            FHeroes.setGameState(GameState.GAMEOVER);
         } else {
             roundOverTime = TimeUtils.millis();
-            game.setGameState(GameState.ROUNDENDPAUSE);
+            FHeroes.setGameState(GameState.ROUNDENDPAUSE);
             setPopup(new Popup("Round Over", "Next round starting soon...", ""));
         }
         
@@ -298,7 +359,7 @@ public class ObjectManager {
     public void startNewRound(){
         if(TimeUtils.millis() - roundOverTime > ROUNDRESETMS){
             FHeroes.getObjectManager().getMap().resetMap(FHeroes.getObjectManager().getMap().getCurrentMap(), Reset.NEWROUND);
-            game.setGameState(GameState.GAMERUNNING);
+            FHeroes.setGameState(GameState.GAMERUNNING);
             removeObject(getPopup());
         }
     }
@@ -314,8 +375,36 @@ public class ObjectManager {
     public void startNewGame(){
         if(TimeUtils.millis() - roundOverTime > ROUNDRESETMS){
             FHeroes.getObjectManager().getMap().resetMap(FHeroes.getObjectManager().getMap().getCurrentMap(), Reset.NEWGAME);
-            game.setGameState(GameState.GAMERUNNING);
+            FHeroes.setGameState(GameState.GAMERUNNING);
             removeObject(getPopup());
+        }
+    }
+
+    public void addTileScores(){
+        int score1 = 0;
+        int score2 = 0;
+        for(int i = 0; i < tileList.size(); i++){
+            Tile tile = tileList.get(i);
+            switch(tile.getFloor().getOwner()){
+                case 1:
+                score1 += 5;
+                break;
+                case 2:
+                score2 += 5;
+                break;
+            }
+        }
+        Player player = getPlayerByNumber(1);
+        player.setScore(player.getScore() + score1);
+        player = getPlayerByNumber(2);
+        player.setScore(player.getScore() + score2);
+        lastScoring = TimeUtils.millis();
+    }
+
+    public void resetTileOwners(){
+        for(int i = 0; i < tileList.size(); i++){
+            Tile tile = tileList.get(i);
+            tile.getFloor().changeOwner(0);
         }
     }
 }

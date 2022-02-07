@@ -18,7 +18,7 @@ public abstract class GameObject {
         nextID++;
     }
 
-    public abstract void render(FHeroes game);
+    public abstract void render(float delta);
 
     public int getX(){
         return x;

@@ -3,6 +3,7 @@ package com.forgottenheroes.main.objects;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.forgottenheroes.main.FHeroes;
 import com.forgottenheroes.main.Reset;
 import com.forgottenheroes.main.objects.tiles.Floor;
@@ -27,7 +28,7 @@ public class Map extends GameObject{
     }
 
     @Override
-    public void render(FHeroes game){
+    public void render(float delta){
         
     }
 
@@ -50,7 +51,7 @@ public class Map extends GameObject{
     }
 
     public void generateMap1(){
-        gridSize = 64;
+        gridSize = 50;
         setHSize(9);
         setVSize(9);
         setNumberOfPlayers(2);
@@ -96,8 +97,8 @@ public class Map extends GameObject{
         setCurrentMap(1);
     }
 
-    public void resetMap(int n, Reset reset){
-        switch(n){
+    public void resetMap(int map, Reset reset){
+        switch(map){
             case 1:
             switch(reset){
                 case NEWGAME:
@@ -111,8 +112,6 @@ public class Map extends GameObject{
                 default:
                 break;
             }
-
-            
         }
     }
 

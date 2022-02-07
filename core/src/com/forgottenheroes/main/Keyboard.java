@@ -3,15 +3,17 @@ package com.forgottenheroes.main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.forgottenheroes.main.objects.Player;
 
 public class Keyboard implements InputProcessor{
 
-    private FHeroes game;
-    private ChatbotScreen chatbot;
+    private long initialPress;
+    private long lastDelete;
+    private final int BACKSPACEDELAY = 200;
+    private final int DELETESPEED = 30;
 
-    public Keyboard(FHeroes game){
-        this.game = game;
+    public Keyboard(){
     }
 
     public void checkKeyPress(){
@@ -22,7 +24,7 @@ public class Keyboard implements InputProcessor{
             player1.initVel();
             player2.initVel();
         }
-        if(game.getGameState() == GameState.GAMERUNNING){
+        if(FHeroes.getGameState() == GameState.GAMERUNNING){
             if(!player1.checkPlayerDefeated()){
                 if(Gdx.input.isKeyPressed(Keys.UP)){
                     player1.addVelXY(0, player1.getMoveSpeed());
@@ -72,29 +74,37 @@ public class Keyboard implements InputProcessor{
                 player2.updateDirection();
             }
         }
-        else if(game.isGameState(GameState.GAMEOVER)){
+        else if(FHeroes.isGameState(GameState.GAMEOVER)){
             if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)){
-                FHeroes.getObjectManager().removeObject(FHeroes.getObjectManager().getPopup());
-                game.setScreen(new ChatbotScreen(game, game.getViewport(), game.getOrthoGraphicCamera()));
-                game.setGameState(GameState.CHATBOT);
-                FHeroes.getObjectManager().removeEntity(FHeroes.getObjectManager().getPlayerByNumber(1));
-                FHeroes.getObjectManager().removeEntity(FHeroes.getObjectManager().getPlayerByNumber(2));
+                FHeroes.getObjectManager().clearObjects();
+                FHeroes.getGame().setScreen(new MainMenuScreen());
+                FHeroes.setGameState(GameState.MAINMENU);
                 FHeroes.getObjectManager().getGameScreen().dispose();
             } else if(Gdx.input.isKeyPressed(Keys.ANY_KEY)){
                 FHeroes.getObjectManager().startNewGame();
             }
         }
-        else if(game.isGameState(GameState.CHATBOT)) {
+        else if(FHeroes.isGameState(GameState.MAINMENU)) {
             if(Gdx.input.isKeyJustPressed(Keys.BACKSPACE)){
-                String buffer = chatbot.getInput();
+                initialPress = TimeUtils.millis();
+                String buffer = FHeroes.getObjectManager().getMainMenuScreen().getInput();
                 if(buffer.length() > 0){
                     buffer = buffer.substring(0, buffer.length() - 1);
-                    chatbot.setInput(buffer);
+                    FHeroes.getObjectManager().getMainMenuScreen().setInput(buffer);
+                    FHeroes.getObjectManager().getMainMenuScreen().updateInput();
                 }
-                
+            }
+            if(Gdx.input.isKeyPressed(Keys.BACKSPACE) && (TimeUtils.millis() - initialPress > BACKSPACEDELAY)){
+                String buffer = FHeroes.getObjectManager().getMainMenuScreen().getInput();
+                if(buffer.length() > 0 && TimeUtils.millis() - lastDelete > DELETESPEED){
+                    buffer = buffer.substring(0, buffer.length() - 1);
+                    FHeroes.getObjectManager().getMainMenuScreen().setInput(buffer);
+                    FHeroes.getObjectManager().getMainMenuScreen().updateInput();
+                    lastDelete = TimeUtils.millis();
+                }
             }
             else if(Gdx.input.isKeyJustPressed(Keys.ENTER)){
-                chatbot.setGettingInput(true);
+                FHeroes.getObjectManager().getMainMenuScreen().setInputReady(true);
             }
         }
     }
@@ -111,13 +121,14 @@ public class Keyboard implements InputProcessor{
 
     @Override
     public boolean keyTyped(char character) {
-        if(game.isGameState(GameState.CHATBOT) && !Gdx.input.isKeyPressed(Keys.BACKSPACE) && !Gdx.input.isKeyPressed(Keys.ENTER)){
-            String buffer = chatbot.getInput();
+        if(FHeroes.isGameState(GameState.MAINMENU) && (Character.isLetterOrDigit(character) || character == ' ')){
+            String buffer = FHeroes.getObjectManager().getMainMenuScreen().getInput();
             buffer += character;
-            if(buffer.length() > 10){
+            if(buffer.length() > 30){
                 buffer = buffer.substring(0, buffer.length() - 1);
             }
-            chatbot.setInput(buffer);
+            FHeroes.getObjectManager().getMainMenuScreen().setInput(buffer);
+            FHeroes.getObjectManager().getMainMenuScreen().updateInput();
             return true;
         }
         return false;
@@ -146,13 +157,5 @@ public class Keyboard implements InputProcessor{
     @Override
     public boolean scrolled(float amountX, float amountY) {
         return false;
-    }
-    
-    public ChatbotScreen getChatbot() {
-        return chatbot;
-    }
-
-    public void setChatbot(ChatbotScreen chatbot) {
-        this.chatbot = chatbot;
     }
 }

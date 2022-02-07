@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.forgottenheroes.main.FHeroes;
+import com.forgottenheroes.main.GameState;
 
 public class Scoreboard extends GameObject{
 
@@ -16,20 +17,21 @@ public class Scoreboard extends GameObject{
         setX(FHeroes.INIT_WIDTH - getWidth());
         setY(FHeroes.INIT_HEIGHT / 32 * 12);
         players = new ArrayList<Player>();
+        FHeroes.getObjectManager().addToObjectList(this);
     }
 
     @Override
-    public void render(FHeroes game) {
-        game.getShapeRenderer().begin();
-        game.getShapeRenderer().set(ShapeType.Filled);
-        game.getShapeRenderer().setColor(new Color(.2f, .2f, .4f, 0.1f));
-        game.getShapeRenderer().rect(getX(), getY(), getWidth(), getHeight());
-        game.getShapeRenderer().end();
-        game.getSpriteBatch().begin();
-        game.getBitmapFont().setColor(new Color(1, 1, 1, 1));
-        game.getBitmapFont().draw(game.getSpriteBatch(), "Score:", getX() + getWidth()/16*2, getY() + getHeight()/16*15);
-        showPlayerScores(game);
-        game.getSpriteBatch().end();
+    public void render(float delta) {
+        FHeroes.getObjectManager().getShapeRenderer().begin();
+        FHeroes.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
+        FHeroes.getObjectManager().getShapeRenderer().setColor(new Color(.2f, .2f, .4f, 0.1f));
+        FHeroes.getObjectManager().getShapeRenderer().rect(getX(), getY(), getWidth(), getHeight());
+        FHeroes.getObjectManager().getShapeRenderer().end();
+        FHeroes.getObjectManager().getSpriteBatch().begin();
+        FHeroes.getObjectManager().getBitmapFont().setColor(new Color(1, 1, 1, 1));
+        FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), "Score:", getX() + getWidth()/16*2, getY() + getHeight()/16*15);
+        showPlayerScores();
+        FHeroes.getObjectManager().getSpriteBatch().end();
     }
 
     public void addPlayerToScoreBoard(Player player){
@@ -40,13 +42,13 @@ public class Scoreboard extends GameObject{
 
     }
 
-    public void showPlayerScores(FHeroes game){
+    public void showPlayerScores(){
         for(int i = 0; i < players.size(); i++){
             Player player = players.get(i);
-            game.getBitmapFont().getData().setScale(1.4f);
-            game.getBitmapFont().draw(game.getSpriteBatch(), player.getName(), getX() + getWidth()/16*2, getY() + getHeight()/16*(15 - 3*(i+1)));
-            game.getBitmapFont().draw(game.getSpriteBatch(), String.format("%-10d", player.getScore()), getX() + getWidth()/16*8, getY() + getHeight()/16*(15 - 3*(i+1)));
-            game.getBitmapFont().getData().setScale(2);
+            FHeroes.getObjectManager().getBitmapFont().getData().setScale(1.4f);
+            FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), player.getName(), getX() + getWidth()/16*2, getY() + getHeight()/16*(15 - 3*(i+1)));
+            FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), String.format("%-10d", player.getScore()), getX() + getWidth()/16*8, getY() + getHeight()/16*(15 - 3*(i+1)));
+            FHeroes.getObjectManager().getBitmapFont().getData().setScale(2);
         }
     }
     

@@ -22,7 +22,7 @@ public abstract class GridObject extends GameObject{
 
 
 
-    public abstract void render(FHeroes game);
+    public abstract void render(float delta);
 
     public static int[] convertToGridCoords(int x, int y){
         Map map = FHeroes.getObjectManager().getMap();
