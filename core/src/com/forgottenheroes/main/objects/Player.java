@@ -1,12 +1,12 @@
 package com.forgottenheroes.main.objects;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.lang.Math;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.forgottenheroes.main.Equipment;
 import com.forgottenheroes.main.FHeroes;
 import com.forgottenheroes.main.GameState;
 import com.forgottenheroes.main.Pickup;
@@ -69,7 +69,7 @@ public class Player extends GameEntity{
         setScore(0);
         setWins(0);
         setAttack(40);
-        setAtkRange(100);
+        setAtkRange(110);
         setAtkWidth(50);
         setMoveSpeed(5);
         setState(State.IDLE);
@@ -88,7 +88,7 @@ public class Player extends GameEntity{
 
     public Player(int[] spawncoords, Color color, int playerNumber){
         super(spawncoords);
-        setGridCoords(spawncoords);
+        //setGridCoords(spawncoords);
         setHeight(40);
         setWidth(40);
         setMaxHP(200);
@@ -96,7 +96,7 @@ public class Player extends GameEntity{
         setName("player");
         setScore(0);
         setWins(0);
-        setAttack(10);
+        setAttack(40);
         setAtkRange(100);
         setAtkWidth(40);
         setMoveSpeed(5);
@@ -412,7 +412,7 @@ public class Player extends GameEntity{
                                 damage = this.getAttack();
                             }
                             this.score += damage;
-                            new DamageNumbers(target.getX() - 10, target.getY() + 50, 0, 1, damage);
+                            new DamageNumbers(target.getX() - 20, target.getY() + 60, 0, 1, damage);
                             damage = 0;
                             target.damageStun();
                         }
@@ -461,11 +461,16 @@ public class Player extends GameEntity{
     }
 
     public void convertTile(){
+        int[] temp;
+        if(Objects.isNull(currentGridCoord)){
+            currentGridCoord = new int[] {-1,-1};
+        }
+        temp = currentGridCoord;
+        currentGridCoord = getGridCoords();
         if(currentGridCoord == null){
             currentGridCoord = new int[] {-1,-1};
         }
-        int[] temp = currentGridCoord;
-        currentGridCoord = getGridCoords();
+        
         if(temp[1] != currentGridCoord[1] || temp[0] != currentGridCoord[0]){
             Floor floor = FHeroes.getObjectManager().getTile(currentGridCoord).getFloor();
             if(floor != null){

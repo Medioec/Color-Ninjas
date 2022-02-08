@@ -77,7 +77,9 @@ public class Keyboard implements InputProcessor{
         else if(FHeroes.isGameState(GameState.GAMEOVER)){
             if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)){
                 FHeroes.getObjectManager().clearObjects();
-                FHeroes.getGame().setScreen(new MainMenuScreen());
+                MainMenuScreen mainmenu = new MainMenuScreen();
+                FHeroes.getGame().setScreen(mainmenu);
+                FHeroes.getObjectManager().setMainMenuScreen(mainmenu);
                 FHeroes.setGameState(GameState.MAINMENU);
                 FHeroes.getObjectManager().getGameScreen().dispose();
             } else if(Gdx.input.isKeyPressed(Keys.ANY_KEY)){

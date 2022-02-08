@@ -330,17 +330,29 @@ public class ObjectManager {
     }
 
     public void setRoundOver(){
+        int highestScore = -1;
+        Player winningPlayer = null;
         for(int i = 0; i < entityList.size(); i++){
             GameEntity entity = entityList.get(i);
             try{
                 Player player = (Player) entity;
-                if(!player.checkPlayerDefeated()){
-                    player.setWins(player.getWins() + 1);
-                };
+                if(player.getScore() == highestScore){
+                    if(!player.checkPlayerDefeated()){
+                        highestScore = player.getScore();
+                        winningPlayer = player;
+                    }
+                }
+                else if(player.getScore() > highestScore){
+                    highestScore = player.getScore();
+                    winningPlayer = player;
+                }
             }
             catch (ClassCastException e){
                 continue;
             }
+        }
+        if(winningPlayer != null){
+            winningPlayer.setWins(winningPlayer.getWins() + 1);
         }
         if(isGameOver()){
             roundOverTime = TimeUtils.millis();

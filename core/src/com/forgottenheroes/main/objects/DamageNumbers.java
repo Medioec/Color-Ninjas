@@ -21,8 +21,8 @@ public class DamageNumbers extends GameEntity{
     public void render(float delta) {
         FHeroes.getObjectManager().getSpriteBatch().begin();
 
-        FHeroes.getObjectManager().getBitmapFont().getData().setScale(1);
-        FHeroes.getObjectManager().getBitmapFont().setColor(new Color(1f, 0f, 0f, 1f));
+        FHeroes.getObjectManager().getBitmapFont().getData().setScale(2);
+        FHeroes.getObjectManager().getBitmapFont().setColor(new Color(0f, 0f, 0f, 1f));
         FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), "-" + String.valueOf(damage), getX(), getY());
         FHeroes.getObjectManager().getBitmapFont().getData().setScale(2);
         this.updateYPos();

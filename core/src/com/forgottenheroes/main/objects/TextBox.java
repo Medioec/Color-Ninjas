@@ -12,9 +12,9 @@ public class TextBox extends GameObject{
     private boolean flexWidth;
     private boolean bgEnabled;
 
-    public final int WORLDWIDTH = (int)FHeroes.getObjectManager().getViewport().getWorldWidth();
-    public final int WORLDHEIGHT = (int)FHeroes.getObjectManager().getViewport().getWorldHeight();
-    public static final int LINESPACING = (int)FHeroes.getObjectManager().getViewport().getWorldHeight()/32*1;
+    public final int WORLDWIDTH = (int)FHeroes.getObjectManager().getMainMenuScreen().getMENUWIDTH();
+    public final int WORLDHEIGHT = (int)FHeroes.getObjectManager().getMainMenuScreen().getMENUHEIGHT();
+    public static final int LINESPACING = (int)FHeroes.getObjectManager().getMainMenuScreen().getMENUHEIGHT()/32*1;
     public static final int DEFAULT_FONT_SIZE = 1;
     public static final Color DEFAULT_TEXT_COLOR = Color.WHITE;
     public static final Color DEFAULT_BG_COLOR = new Color(.2f, .2f, .4f, 1f);

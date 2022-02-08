@@ -29,11 +29,11 @@ public abstract class GameObject {
     }
 
     public void setX(int x){
-        this.x = x;
+        this.x = x + FHeroes.getxOffsetOrigin();
     }
 
     public void setY(int y){
-        this.y = y;
+        this.y = y + FHeroes.getyOffsetOrigin();
     }
 
     public int getWidth(){
@@ -70,7 +70,7 @@ public abstract class GameObject {
 
     public int[] getGridCoords(){
         Map map = FHeroes.getObjectManager().getMap();
-        if(map.getX() < x && x < map.getX() + map.getWidth() && map.getY() < y && y < map.getY() + map.getHeight()){
+        if(map.getX() < getX() && getX() < map.getX() + map.getWidth() && map.getY() < getY() && getY() < map.getY() + map.getHeight()){
             int[] coords = new int[2];
             coords[0] = (x - map.getX()) / map.getGridSize();
             coords[1] = (y - map.getY()) / map.getGridSize();
@@ -92,7 +92,7 @@ public abstract class GameObject {
 
     public void setGridCoords(int[] coords){
         Map map = FHeroes.getObjectManager().getMap();
-        x = coords[0] * map.getGridSize() + map.getX() + map.getGridSize() / 2;
-        y = coords[1] * map.getGridSize() + map.getY() + map.getGridSize() / 2;
+        x = (coords[0] * map.getGridSize() + map.getX() + map.getGridSize() / 2);
+        y = (coords[1] * map.getGridSize() + map.getY() + map.getGridSize() / 2);
     }
 }

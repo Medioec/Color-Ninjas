@@ -57,10 +57,10 @@ public abstract class GameEntity extends GameObject implements MoveableInterface
     }
 
     public void updateXPos(){
-        setX(getX() + velX);;
+        setX(getX() + velX - FHeroes.getxOffsetOrigin());;
     }
 
     public void updateYPos(){
-        setY(getY() + velY);
+        setY(getY() + velY - FHeroes.getyOffsetOrigin());
     }
 }

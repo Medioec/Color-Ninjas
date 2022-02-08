@@ -5,14 +5,10 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.physics.bullet.dynamics.SWIGTYPE_p_btAlignedObjectArrayT_btWheelInfo_t;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.forgottenheroes.main.interfaces.ScreenInterface;
 import com.forgottenheroes.main.objects.MultilineTextBox;
 import com.forgottenheroes.main.objects.Player;
@@ -34,14 +30,16 @@ public class MainMenuScreen implements Screen, ScreenInterface{
     private CurrentChat currentChat;
     private ArrayList<Color> colorsAvailable;
 
-    private Player player1, player2;
     private Chatbot chatbot;
 
     public MainMenuScreen() {
+        FHeroes.setxOffsetOrigin(0);
+        FHeroes.setyOffsetOrigin(0);
+        FHeroes.getObjectManager().setMainMenuScreen(this);
         changeViewportWorldSize(MENUWIDTH, MENUHEIGHT);
         setCameraPosition(MENUWIDTH, MENUHEIGHT);
-        player1 = new Player(1);
-        player2 = new Player(2);
+        new Player(1);
+        new Player(2);
         colorsAvailable = new ArrayList<Color>();
         colorsAvailable.add(Color.RED);
         colorsAvailable.add(Color.BLUE);
@@ -80,8 +78,6 @@ public class MainMenuScreen implements Screen, ScreenInterface{
     @Override
     public void render(float delta) {
         preRenderPrep();
-        changeViewportWorldSize(MENUWIDTH, MENUHEIGHT);
-        setCameraPosition(MENUWIDTH, MENUHEIGHT);
         FHeroes.getObjectManager().getShapeRenderer().begin();
 		FHeroes.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
 		FHeroes.getObjectManager().getShapeRenderer().setColor(0.4f, 0.6f, 1, 1);
@@ -189,6 +185,14 @@ public class MainMenuScreen implements Screen, ScreenInterface{
             textbox.setX(oldX);
             textbox.setY(oldY);
         }
+    }
+
+    public int getMENUHEIGHT() {
+        return MENUHEIGHT;
+    }
+
+    public int getMENUWIDTH() {
+        return MENUWIDTH;
     }
     
 

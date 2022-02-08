@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.forgottenheroes.main.FHeroes;
-import com.forgottenheroes.main.GameState;
 
 public class Scoreboard extends GameObject{
 
@@ -29,6 +28,7 @@ public class Scoreboard extends GameObject{
         FHeroes.getObjectManager().getShapeRenderer().end();
         FHeroes.getObjectManager().getSpriteBatch().begin();
         FHeroes.getObjectManager().getBitmapFont().setColor(new Color(1, 1, 1, 1));
+        FHeroes.getObjectManager().getBitmapFont().getData().setScale(2);
         FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), "Score:", getX() + getWidth()/16*2, getY() + getHeight()/16*15);
         showPlayerScores();
         FHeroes.getObjectManager().getSpriteBatch().end();

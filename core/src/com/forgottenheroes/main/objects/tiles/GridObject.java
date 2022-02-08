@@ -1,6 +1,7 @@
 package com.forgottenheroes.main.objects.tiles;
 
 import com.forgottenheroes.main.FHeroes;
+import com.forgottenheroes.main.GameScreen;
 import com.forgottenheroes.main.objects.GameObject;
 import com.forgottenheroes.main.objects.Map;
 
@@ -50,15 +51,15 @@ public abstract class GridObject extends GameObject{
         Map map = FHeroes.getObjectManager().getMap();
         this.coords[0] = xcoord;
         this.coords[1] = ycoord;
-        setX(xcoord * map.getGridSize() + map.getX());
-        setY(ycoord * map.getGridSize() + map.getY());
+        setX(xcoord * map.getGridSize() + map.getX() - FHeroes.getxOffsetOrigin());
+        setY(ycoord * map.getGridSize() + map.getY() - FHeroes.getyOffsetOrigin());
     }
 
     @Override
     public void setGridCoords(int[] coords){
         Map map = FHeroes.getObjectManager().getMap();
         this.coords = coords;
-        setX(coords[0] * map.getGridSize() + map.getX());
-        setY(coords[1] * map.getGridSize() + map.getY());
+        setX(coords[0] * map.getGridSize() + map.getX() - FHeroes.getxOffsetOrigin());
+        setY(coords[1] * map.getGridSize() + map.getY() - FHeroes.getyOffsetOrigin());
     }
 }

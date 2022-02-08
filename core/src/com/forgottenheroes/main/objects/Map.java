@@ -3,8 +3,11 @@ package com.forgottenheroes.main.objects;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.forgottenheroes.main.FHeroes;
+import com.forgottenheroes.main.GameScreen;
 import com.forgottenheroes.main.Reset;
 import com.forgottenheroes.main.objects.tiles.Floor;
 import com.forgottenheroes.main.objects.tiles.Tile;
@@ -13,7 +16,11 @@ import com.forgottenheroes.main.objects.tiles.Wall;
 public class Map extends GameObject{
 
     private ObjectManager objectManager;
+    private TiledMap map;
+    private OrthogonalTiledMapRenderer renderer;
 
+    private int tiledMapGridSize;
+    private int scaleFactor;
     private int vSize; //horizontal size (in squares)
     private int hSize; //vertical size
     private int currentMap;
@@ -46,12 +53,17 @@ public class Map extends GameObject{
     }
 
     public void centerMap(){
-        this.setY( (FHeroes.INIT_HEIGHT - this.getHeight() ) / 2 );
-        this.setX( (FHeroes.INIT_WIDTH - this.getWidth() ) / 2 );
+        this.setY( (GameScreen.getWORLDHEIGHT() - this.getHeight() ) / 2 );
+        this.setX( (GameScreen.getWORLDWIDTH() - this.getWidth() ) / 2 );
     }
 
     public void generateMap1(){
-        gridSize = 50;
+        TmxMapLoader loader = new TmxMapLoader();
+        map = loader.load("map/map.tmx");
+        tiledMapGridSize = 16;
+        gridSize = 64;
+        scaleFactor = gridSize / tiledMapGridSize;
+        //renderer = new OrthogonalTiledMapRenderer(map, unitScale, batch)
         setHSize(9);
         setVSize(9);
         setNumberOfPlayers(2);

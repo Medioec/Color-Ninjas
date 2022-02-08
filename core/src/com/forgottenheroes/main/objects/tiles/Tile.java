@@ -2,8 +2,6 @@ package com.forgottenheroes.main.objects.tiles;
 
 import java.util.ArrayList;
 
-import com.forgottenheroes.main.FHeroes;
-
 public class Tile extends GridObject{
     private ArrayList<TileObject> tileObjectList;
 

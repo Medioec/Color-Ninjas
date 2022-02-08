@@ -3,12 +3,8 @@ package com.forgottenheroes.main;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.forgottenheroes.main.interfaces.ScreenInterface;
 import com.forgottenheroes.main.objects.Leaderboard;
 import com.forgottenheroes.main.objects.Map;
@@ -16,30 +12,30 @@ import com.forgottenheroes.main.objects.Scoreboard;
 
 public class GameScreen implements Screen, ScreenInterface {
 
-	private final float WORLDHEIGHT = 720;
-    private final float WORLDWIDTH = WORLDHEIGHT/9*16;
+	private static final int WORLDHEIGHT = 720;
+    private static final int WORLDWIDTH = WORLDHEIGHT/9*16;
+	private static final int TILEDWIDTH = 27 * 16 * 4;
+	private static final int TILEDHEIGHT = 13 * 16 * 4;
 
 	public GameScreen() {
-		//game.setShapeRenderer(new ShapeRenderer());
-		//game.getShapeRenderer().setAutoShapeType(true);
+		FHeroes.setxOffsetOrigin((TILEDWIDTH - WORLDWIDTH) / 2);
+		FHeroes.setyOffsetOrigin((TILEDHEIGHT - WORLDHEIGHT) / 2);
 		changeViewportWorldSize(WORLDWIDTH, WORLDHEIGHT);
-        setCameraPosition(WORLDWIDTH, WORLDHEIGHT);
+        setCameraPosition(TILEDWIDTH, TILEDHEIGHT);
 		FHeroes.getObjectManager().setMap(new Map());
 		FHeroes.getObjectManager().setLeaderboard(new Leaderboard());
 		FHeroes.getObjectManager().setScoreboard(new Scoreboard());
 		FHeroes.getObjectManager().getMap().generateMap1();
-		FHeroes.getObjectManager().getMap().resetMap(1, Reset.NEWGAME);
+		//FHeroes.getObjectManager().getMap().resetMap(1, Reset.NEWGAME);
 	}
 
 	@Override
 	public void render(float delta) {
 		preRenderPrep();
-		changeViewportWorldSize(WORLDWIDTH, WORLDHEIGHT);
-        setCameraPosition(WORLDWIDTH, WORLDHEIGHT);
 		FHeroes.getObjectManager().getShapeRenderer().begin();
 		FHeroes.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
 		FHeroes.getObjectManager().getShapeRenderer().setColor(0.4f, 0.6f, 1, 1);
-		FHeroes.getObjectManager().getShapeRenderer().rect(0, 0, WORLDWIDTH, WORLDHEIGHT);
+		FHeroes.getObjectManager().getShapeRenderer().rect(FHeroes.getxOffsetOrigin(), FHeroes.getyOffsetOrigin(), WORLDWIDTH, WORLDHEIGHT);
 		FHeroes.getObjectManager().getShapeRenderer().end();
 		FHeroes.getObjectManager().render(delta);
 	}
@@ -89,11 +85,19 @@ public class GameScreen implements Screen, ScreenInterface {
         FHeroes.getObjectManager().getCamera().setToOrtho(false, width, height);
     }
 
-	public float getWORLDHEIGHT() {
+	public static int getWORLDHEIGHT() {
 		return WORLDHEIGHT;
 	}
 
-	public float getWORLDWIDTH() {
+	public static int getWORLDWIDTH() {
 		return WORLDWIDTH;
+	}
+
+	public static int getTILEDHEIGHT() {
+		return TILEDHEIGHT;
+	}
+
+	public static int getTILEDWIDTH() {
+		return TILEDWIDTH;
 	}
 }

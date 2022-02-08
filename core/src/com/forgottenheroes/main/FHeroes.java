@@ -17,6 +17,8 @@ public class FHeroes extends Game {
 
 	public static final int INIT_HEIGHT = 720;
 	public static final int INIT_WIDTH = INIT_HEIGHT / 9 * 16;
+	private static int xOffsetOrigin;
+	private static int yOffsetOrigin;
 
 	//sets up the game window and display main menu
 	public void create() {
@@ -31,10 +33,11 @@ public class FHeroes extends Game {
 		objectManager.getCamera().setToOrtho(false, INIT_WIDTH, INIT_HEIGHT);
 		objectManager.setViewport(new FitViewport(INIT_WIDTH, INIT_HEIGHT, objectManager.getCamera()));
 		
-		objectManager.setMainMenuScreen(new MainMenuScreen());
-		
-		setScreen(objectManager.getMainMenuScreen());
-		setGameState(GameState.MAINMENU);
+		//objectManager.setMainMenuScreen(new MainMenuScreen());
+		objectManager.setGameScreen(new GameScreen());
+		//setScreen(objectManager.getMainMenuScreen());
+		setScreen(objectManager.getGameScreen());
+		setGameState(GameState.GAMERUNNING);
 	}
 
 	public void render() {
@@ -69,5 +72,21 @@ public class FHeroes extends Game {
 		if(getGameState() == state){
 			return true;
 		} else return false;
+	}
+
+	public static int getxOffsetOrigin() {
+		return xOffsetOrigin;
+	}
+
+	public static void setxOffsetOrigin(int xOffsetOrigin) {
+		FHeroes.xOffsetOrigin = xOffsetOrigin;
+	}
+
+	public static int getyOffsetOrigin() {
+		return yOffsetOrigin;
+	}
+
+	public static void setyOffsetOrigin(int yOffsetOrigin) {
+		FHeroes.yOffsetOrigin = yOffsetOrigin;
 	}
 }
