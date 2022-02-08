@@ -28,6 +28,7 @@ public abstract class GameObject {
 
     public void setAbsoluteX(int absoluteX) {
         this.absoluteX = absoluteX;
+        relativeX = absoluteX - FHeroes.getxOffsetOrigin();
     }
 
     public int getAbsoluteY() {
@@ -36,6 +37,7 @@ public abstract class GameObject {
 
     public void setAbsoluteY(int absoluteY) {
         this.absoluteY = absoluteY;
+        relativeY = absoluteY - FHeroes.getyOffsetOrigin();
     }
 
     public int getRelativeX(){
@@ -99,12 +101,13 @@ public abstract class GameObject {
         else return null;
     }
 
+    //input of absolute coordinates
     public static int[] getGridCoords(int x, int y){
         Map map = FHeroes.getObjectManager().getMap();
-        if(map.getRelativeX() < x && x < map.getRelativeX() + map.getWidth() && map.getRelativeY() < y && y < map.getRelativeY() + map.getHeight()){
+        if(map.getAbsoluteX() < x && x < map.getAbsoluteX() + map.getWidth() && map.getAbsoluteY() < y && y < map.getAbsoluteY() + map.getHeight()){
             int[] coords = new int[2];
-            coords[0] = (x - map.getRelativeX()) / map.getGridSize();
-            coords[1] = (y - map.getRelativeY()) / map.getGridSize();
+            coords[0] = (x - map.getAbsoluteX()) / map.getGridSize();
+            coords[1] = (y - map.getAbsoluteY()) / map.getGridSize();
             return coords;
         }
         else return null;
@@ -112,7 +115,7 @@ public abstract class GameObject {
 
     public void setGridCoords(int[] coords){
         Map map = FHeroes.getObjectManager().getMap();
-        relativeX = (coords[0] * map.getGridSize() + map.getRelativeX() + map.getGridSize() / 2);
-        relativeY = (coords[1] * map.getGridSize() + map.getRelativeY() + map.getGridSize() / 2);
+        setRelativeX((coords[0] * map.getGridSize() + map.getRelativeX() + map.getGridSize() / 2));
+        setRelativeY((coords[1] * map.getGridSize() + map.getRelativeY() + map.getGridSize() / 2));
     }
 }

@@ -117,10 +117,10 @@ public class Player extends GameEntity{
                     FHeroes.getObjectManager().getShapeRenderer().begin();
                     FHeroes.getObjectManager().getShapeRenderer().setColor(Color.BLACK);
                     FHeroes.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
-                    FHeroes.getObjectManager().getShapeRenderer().circle(getRelativeX(), getRelativeY(), getHeight() / 2);
+                    FHeroes.getObjectManager().getShapeRenderer().circle(getAbsoluteX(), getAbsoluteY(), getHeight() / 2);
                     FHeroes.getObjectManager().getShapeRenderer().setColor(color);
                     FHeroes.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
-                    FHeroes.getObjectManager().getShapeRenderer().circle(getRelativeX(), getRelativeY(), getHeight() / 2 - 2);
+                    FHeroes.getObjectManager().getShapeRenderer().circle(getAbsoluteX(), getAbsoluteY(), getHeight() / 2 - 2);
                     FHeroes.getObjectManager().getShapeRenderer().end();
                 }
             }
@@ -129,8 +129,8 @@ public class Player extends GameEntity{
     
     public boolean isValidXMovement(){
         if(!checkPlayerDefeated() && !isAttacking()){
-            int newX = getRelativeX() + getVelX();
-            int newY = getRelativeY();
+            int newX = getAbsoluteX() + getVelX();
+            int newY = getAbsoluteY();
             int[] coords = getGridCoords(newX, newY);
             if(coords != null) return FHeroes.getObjectManager().getMap().isPassable(coords);
             else return false;
@@ -142,8 +142,8 @@ public class Player extends GameEntity{
 
     public boolean isValidYMovement(){
         if(!checkPlayerDefeated() && !isAttacking()){
-            int newX = getRelativeX();
-            int newY = getRelativeY() + getVelY();
+            int newX = getAbsoluteX();
+            int newY = getAbsoluteY() + getVelY();
             int[] coords = getGridCoords(newX, newY);
             if(coords != null) return FHeroes.getObjectManager().getMap().isPassable(coords);
             else return false;
@@ -412,7 +412,7 @@ public class Player extends GameEntity{
                                 damage = this.getAttack();
                             }
                             this.score += damage;
-                            new DamageNumbers(target.getRelativeX() - 20, target.getRelativeY() + 60, 0, 1, damage);
+                            new DamageNumbers(target.getAbsoluteX() - 20, target.getAbsoluteY() + 60, 0, 1, damage);
                             damage = 0;
                             target.damageStun();
                         }
@@ -462,7 +462,7 @@ public class Player extends GameEntity{
 
     public void convertTile(){
         int[] temp;
-        if(Objects.isNull(currentGridCoord)){
+        if(currentGridCoord == null){
             currentGridCoord = new int[] {-1,-1};
         }
         temp = currentGridCoord;

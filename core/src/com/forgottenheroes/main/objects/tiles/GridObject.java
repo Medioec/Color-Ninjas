@@ -23,10 +23,11 @@ public abstract class GridObject extends GameObject{
 
     public abstract void render(float delta);
 
+    //converts absolute coordinates
     public static int[] convertToGridCoords(int x, int y){
         Map map = FHeroes.getObjectManager().getMap();
-        int xcoord = (x - map.getRelativeX()) / map.getGridSize();
-        int ycoord = (y - map.getRelativeY()) / map.getGridSize();
+        int xcoord = (x - map.getAbsoluteX()) / map.getGridSize();
+        int ycoord = (y - map.getAbsoluteY()) / map.getGridSize();
         int[] coord = {xcoord, ycoord};
         return coord;
     }
