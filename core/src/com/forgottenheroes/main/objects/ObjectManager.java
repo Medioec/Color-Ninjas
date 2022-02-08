@@ -271,7 +271,7 @@ public class ObjectManager {
     }
 
     public void sortEntitiesByY(){
-        entityList.sort((e1, e2) -> e2.getY() - e1.getY());
+        entityList.sort((e1, e2) -> e2.getRelativeY() - e1.getRelativeY());
     }
 
     public void removeEntity(GameEntity toRemove){

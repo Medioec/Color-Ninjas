@@ -23,8 +23,8 @@ public abstract class GameEntity extends GameObject implements MoveableInterface
     }
 
     public GameEntity(int x, int y, int velX, int velY){
-        this.setX(x);
-        this.setY(y);
+        this.setRelativeX(x);
+        this.setRelativeY(y);
         this.velX = velX;
         this.velY = velY;
     }
@@ -57,10 +57,10 @@ public abstract class GameEntity extends GameObject implements MoveableInterface
     }
 
     public void updateXPos(){
-        setX(getX() + velX - FHeroes.getxOffsetOrigin());;
+        setRelativeX(getRelativeX() + velX - FHeroes.getxOffsetOrigin());;
     }
 
     public void updateYPos(){
-        setY(getY() + velY - FHeroes.getyOffsetOrigin());
+        setRelativeY(getRelativeY() + velY - FHeroes.getyOffsetOrigin());
     }
 }

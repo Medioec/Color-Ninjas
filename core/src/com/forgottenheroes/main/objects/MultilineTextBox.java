@@ -31,9 +31,9 @@ public class MultilineTextBox extends TextBox{
                 else{
                     setWidth(maxWidth + LINESPACING);
                 }
-                setX((WORLDWIDTH - getWidth()) / 2);
+                setRelativeX((WORLDWIDTH - getWidth()) / 2);
             }
-            FHeroes.getObjectManager().getShapeRenderer().rect(getX(), getY(), getWidth(), getHeight());
+            FHeroes.getObjectManager().getShapeRenderer().rect(getRelativeX(), getRelativeY(), getWidth(), getHeight());
         }
         
         FHeroes.getObjectManager().getShapeRenderer().end();
@@ -43,7 +43,7 @@ public class MultilineTextBox extends TextBox{
             FHeroes.getObjectManager().getBitmapFont().setColor(line.getColor());
             FHeroes.getObjectManager().getBitmapFont().getData().setScale(line.getFontSize());
             FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), 
-                line.getText(), getX() + (getWidth() - line.getWidth()) / 2, line.getY());
+                line.getText(), getRelativeX() + (getWidth() - line.getWidth()) / 2, line.getRelativeY());
         }
         FHeroes.getObjectManager().getSpriteBatch().end();
     }
@@ -59,10 +59,10 @@ public class MultilineTextBox extends TextBox{
         Text line = new Text(text, fontSize, color);
         line.setWidth(fontWidth);
         line.setHeight(fontHeight);
-        line.setY(getY() + fontHeight + LINESPACING);
+        line.setRelativeY(getRelativeY() + fontHeight + LINESPACING);
         for(int i = 0; i < textList.size(); i++){
             Text currentLine = textList.get(i);
-            currentLine.setY(currentLine.getY() + fontHeight + LINESPACING);
+            currentLine.setRelativeY(currentLine.getRelativeY() + fontHeight + LINESPACING);
         }
         textList.add(line);
     }
@@ -78,10 +78,10 @@ public class MultilineTextBox extends TextBox{
         Text line = new Text(text, fontSize, DEFAULT_TEXT_COLOR);
         line.setWidth(fontWidth);
         line.setHeight(fontHeight);
-        line.setY(getY() + fontHeight + LINESPACING);
+        line.setRelativeY(getRelativeY() + fontHeight + LINESPACING);
         for(int i = 0; i < textList.size(); i++){
             Text currentLine = textList.get(i);
-            currentLine.setY(currentLine.getY() + fontHeight + LINESPACING);
+            currentLine.setRelativeY(currentLine.getRelativeY() + fontHeight + LINESPACING);
         }
         textList.add(line);
     }
@@ -97,10 +97,10 @@ public class MultilineTextBox extends TextBox{
         Text line = new Text(text, DEFAULT_FONT_SIZE, Color.WHITE);
         line.setWidth(fontWidth);
         line.setHeight(fontHeight);
-        line.setY(getY() + fontHeight + LINESPACING);
+        line.setRelativeY(getRelativeY() + fontHeight + LINESPACING);
         for(int i = 0; i < textList.size(); i++){
             Text currentLine = textList.get(i);
-            currentLine.setY(currentLine.getY() + fontHeight + LINESPACING);
+            currentLine.setRelativeY(currentLine.getRelativeY() + fontHeight + LINESPACING);
         }
         textList.add(line);
     }

@@ -47,13 +47,13 @@ public class MainMenuScreen implements Screen, ScreenInterface{
         colorsAvailable.add(Color.YELLOW);
         displayDefault();
         inputBox = new TextBox();
-        inputBox.setY(MENUHEIGHT/16*1);
+        inputBox.setRelativeY(MENUHEIGHT/16*1);
         inputBox.addTextLine("", 1, Color.WHITE);
         inputBox.setFlexWidth(true);
 
         responseBox = new TextBox();
         responseBox.setBgEnabled(false);
-        responseBox.setY(MENUHEIGHT/16*3);
+        responseBox.setRelativeY(MENUHEIGHT/16*3);
         responseBox.addTextLine("", 1, Color.RED);
         responseBox.setFlexWidth(true);
         
@@ -175,15 +175,15 @@ public class MainMenuScreen implements Screen, ScreenInterface{
     public void createTextBox(TextBox box){
         if(box == null){
             textbox = new MultilineTextBox();
-            textbox.setY(MENUHEIGHT/16*8);
+            textbox.setRelativeY(MENUHEIGHT/16*8);
         } 
         else{
-            int oldX = box.getX();
-            int oldY = box.getY();
+            int oldX = box.getRelativeX();
+            int oldY = box.getRelativeY();
             FHeroes.getObjectManager().removeObject(box);
             textbox = new MultilineTextBox();
-            textbox.setX(oldX);
-            textbox.setY(oldY);
+            textbox.setRelativeX(oldX);
+            textbox.setRelativeY(oldY);
         }
     }
 
@@ -198,7 +198,7 @@ public class MainMenuScreen implements Screen, ScreenInterface{
 
     public void displayDefault(){
         createTextBox(textbox);
-        textbox.setY(MENUHEIGHT/16*5);
+        textbox.setRelativeY(MENUHEIGHT/16*5);
         textbox.addTextLine("Forgotten Heroes", 1.4f);
         textbox.addTextLine("Enter <help> to view game instructions.");
         textbox.addTextLine("To change player name:");

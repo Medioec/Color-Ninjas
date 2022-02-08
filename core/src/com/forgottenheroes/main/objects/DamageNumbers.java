@@ -23,7 +23,7 @@ public class DamageNumbers extends GameEntity{
 
         FHeroes.getObjectManager().getBitmapFont().getData().setScale(2);
         FHeroes.getObjectManager().getBitmapFont().setColor(new Color(0f, 0f, 0f, 1f));
-        FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), "-" + String.valueOf(damage), getX(), getY());
+        FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), "-" + String.valueOf(damage), getRelativeX(), getRelativeY());
         FHeroes.getObjectManager().getBitmapFont().getData().setScale(2);
         this.updateYPos();
         FHeroes.getObjectManager().getSpriteBatch().end();

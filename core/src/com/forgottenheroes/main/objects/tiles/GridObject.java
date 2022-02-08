@@ -21,18 +21,15 @@ public abstract class GridObject extends GameObject{
         this.setGridCoords(coords[0], coords[1]);
     }
 
-
-
     public abstract void render(float delta);
 
     public static int[] convertToGridCoords(int x, int y){
         Map map = FHeroes.getObjectManager().getMap();
-        int xcoord = (x - map.getX()) / map.getGridSize();
-        int ycoord = (y - map.getY()) / map.getGridSize();
+        int xcoord = (x - map.getRelativeX()) / map.getGridSize();
+        int ycoord = (y - map.getRelativeY()) / map.getGridSize();
         int[] coord = {xcoord, ycoord};
         return coord;
     }
-
     
     public int getGridXCoord(){
         return coords[0];
@@ -51,15 +48,19 @@ public abstract class GridObject extends GameObject{
         Map map = FHeroes.getObjectManager().getMap();
         this.coords[0] = xcoord;
         this.coords[1] = ycoord;
-        setX(xcoord * map.getGridSize() + map.getX() - FHeroes.getxOffsetOrigin());
-        setY(ycoord * map.getGridSize() + map.getY() - FHeroes.getyOffsetOrigin());
+        setRelativeX(xcoord * map.getGridSize() + map.getRelativeX());
+        setRelativeY(ycoord * map.getGridSize() + map.getRelativeY());
+        setAbsoluteX(FHeroes.getxOffsetOrigin() + getRelativeX());
+        setAbsoluteY(FHeroes.getyOffsetOrigin() + getRelativeY());
     }
 
     @Override
     public void setGridCoords(int[] coords){
         Map map = FHeroes.getObjectManager().getMap();
         this.coords = coords;
-        setX(coords[0] * map.getGridSize() + map.getX() - FHeroes.getxOffsetOrigin());
-        setY(coords[1] * map.getGridSize() + map.getY() - FHeroes.getyOffsetOrigin());
+        setRelativeX(coords[0] * map.getGridSize() + map.getRelativeX());
+        setRelativeY(coords[1] * map.getGridSize() + map.getRelativeY());
+        setAbsoluteX(FHeroes.getxOffsetOrigin() + getRelativeX());
+        setAbsoluteY(FHeroes.getyOffsetOrigin() + getRelativeY());
     }
 }

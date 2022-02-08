@@ -25,8 +25,8 @@ public class TextBox extends GameObject{
         bgEnabled = true;
         setWidth(WORLDWIDTH);
         setHeight(LINESPACING);
-        setX((WORLDWIDTH - getWidth()) / 2);
-        setY(WORLDHEIGHT - getHeight() / 2);
+        setRelativeX((WORLDWIDTH - getWidth()) / 2);
+        setRelativeY(WORLDHEIGHT - getHeight() / 2);
         FHeroes.getObjectManager().addToObjectList(this);
     }
 
@@ -37,8 +37,8 @@ public class TextBox extends GameObject{
         addTextLine(string);
         setWidth(WORLDWIDTH/16*13);
         setHeight(LINESPACING);
-        setX((WORLDWIDTH - getWidth()) / 2);
-        setY(WORLDHEIGHT - getHeight() / 2);
+        setRelativeX((WORLDWIDTH - getWidth()) / 2);
+        setRelativeY(WORLDHEIGHT - getHeight() / 2);
         FHeroes.getObjectManager().addToObjectList(this);
     }
 
@@ -57,9 +57,9 @@ public class TextBox extends GameObject{
                 else{
                     setWidth(width + LINESPACING);
                 }
-                setX((WORLDWIDTH - getWidth()) / 2);
+                setRelativeX((WORLDWIDTH - getWidth()) / 2);
             }
-            FHeroes.getObjectManager().getShapeRenderer().rect(getX(), getY(), getWidth(), getHeight());
+            FHeroes.getObjectManager().getShapeRenderer().rect(getRelativeX(), getRelativeY(), getWidth(), getHeight());
         }
         
         FHeroes.getObjectManager().getShapeRenderer().end();
@@ -67,7 +67,7 @@ public class TextBox extends GameObject{
         FHeroes.getObjectManager().getBitmapFont().setColor(text.getColor());
         FHeroes.getObjectManager().getBitmapFont().getData().setScale(text.getFontSize());
         FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), 
-            text.getText(), getX() + (getWidth() - text.getWidth()) / 2, text.getY());
+            text.getText(), getRelativeX() + (getWidth() - text.getWidth()) / 2, text.getRelativeY());
         FHeroes.getObjectManager().getSpriteBatch().end();
     }
 
@@ -99,7 +99,7 @@ public class TextBox extends GameObject{
         Text line = new Text(text, fontSize, color);
         line.setWidth(fontWidth);
         line.setHeight(fontHeight);
-        line.setY(getY() + fontHeight + LINESPACING);
+        line.setRelativeY(getRelativeY() + fontHeight + LINESPACING);
         this.text = line;
     }
 
@@ -115,7 +115,7 @@ public class TextBox extends GameObject{
         Text line = new Text(text, fontSize, DEFAULT_TEXT_COLOR);
         line.setWidth(fontWidth);
         line.setHeight(fontHeight);
-        line.setY(getY() + fontHeight + LINESPACING);
+        line.setRelativeY(getRelativeY() + fontHeight + LINESPACING);
         this.text = line;
     }
 
@@ -131,7 +131,7 @@ public class TextBox extends GameObject{
         Text line = new Text(text, DEFAULT_FONT_SIZE, DEFAULT_TEXT_COLOR);
         line.setWidth(fontWidth);
         line.setHeight(fontHeight);
-        line.setY(getY() + fontHeight + LINESPACING);
+        line.setRelativeY(getRelativeY() + fontHeight + LINESPACING);
         this.text = line;
     }
 

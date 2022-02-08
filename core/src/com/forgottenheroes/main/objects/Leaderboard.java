@@ -13,8 +13,8 @@ public class Leaderboard extends GameObject{
     public Leaderboard(){
         setWidth(300);
         setHeight(200);
-        setX(0);
-        setY(FHeroes.INIT_HEIGHT / 32 * 12);
+        setRelativeX(0);
+        setRelativeY(FHeroes.INIT_HEIGHT / 32 * 12);
         players = new ArrayList<Player>();
         FHeroes.getObjectManager().addToObjectList(this);
     }
@@ -24,12 +24,12 @@ public class Leaderboard extends GameObject{
         FHeroes.getObjectManager().getShapeRenderer().begin();
         FHeroes.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
         FHeroes.getObjectManager().getShapeRenderer().setColor(new Color(.2f, .2f, .4f, 1f));
-        FHeroes.getObjectManager().getShapeRenderer().rect(getX(), getY(), getWidth(), getHeight());
+        FHeroes.getObjectManager().getShapeRenderer().rect(getAbsoluteX(), getAbsoluteY(), getWidth(), getHeight());
         FHeroes.getObjectManager().getShapeRenderer().end();
         FHeroes.getObjectManager().getSpriteBatch().begin();
         FHeroes.getObjectManager().getBitmapFont().setColor(new Color(1, 1, 1, 1));
         FHeroes.getObjectManager().getBitmapFont().getData().setScale(2);
-        FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), "Rounds Won:", getX() + getWidth()/16*2, getY() + getHeight()/16*15);
+        FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), "Rounds Won:", getAbsoluteX() + getWidth()/16*2, getAbsoluteY() + getHeight()/16*15);
         showPlayerWins();
         FHeroes.getObjectManager().getSpriteBatch().end();
     }
@@ -46,9 +46,9 @@ public class Leaderboard extends GameObject{
         for(int i = 0; i < players.size(); i++){
             Player player = players.get(i);
             FHeroes.getObjectManager().getBitmapFont().getData().setScale(1.4f);
-            FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), player.getName(), getX() + getWidth()/16*2, getY() + getHeight()/16*(15 - 3*(i+1)));
-            FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), String.format("%-10d", player.getWins()), getX() + getWidth()/16*8, getY() + getHeight()/16*(15 - 3*(i+1)));
-            FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), "First to 3 wins", getX() + getWidth()/16*2, getY() + getHeight()/16*2);
+            FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), player.getName(), getAbsoluteX() + getWidth()/16*2, getAbsoluteY() + getHeight()/16*(15 - 3*(i+1)));
+            FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), String.format("%-10d", player.getWins()), getAbsoluteX() + getWidth()/16*8, getAbsoluteY() + getHeight()/16*(15 - 3*(i+1)));
+            FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), "First to 3 wins", getAbsoluteX() + getWidth()/16*2, getAbsoluteY() + getHeight()/16*2);
             FHeroes.getObjectManager().getBitmapFont().getData().setScale(2);
         }
     }

@@ -25,8 +25,8 @@ public class AttackSwing extends GameObject{
         setTexture(new Texture(Gdx.files.internal("attacksprite.png")));
         setWidth(100);
         setHeight(50);
-        setX(player.getX());
-        setY(player.getY() - getHeight() / 2);
+        setRelativeX(player.getRelativeX());
+        setRelativeY(player.getRelativeY() - getHeight() / 2);
         originX = 0;
         originY = getTexture().getHeight() / 2;
         scaleX = 1;
@@ -46,7 +46,7 @@ public class AttackSwing extends GameObject{
     @Override
     public void render(float delta) {
         FHeroes.getObjectManager().getSpriteBatch().begin();
-        FHeroes.getObjectManager().getSpriteBatch().draw(getTexture(), getX(), getY(), originX, originY, getWidth(), getHeight(), scaleX, scaleY, rotation, srcX, srcY, srcWidth, srcHeight, flipX, flipY);
+        FHeroes.getObjectManager().getSpriteBatch().draw(getTexture(), getRelativeX(), getRelativeY(), originX, originY, getWidth(), getHeight(), scaleX, scaleY, rotation, srcX, srcY, srcWidth, srcHeight, flipX, flipY);
         FHeroes.getObjectManager().getSpriteBatch().end();
         if(TimeUtils.millis() - spawnTime > FADEMS){
             FHeroes.getObjectManager().queueForRemoval(this);

@@ -26,8 +26,8 @@ public class Popup extends GameObject{
         setSmallText(smallText);
         setWidth(FHeroes.INIT_WIDTH / 2);
         setHeight(FHeroes.INIT_HEIGHT / 5);
-        setX((FHeroes.INIT_WIDTH - getWidth()) / 2);
-        setY((FHeroes.INIT_HEIGHT - getHeight()) / 2);
+        setRelativeX((FHeroes.INIT_WIDTH - getWidth()) / 2);
+        setRelativeY((FHeroes.INIT_HEIGHT - getHeight()) / 2);
         setTitleScale(3);
         setTextScale(2);
         setSmallTextScale(1.5f);
@@ -50,16 +50,16 @@ public class Popup extends GameObject{
         updateTextWidth();
         FHeroes.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
         FHeroes.getObjectManager().getShapeRenderer().setColor(new Color(.2f, .2f, .4f, 1f));
-        FHeroes.getObjectManager().getShapeRenderer().rect(getX(), getY(), getWidth(), getHeight());
+        FHeroes.getObjectManager().getShapeRenderer().rect(getAbsoluteX(), getAbsoluteY(), getWidth(), getHeight());
         FHeroes.getObjectManager().getShapeRenderer().end();
         FHeroes.getObjectManager().getSpriteBatch().begin();
         FHeroes.getObjectManager().getBitmapFont().setColor(new Color(1,1,1,1));
         FHeroes.getObjectManager().getBitmapFont().getData().setScale(getTitleScale());
-        FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), getTitle(), getX() + (getWidth() - getTitleWidth()) / 2, getY() + getHeight()/16*12);
+        FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), getTitle(), getAbsoluteX() + (getWidth() - getTitleWidth()) / 2, getAbsoluteY() + getHeight()/16*12);
         FHeroes.getObjectManager().getBitmapFont().getData().setScale(getTextScale());
-        FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), getText(), getX() + (getWidth() - getTextWidth()) / 2, getY() + getTextYOffset() + getHeight()/16*6);
+        FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), getText(), getAbsoluteX() + (getWidth() - getTextWidth()) / 2, getAbsoluteY() + getTextYOffset() + getHeight()/16*6);
         FHeroes.getObjectManager().getBitmapFont().getData().setScale(getSmallTextScale());
-        FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), getSmallText(), getX() + (getWidth() - getSmallTextWidth()) / 2, getY() + getHeight()/16*3);
+        FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), getSmallText(), getAbsoluteX() + (getWidth() - getSmallTextWidth()) / 2, getAbsoluteY() + getHeight()/16*3);
         FHeroes.getObjectManager().getSpriteBatch().end();
     }
 

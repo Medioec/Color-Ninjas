@@ -117,10 +117,10 @@ public class Player extends GameEntity{
                     FHeroes.getObjectManager().getShapeRenderer().begin();
                     FHeroes.getObjectManager().getShapeRenderer().setColor(Color.BLACK);
                     FHeroes.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
-                    FHeroes.getObjectManager().getShapeRenderer().circle(getX(), getY(), getHeight() / 2);
+                    FHeroes.getObjectManager().getShapeRenderer().circle(getRelativeX(), getRelativeY(), getHeight() / 2);
                     FHeroes.getObjectManager().getShapeRenderer().setColor(color);
                     FHeroes.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
-                    FHeroes.getObjectManager().getShapeRenderer().circle(getX(), getY(), getHeight() / 2 - 2);
+                    FHeroes.getObjectManager().getShapeRenderer().circle(getRelativeX(), getRelativeY(), getHeight() / 2 - 2);
                     FHeroes.getObjectManager().getShapeRenderer().end();
                 }
             }
@@ -129,8 +129,8 @@ public class Player extends GameEntity{
     
     public boolean isValidXMovement(){
         if(!checkPlayerDefeated() && !isAttacking()){
-            int newX = getX() + getVelX();
-            int newY = getY();
+            int newX = getRelativeX() + getVelX();
+            int newY = getRelativeY();
             int[] coords = getGridCoords(newX, newY);
             if(coords != null) return FHeroes.getObjectManager().getMap().isPassable(coords);
             else return false;
@@ -142,8 +142,8 @@ public class Player extends GameEntity{
 
     public boolean isValidYMovement(){
         if(!checkPlayerDefeated() && !isAttacking()){
-            int newX = getX();
-            int newY = getY() + getVelY();
+            int newX = getRelativeX();
+            int newY = getRelativeY() + getVelY();
             int[] coords = getGridCoords(newX, newY);
             if(coords != null) return FHeroes.getObjectManager().getMap().isPassable(coords);
             else return false;
@@ -397,8 +397,8 @@ public class Player extends GameEntity{
             // loop through all players in list that are not attacking player
             for(Player target:playerList){
                 if(target.getPlayerNumber() != this.getPlayerNumber() && !target.checkPlayerDefeated()){
-                    posv[0] = target.getX() - this.getX();
-                    posv[1] = target.getY() - this.getY();
+                    posv[0] = target.getRelativeX() - this.getRelativeX();
+                    posv[1] = target.getRelativeY() - this.getRelativeY();
                     int projdirv = (int)(unitdirv[0] * posv[0] + unitdirv[1] * posv[1]);
                     if(0 < projdirv && projdirv < target.getAtkRange()){
                         int projorthodirv = (int)(unitorthodirv[0] * posv[0] + unitorthodirv[1] * posv[1]);
@@ -412,7 +412,7 @@ public class Player extends GameEntity{
                                 damage = this.getAttack();
                             }
                             this.score += damage;
-                            new DamageNumbers(target.getX() - 20, target.getY() + 60, 0, 1, damage);
+                            new DamageNumbers(target.getRelativeX() - 20, target.getRelativeY() + 60, 0, 1, damage);
                             damage = 0;
                             target.damageStun();
                         }

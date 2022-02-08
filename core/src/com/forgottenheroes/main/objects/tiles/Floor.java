@@ -24,10 +24,10 @@ public class Floor extends TileObject{
         FHeroes.getObjectManager().getShapeRenderer().begin();
         FHeroes.getObjectManager().getShapeRenderer().setColor(tileColor);
         FHeroes.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
-        FHeroes.getObjectManager().getShapeRenderer().rect(getX(), getY(), getWidth(), getHeight());
+        FHeroes.getObjectManager().getShapeRenderer().rect(getAbsoluteX(), getAbsoluteY(), getWidth(), getHeight());
         FHeroes.getObjectManager().getShapeRenderer().setColor(Color.BLACK);
         FHeroes.getObjectManager().getShapeRenderer().set(ShapeType.Line);
-        FHeroes.getObjectManager().getShapeRenderer().rect(getX(), getY(), getWidth(), getHeight());
+        FHeroes.getObjectManager().getShapeRenderer().rect(getAbsoluteX(), getAbsoluteY(), getWidth(), getHeight());
         FHeroes.getObjectManager().getShapeRenderer().end();
     }
     

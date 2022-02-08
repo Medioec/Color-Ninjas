@@ -53,8 +53,8 @@ public class Map extends GameObject{
     }
 
     public void centerMap(){
-        this.setY( (GameScreen.getWORLDHEIGHT() - this.getHeight() ) / 2 );
-        this.setX( (GameScreen.getWORLDWIDTH() - this.getWidth() ) / 2 );
+        this.setRelativeY( (GameScreen.getWORLDHEIGHT() - this.getHeight() ) / 2 );
+        this.setRelativeX( (GameScreen.getWORLDWIDTH() - this.getWidth() ) / 2 );
     }
 
     public void generateMap1(){
