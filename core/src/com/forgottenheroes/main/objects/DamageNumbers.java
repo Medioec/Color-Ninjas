@@ -22,7 +22,7 @@ public class DamageNumbers extends GameEntity{
         CNinjas.getObjectManager().getSpriteBatch().begin();
 
         CNinjas.getObjectManager().getBitmapFont().getData().setScale(2);
-        CNinjas.getObjectManager().getBitmapFont().setColor(new Color(0f, 0f, 0f, 1f));
+        CNinjas.getObjectManager().getBitmapFont().setColor(new Color(1f, 0f, 0f, 1f));
         CNinjas.getObjectManager().getBitmapFont().draw(CNinjas.getObjectManager().getSpriteBatch(), "-" + String.valueOf(damage), getAbsoluteX(), getAbsoluteY());
         CNinjas.getObjectManager().getBitmapFont().getData().setScale(2);
         this.updateYPos();
