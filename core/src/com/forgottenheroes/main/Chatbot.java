@@ -7,6 +7,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.forgottenheroes.main.MainMenuScreen.CurrentChat;
+import com.forgottenheroes.main.objects.Player.PlayerColor;
 
 public class Chatbot extends Thread{
     private boolean exit; //whether or not to stop the chatbot
@@ -33,14 +34,14 @@ public class Chatbot extends Thread{
             while(inc < 1){
                 lock.lock();
                 try {
-                    while(!FHeroes.getObjectManager().getMainMenuScreen().isInputReady()){
+                    while(!CNinjas.getObjectManager().getMainMenuScreen().isInputReady()){
                         inputReady.await();
                     }
-                    input = FHeroes.getObjectManager().getMainMenuScreen().getInput();
+                    input = CNinjas.getObjectManager().getMainMenuScreen().getInput();
                     inv = input.split("\\W+");
                     inc = inv.length;
-                    FHeroes.getObjectManager().getMainMenuScreen().setInput("");
-                    FHeroes.getObjectManager().getMainMenuScreen().updateInput();
+                    CNinjas.getObjectManager().getMainMenuScreen().setInput("");
+                    CNinjas.getObjectManager().getMainMenuScreen().updateInput();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -48,12 +49,12 @@ public class Chatbot extends Thread{
                     lock.unlock();
                 }
             }
-            MainMenuScreen menu = FHeroes.getObjectManager().getMainMenuScreen();
+            MainMenuScreen menu = CNinjas.getObjectManager().getMainMenuScreen();
             output = "";
             exit = chatbotProcess(menu);
             menu.setTemporalResponse(output);
             menu.updateResponse();
-            FHeroes.getObjectManager().getMainMenuScreen().setInputReady(false);
+            CNinjas.getObjectManager().getMainMenuScreen().setInputReady(false);
             inc = 0;
         }
         
@@ -145,15 +146,15 @@ public class Chatbot extends Thread{
                         return;
                     }
                     else{
-                        Color color;
+                        PlayerColor color;
                         if(cmpString(inv[2], "red")){
-                            color = Color.RED;
+                            color = PlayerColor.RED;
                         } else if(cmpString(inv[2], "blue")){
-                            color = Color.BLUE;
+                            color = PlayerColor.BLUE;
                         } else if(cmpString(inv[2], "green")){
-                            color = Color.GREEN;
+                            color = PlayerColor.GREEN;
                         } else if(cmpString(inv[2], "yellow")){
-                            color = Color.YELLOW;
+                            color = PlayerColor.YELLOW;
                         } else {
                             output = "Invalid color selected.";
                             return;

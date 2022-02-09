@@ -2,7 +2,7 @@ package com.forgottenheroes.main.objects;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.forgottenheroes.main.FHeroes;
+import com.forgottenheroes.main.CNinjas;
 
 public class DamageNumbers extends GameEntity{
 
@@ -14,21 +14,21 @@ public class DamageNumbers extends GameEntity{
         super(x, y, velX, velY);
         this.damage = damage;
         this.spawnTime = TimeUtils.millis();
-        FHeroes.getObjectManager().addToEntityList(this);
+        CNinjas.getObjectManager().addToEntityList(this);
     }
 
     @Override
     public void render(float delta) {
-        FHeroes.getObjectManager().getSpriteBatch().begin();
+        CNinjas.getObjectManager().getSpriteBatch().begin();
 
-        FHeroes.getObjectManager().getBitmapFont().getData().setScale(2);
-        FHeroes.getObjectManager().getBitmapFont().setColor(new Color(0f, 0f, 0f, 1f));
-        FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), "-" + String.valueOf(damage), getAbsoluteX(), getAbsoluteY());
-        FHeroes.getObjectManager().getBitmapFont().getData().setScale(2);
+        CNinjas.getObjectManager().getBitmapFont().getData().setScale(2);
+        CNinjas.getObjectManager().getBitmapFont().setColor(new Color(0f, 0f, 0f, 1f));
+        CNinjas.getObjectManager().getBitmapFont().draw(CNinjas.getObjectManager().getSpriteBatch(), "-" + String.valueOf(damage), getAbsoluteX(), getAbsoluteY());
+        CNinjas.getObjectManager().getBitmapFont().getData().setScale(2);
         this.updateYPos();
-        FHeroes.getObjectManager().getSpriteBatch().end();
+        CNinjas.getObjectManager().getSpriteBatch().end();
         if(TimeUtils.millis() - spawnTime > FADEMS){
-            FHeroes.getObjectManager().queueForRemoval(this);
+            CNinjas.getObjectManager().queueForRemoval(this);
         }
     }
 

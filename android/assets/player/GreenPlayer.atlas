@@ -1,0 +1,144 @@
+GreenPlayer.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+down
+    rotate: false
+    xy: 0, 0
+    size: 16, 16
+    orig: 16, 16
+    offset: 0, 0
+    index: 0
+down
+    rotate: false
+    xy: 0, 16
+    size: 16, 16
+    orig: 16, 16
+    offset: 0, 0
+    index: 1
+down
+    rotate: false
+    xy: 0, 32
+    size: 16, 16
+    orig: 16, 16
+    offset: 0, 0
+    index: 2
+down
+    rotate: false
+    xy: 0, 48
+    size: 16, 16
+    orig: 16, 16
+    offset: 0, 0
+    index: 3
+up
+    rotate: false
+    xy: 16, 0
+    size: 16, 16
+    orig: 16, 16
+    offset: 0, 0
+    index: 0
+up
+    rotate: false
+    xy: 16, 16
+    size: 16, 16
+    orig: 16, 16
+    offset: 0, 0
+    index: 1
+up
+    rotate: false
+    xy: 16, 32
+    size: 16, 16
+    orig: 16, 16
+    offset: 0, 0
+    index: 2
+up
+    rotate: false
+    xy: 16, 48
+    size: 16, 16
+    orig: 16, 16
+    offset: 0, 0
+    index: 3
+left
+    rotate: false
+    xy: 32, 0
+    size: 16, 16
+    orig: 16, 16
+    offset: 0, 0
+    index: 0
+left
+    rotate: false
+    xy: 32, 16
+    size: 16, 16
+    orig: 16, 16
+    offset: 0, 0
+    index: 1
+left
+    rotate: false
+    xy: 32, 32
+    size: 16, 16
+    orig: 16, 16
+    offset: 0, 0
+    index: 2
+left
+    rotate: false
+    xy: 32, 48
+    size: 16, 16
+    orig: 16, 16
+    offset: 0, 0
+    index: 3
+right
+    rotate: false
+    xy: 48, 0
+    size: 16, 16
+    orig: 16, 16
+    offset: 0, 0
+    index: 0
+right
+    rotate: false
+    xy: 48, 16
+    size: 16, 16
+    orig: 16, 16
+    offset: 0, 0
+    index: 1
+right
+    rotate: false
+    xy: 48, 32
+    size: 16, 16
+    orig: 16, 16
+    offset: 0, 0
+    index: 2
+right
+    rotate: false
+    xy: 48, 48
+    size: 16, 16
+    orig: 16, 16
+    offset: 0, 0
+    index: 3
+downattack
+    rotate: false
+    xy: 0, 64
+    size: 16, 16
+    orig: 16, 16
+    offset: 0, 0
+    index: 0
+upattack
+    rotate: false
+    xy: 16, 64
+    size: 16, 16
+    orig: 16, 16
+    offset: 0, 0
+    index: 0
+leftattack
+    rotate: false
+    xy: 32, 64
+    size: 16, 16
+    orig: 16, 16
+    offset: 0, 0
+    index: 0
+rightattack
+    rotate: false
+    xy: 48, 64
+    size: 16, 16
+    orig: 16, 16
+    offset: 0, 0
+    index: 0

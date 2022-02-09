@@ -2,7 +2,7 @@ package com.forgottenheroes.main.objects;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.forgottenheroes.main.FHeroes;
+import com.forgottenheroes.main.CNinjas;
 
 public class HealthDisplay extends GameObject{
 
@@ -18,8 +18,8 @@ public class HealthDisplay extends GameObject{
                 setRelativeY(0);
                 break;
             case 2:
-                setRelativeX(FHeroes.INIT_WIDTH - getWidth());
-                setRelativeY(FHeroes.INIT_HEIGHT - getHeight());
+                setRelativeX(CNinjas.INIT_WIDTH - getWidth());
+                setRelativeY(CNinjas.INIT_HEIGHT - getHeight());
                 break;
             default:
                 break;
@@ -29,25 +29,25 @@ public class HealthDisplay extends GameObject{
 
     @Override
     public void render(float delta) {
-        FHeroes.getObjectManager().getShapeRenderer().begin();
-        FHeroes.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
-        FHeroes.getObjectManager().getShapeRenderer().setColor(new Color(1f, 1f, 1f, 1f));
-        FHeroes.getObjectManager().getShapeRenderer().rect(getAbsoluteX(), getAbsoluteY(), getWidth(), getHeight());
-        FHeroes.getObjectManager().getShapeRenderer().setColor(new Color(0f, 0f, 0f, 1f));
-        FHeroes.getObjectManager().getShapeRenderer().rect(getAbsoluteX() + 20, getAbsoluteY() + 10, getWidth() - 40, getHeight()/32 * 14);
-        FHeroes.getObjectManager().getShapeRenderer().setColor(new Color(1f, 0f, 0f, 1f));
-        FHeroes.getObjectManager().getShapeRenderer().rect(getAbsoluteX() + 30, getAbsoluteY() + 16, getWidth() - 60, getHeight()/32 * 10);
-        FHeroes.getObjectManager().getShapeRenderer().setColor(new Color(0f, 1f, 0f, 1f));
-        FHeroes.getObjectManager().getShapeRenderer().rect(getAbsoluteX() + 30, getAbsoluteY() + 16, (int) ((double) player.getHp() / (double) player.getMaxHP() * (getWidth() - 60)), getHeight()/32 * 10);
-        FHeroes.getObjectManager().getShapeRenderer().end();
-        FHeroes.getObjectManager().getSpriteBatch().begin();
-        FHeroes.getObjectManager().getBitmapFont().getData().setScale(2);
-        FHeroes.getObjectManager().getBitmapFont().setColor(player.getColor());
-        FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), player.getName(), getAbsoluteX() + 30, getAbsoluteY() + 90);
-        FHeroes.getObjectManager().getBitmapFont().setColor(new Color(0f, 0f, 0f, 1f));
-        FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), String.valueOf(player.getHp()) + "/" + String.valueOf(player.getMaxHP()), getAbsoluteX() + getWidth()/16*6, getAbsoluteY() + 42);
+        CNinjas.getObjectManager().getShapeRenderer().begin();
+        CNinjas.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
+        CNinjas.getObjectManager().getShapeRenderer().setColor(new Color(1f, 1f, 1f, 1f));
+        CNinjas.getObjectManager().getShapeRenderer().rect(getAbsoluteX(), getAbsoluteY(), getWidth(), getHeight());
+        CNinjas.getObjectManager().getShapeRenderer().setColor(new Color(0f, 0f, 0f, 1f));
+        CNinjas.getObjectManager().getShapeRenderer().rect(getAbsoluteX() + 20, getAbsoluteY() + 10, getWidth() - 40, getHeight()/32 * 14);
+        CNinjas.getObjectManager().getShapeRenderer().setColor(new Color(1f, 0f, 0f, 1f));
+        CNinjas.getObjectManager().getShapeRenderer().rect(getAbsoluteX() + 30, getAbsoluteY() + 16, getWidth() - 60, getHeight()/32 * 10);
+        CNinjas.getObjectManager().getShapeRenderer().setColor(new Color(0f, 1f, 0f, 1f));
+        CNinjas.getObjectManager().getShapeRenderer().rect(getAbsoluteX() + 30, getAbsoluteY() + 16, (int) ((double) player.getHp() / (double) player.getMaxHP() * (getWidth() - 60)), getHeight()/32 * 10);
+        CNinjas.getObjectManager().getShapeRenderer().end();
+        CNinjas.getObjectManager().getSpriteBatch().begin();
+        CNinjas.getObjectManager().getBitmapFont().getData().setScale(2);
+        CNinjas.getObjectManager().getBitmapFont().setColor(player.getColor());
+        CNinjas.getObjectManager().getBitmapFont().draw(CNinjas.getObjectManager().getSpriteBatch(), player.getName(), getAbsoluteX() + 30, getAbsoluteY() + 90);
+        CNinjas.getObjectManager().getBitmapFont().setColor(new Color(0f, 0f, 0f, 1f));
+        CNinjas.getObjectManager().getBitmapFont().draw(CNinjas.getObjectManager().getSpriteBatch(), String.valueOf(player.getHp()) + "/" + String.valueOf(player.getMaxHP()), getAbsoluteX() + getWidth()/16*6, getAbsoluteY() + 42);
 
-        FHeroes.getObjectManager().getSpriteBatch().end();
+        CNinjas.getObjectManager().getSpriteBatch().end();
     }
 
     public Player getPlayer() {

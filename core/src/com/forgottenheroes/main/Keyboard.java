@@ -18,13 +18,13 @@ public class Keyboard implements InputProcessor{
 
     public void checkKeyPress(){
 
-        Player player1 = FHeroes.getObjectManager().getPlayerByNumber(1);
-        Player player2 = FHeroes.getObjectManager().getPlayerByNumber(2);
+        Player player1 = CNinjas.getObjectManager().getPlayerByNumber(1);
+        Player player2 = CNinjas.getObjectManager().getPlayerByNumber(2);
         if(player1 != null && player2 != null){
             player1.initVel();
             player2.initVel();
         }
-        if(FHeroes.getGameState() == GameState.GAMERUNNING){
+        if(CNinjas.getGameState() == GameState.GAMERUNNING){
             if(!player1.checkPlayerDefeated()){
                 if(Gdx.input.isKeyPressed(Keys.UP)){
                     player1.addVelXY(0, player1.getMoveSpeed());
@@ -74,39 +74,39 @@ public class Keyboard implements InputProcessor{
                 player2.updateDirection();
             }
         }
-        else if(FHeroes.isGameState(GameState.GAMEOVER)){
+        else if(CNinjas.isGameState(GameState.GAMEOVER)){
             if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)){
-                FHeroes.getObjectManager().clearObjects();
+                CNinjas.getObjectManager().clearObjects();
                 MainMenuScreen mainmenu = new MainMenuScreen();
-                FHeroes.getGame().setScreen(mainmenu);
-                FHeroes.getObjectManager().setMainMenuScreen(mainmenu);
-                FHeroes.setGameState(GameState.MAINMENU);
-                FHeroes.getObjectManager().getGameScreen().dispose();
+                CNinjas.getGame().setScreen(mainmenu);
+                CNinjas.getObjectManager().setMainMenuScreen(mainmenu);
+                CNinjas.setGameState(GameState.MAINMENU);
+                CNinjas.getObjectManager().getGameScreen().dispose();
             } else if(Gdx.input.isKeyPressed(Keys.ANY_KEY)){
-                FHeroes.getObjectManager().startNewGame();
+                CNinjas.getObjectManager().startNewGame();
             }
         }
-        else if(FHeroes.isGameState(GameState.MAINMENU)) {
+        else if(CNinjas.isGameState(GameState.MAINMENU)) {
             if(Gdx.input.isKeyJustPressed(Keys.BACKSPACE)){
                 initialPress = TimeUtils.millis();
-                String buffer = FHeroes.getObjectManager().getMainMenuScreen().getInput();
+                String buffer = CNinjas.getObjectManager().getMainMenuScreen().getInput();
                 if(buffer.length() > 0){
                     buffer = buffer.substring(0, buffer.length() - 1);
-                    FHeroes.getObjectManager().getMainMenuScreen().setInput(buffer);
-                    FHeroes.getObjectManager().getMainMenuScreen().updateInput();
+                    CNinjas.getObjectManager().getMainMenuScreen().setInput(buffer);
+                    CNinjas.getObjectManager().getMainMenuScreen().updateInput();
                 }
             }
             if(Gdx.input.isKeyPressed(Keys.BACKSPACE) && (TimeUtils.millis() - initialPress > BACKSPACEDELAY)){
-                String buffer = FHeroes.getObjectManager().getMainMenuScreen().getInput();
+                String buffer = CNinjas.getObjectManager().getMainMenuScreen().getInput();
                 if(buffer.length() > 0 && TimeUtils.millis() - lastDelete > DELETESPEED){
                     buffer = buffer.substring(0, buffer.length() - 1);
-                    FHeroes.getObjectManager().getMainMenuScreen().setInput(buffer);
-                    FHeroes.getObjectManager().getMainMenuScreen().updateInput();
+                    CNinjas.getObjectManager().getMainMenuScreen().setInput(buffer);
+                    CNinjas.getObjectManager().getMainMenuScreen().updateInput();
                     lastDelete = TimeUtils.millis();
                 }
             }
             else if(Gdx.input.isKeyJustPressed(Keys.ENTER)){
-                FHeroes.getObjectManager().getMainMenuScreen().setInputReady(true);
+                CNinjas.getObjectManager().getMainMenuScreen().setInputReady(true);
             }
         }
     }
@@ -123,14 +123,14 @@ public class Keyboard implements InputProcessor{
 
     @Override
     public boolean keyTyped(char character) {
-        if(FHeroes.isGameState(GameState.MAINMENU) && (Character.isLetterOrDigit(character) || character == ' ')){
-            String buffer = FHeroes.getObjectManager().getMainMenuScreen().getInput();
+        if(CNinjas.isGameState(GameState.MAINMENU) && (Character.isLetterOrDigit(character) || character == ' ')){
+            String buffer = CNinjas.getObjectManager().getMainMenuScreen().getInput();
             buffer += character;
             if(buffer.length() > 30){
                 buffer = buffer.substring(0, buffer.length() - 1);
             }
-            FHeroes.getObjectManager().getMainMenuScreen().setInput(buffer);
-            FHeroes.getObjectManager().getMainMenuScreen().updateInput();
+            CNinjas.getObjectManager().getMainMenuScreen().setInput(buffer);
+            CNinjas.getObjectManager().getMainMenuScreen().updateInput();
             return true;
         }
         return false;

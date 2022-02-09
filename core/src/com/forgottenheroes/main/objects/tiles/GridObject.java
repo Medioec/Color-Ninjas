@@ -1,6 +1,6 @@
 package com.forgottenheroes.main.objects.tiles;
 
-import com.forgottenheroes.main.FHeroes;
+import com.forgottenheroes.main.CNinjas;
 import com.forgottenheroes.main.GameScreen;
 import com.forgottenheroes.main.objects.GameObject;
 import com.forgottenheroes.main.objects.Map;
@@ -25,7 +25,7 @@ public abstract class GridObject extends GameObject{
 
     //converts absolute coordinates
     public static int[] convertToGridCoords(int x, int y){
-        Map map = FHeroes.getObjectManager().getMap();
+        Map map = CNinjas.getObjectManager().getMap();
         int xcoord = (x - map.getAbsoluteX()) / map.getGridSize();
         int ycoord = (y - map.getAbsoluteY()) / map.getGridSize();
         int[] coord = {xcoord, ycoord};
@@ -46,22 +46,22 @@ public abstract class GridObject extends GameObject{
     }
 
     public void setGridCoords(int xcoord, int ycoord){
-        Map map = FHeroes.getObjectManager().getMap();
+        Map map = CNinjas.getObjectManager().getMap();
         this.coords[0] = xcoord;
         this.coords[1] = ycoord;
         setRelativeX(xcoord * map.getGridSize() + map.getRelativeX());
         setRelativeY(ycoord * map.getGridSize() + map.getRelativeY());
-        setAbsoluteX(FHeroes.getxOffsetOrigin() + getRelativeX());
-        setAbsoluteY(FHeroes.getyOffsetOrigin() + getRelativeY());
+        setAbsoluteX(CNinjas.getxOffsetOrigin() + getRelativeX());
+        setAbsoluteY(CNinjas.getyOffsetOrigin() + getRelativeY());
     }
 
     @Override
     public void setGridCoords(int[] coords){
-        Map map = FHeroes.getObjectManager().getMap();
+        Map map = CNinjas.getObjectManager().getMap();
         this.coords = coords;
         setRelativeX(coords[0] * map.getGridSize() + map.getRelativeX());
         setRelativeY(coords[1] * map.getGridSize() + map.getRelativeY());
-        setAbsoluteX(FHeroes.getxOffsetOrigin() + getRelativeX());
-        setAbsoluteY(FHeroes.getyOffsetOrigin() + getRelativeY());
+        setAbsoluteX(CNinjas.getxOffsetOrigin() + getRelativeX());
+        setAbsoluteY(CNinjas.getyOffsetOrigin() + getRelativeY());
     }
 }

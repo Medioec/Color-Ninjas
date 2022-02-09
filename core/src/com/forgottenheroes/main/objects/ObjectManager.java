@@ -10,7 +10,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.forgottenheroes.main.FHeroes;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.forgottenheroes.main.CNinjas;
 import com.forgottenheroes.main.GameScreen;
 import com.forgottenheroes.main.GameState;
 import com.forgottenheroes.main.Keyboard;
@@ -29,8 +30,9 @@ public class ObjectManager {
 	private ShapeRenderer shapeRenderer;
 	private Viewport viewport;
 	private OrthographicCamera camera;
+    private OrthogonalTiledMapRenderer mapRenderer;
 
-    private FHeroes game;
+    private CNinjas game;
     private Map map;
     private GameScreen gameScreen;
     private MainMenuScreen mainMenuScreen;
@@ -45,7 +47,7 @@ public class ObjectManager {
     private final int ROUNDRESETMS = 3000;
     private final int SCOREINTERVALMS = 1000;
 
-    public ObjectManager(FHeroes game){
+    public ObjectManager(CNinjas game){
         this.game = game;
         removalQueue = new ArrayList<GameObject>();
         tileList = new ArrayList<Tile>();
@@ -56,10 +58,10 @@ public class ObjectManager {
     }
 
     public void render(float delta){
-        if(FHeroes.getGameState() == GameState.ROUNDENDPAUSE){
+        if(CNinjas.getGameState() == GameState.ROUNDENDPAUSE){
             startNewRound();
         }
-        if(FHeroes.isGameState(GameState.GAMERUNNING)){
+        if(CNinjas.isGameState(GameState.GAMERUNNING)){
             if(TimeUtils.millis() - lastScoring > SCOREINTERVALMS){
                 addTileScores();
             }
@@ -79,6 +81,14 @@ public class ObjectManager {
             GameObject object = objectList.get(i);
             object.render(delta);
         }
+    }
+
+    public OrthogonalTiledMapRenderer getMapRenderer() {
+        return mapRenderer;
+    }
+
+    public void setMapRenderer(OrthogonalTiledMapRenderer mapRenderer) {
+        this.mapRenderer = mapRenderer;
     }
 
     public OrthographicCamera getCamera() {
@@ -149,7 +159,7 @@ public class ObjectManager {
         this.keyboard = keyboard;
     }
 
-    public FHeroes getGame() {
+    public CNinjas getGame() {
         return game;
     }
 
@@ -359,10 +369,10 @@ public class ObjectManager {
             Popup popup = new Popup("Game Over", "Esc to return to menu, any other key for rematch...", "");
             popup.setTextScale(1.4f);
             setPopup(popup);
-            FHeroes.setGameState(GameState.GAMEOVER);
+            CNinjas.setGameState(GameState.GAMEOVER);
         } else {
             roundOverTime = TimeUtils.millis();
-            FHeroes.setGameState(GameState.ROUNDENDPAUSE);
+            CNinjas.setGameState(GameState.ROUNDENDPAUSE);
             setPopup(new Popup("Round Over", "Next round starting soon...", ""));
         }
         
@@ -370,8 +380,8 @@ public class ObjectManager {
 
     public void startNewRound(){
         if(TimeUtils.millis() - roundOverTime > ROUNDRESETMS){
-            FHeroes.getObjectManager().getMap().resetMap(FHeroes.getObjectManager().getMap().getCurrentMap(), Reset.NEWROUND);
-            FHeroes.setGameState(GameState.GAMERUNNING);
+            map.resetMap(map.getCurrentMap(), Reset.NEWROUND);
+            CNinjas.setGameState(GameState.GAMERUNNING);
             removeObject(getPopup());
         }
     }
@@ -386,8 +396,8 @@ public class ObjectManager {
 
     public void startNewGame(){
         if(TimeUtils.millis() - roundOverTime > ROUNDRESETMS){
-            FHeroes.getObjectManager().getMap().resetMap(FHeroes.getObjectManager().getMap().getCurrentMap(), Reset.NEWGAME);
-            FHeroes.setGameState(GameState.GAMERUNNING);
+            CNinjas.getObjectManager().getMap().resetMap(CNinjas.getObjectManager().getMap().getCurrentMap(), Reset.NEWGAME);
+            CNinjas.setGameState(GameState.GAMERUNNING);
             removeObject(getPopup());
         }
     }

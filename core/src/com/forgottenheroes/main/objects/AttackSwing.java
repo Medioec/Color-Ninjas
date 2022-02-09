@@ -3,7 +3,7 @@ package com.forgottenheroes.main.objects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.forgottenheroes.main.FHeroes;
+import com.forgottenheroes.main.CNinjas;
 
 public class AttackSwing extends GameObject{
 
@@ -40,16 +40,16 @@ public class AttackSwing extends GameObject{
         flipY = false;
         
         spawnTime = TimeUtils.millis();
-        FHeroes.getObjectManager().addToObjectList(this);
+        CNinjas.getObjectManager().addToObjectList(this);
     }
 
     @Override
     public void render(float delta) {
-        FHeroes.getObjectManager().getSpriteBatch().begin();
-        FHeroes.getObjectManager().getSpriteBatch().draw(getTexture(), getAbsoluteX(), getAbsoluteY(), originX, originY, getWidth(), getHeight(), scaleX, scaleY, rotation, srcX, srcY, srcWidth, srcHeight, flipX, flipY);
-        FHeroes.getObjectManager().getSpriteBatch().end();
+        CNinjas.getObjectManager().getSpriteBatch().begin();
+        CNinjas.getObjectManager().getSpriteBatch().draw(getTexture(), getAbsoluteX(), getAbsoluteY(), originX, originY, getWidth(), getHeight(), scaleX, scaleY, rotation, srcX, srcY, srcWidth, srcHeight, flipX, flipY);
+        CNinjas.getObjectManager().getSpriteBatch().end();
         if(TimeUtils.millis() - spawnTime > FADEMS){
-            FHeroes.getObjectManager().queueForRemoval(this);
+            CNinjas.getObjectManager().queueForRemoval(this);
         }
     }
 

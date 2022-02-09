@@ -6,9 +6,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.forgottenheroes.main.FHeroes;
+import com.forgottenheroes.main.CNinjas;
 import com.forgottenheroes.main.GameScreen;
 import com.forgottenheroes.main.Reset;
+import com.forgottenheroes.main.objects.Player.PlayerColor;
 import com.forgottenheroes.main.objects.tiles.Floor;
 import com.forgottenheroes.main.objects.tiles.Tile;
 import com.forgottenheroes.main.objects.tiles.Wall;
@@ -17,7 +18,6 @@ public class Map extends GameObject{
 
     private ObjectManager objectManager;
     private TiledMap map;
-    private OrthogonalTiledMapRenderer renderer;
 
     private int tiledMapGridSize;
     private int scaleFactor;
@@ -31,7 +31,7 @@ public class Map extends GameObject{
     private static int numberOfPlayers;
 
     public Map(){
-        this.objectManager = FHeroes.getObjectManager();
+        this.objectManager = CNinjas.getObjectManager();
     }
 
     @Override
@@ -63,7 +63,8 @@ public class Map extends GameObject{
         tiledMapGridSize = 16;
         gridSize = 64;
         scaleFactor = gridSize / tiledMapGridSize;
-        //renderer = new OrthogonalTiledMapRenderer(map, unitScale, batch)
+        OrthogonalTiledMapRenderer renderer = new OrthogonalTiledMapRenderer(map, scaleFactor, CNinjas.getObjectManager().getSpriteBatch());
+        objectManager.setMapRenderer(renderer);
         setHSize(9);
         setVSize(9);
         setNumberOfPlayers(2);
@@ -80,17 +81,17 @@ public class Map extends GameObject{
                 objectManager.addToTileList(tile);
                 for(int[] coord:wallList){
                     if(coord[0] == i && coord[1] == j){
-                        tile.addTileObject(new Wall(tile));
+                        //tile.addTileObject(new Wall(tile));
                     }
                 }
             }
         }
-        Player player1 = FHeroes.getObjectManager().getPlayerByNumber(1);
-        Player player2 = FHeroes.getObjectManager().getPlayerByNumber(2);
+        Player player1 = CNinjas.getObjectManager().getPlayerByNumber(1);
+        Player player2 = CNinjas.getObjectManager().getPlayerByNumber(2);
         if(player1 == null || player2 == null){
-            player1 = new Player(getPlayer1InitPos(), Color.RED, 1);
+            player1 = new Player(getPlayer1InitPos(), PlayerColor.RED, 1);
             player1.setName("Player 1");
-            player2 = new Player(getPlayer2InitPos(), Color.BLUE, 2);
+            player2 = new Player(getPlayer2InitPos(), PlayerColor.BLUE, 2);
             player2.setName("Player 2");
         } else {
             player1.setGridCoords(getPlayer1InitPos());
@@ -98,12 +99,14 @@ public class Map extends GameObject{
         }
         player1.setInitPos(getPlayer1InitPos());
         player2.setInitPos(getPlayer2InitPos());
+        player1.prepareAnimation(player1.getPlayerColor());
+        player2.prepareAnimation(player2.getPlayerColor());
         HealthDisplay p1Health = new HealthDisplay(player1);
         HealthDisplay p2Health = new HealthDisplay(player2);
-        FHeroes.getObjectManager().getScoreboard().addPlayerToScoreBoard(player1);
-        FHeroes.getObjectManager().getScoreboard().addPlayerToScoreBoard(player2);
-        FHeroes.getObjectManager().getLeaderboard().addPlayerToLeaderboard(player1);
-        FHeroes.getObjectManager().getLeaderboard().addPlayerToLeaderboard(player2);
+        CNinjas.getObjectManager().getScoreboard().addPlayerToScoreBoard(player1);
+        CNinjas.getObjectManager().getScoreboard().addPlayerToScoreBoard(player2);
+        CNinjas.getObjectManager().getLeaderboard().addPlayerToLeaderboard(player1);
+        CNinjas.getObjectManager().getLeaderboard().addPlayerToLeaderboard(player2);
         objectManager.addToObjectList(p1Health);
         objectManager.addToObjectList(p2Health);
         setCurrentMap(1);
@@ -114,17 +117,21 @@ public class Map extends GameObject{
             case 1:
             switch(reset){
                 case NEWGAME:
-                FHeroes.getObjectManager().getPlayerByNumber(1).resetToNewGame();
-                FHeroes.getObjectManager().getPlayerByNumber(2).resetToNewGame();
+                CNinjas.getObjectManager().getPlayerByNumber(1).resetToNewGame();
+                CNinjas.getObjectManager().getPlayerByNumber(2).resetToNewGame();
                 break;
                 case NEWROUND:
-                FHeroes.getObjectManager().getPlayerByNumber(1).resetToNewRound();
-                FHeroes.getObjectManager().getPlayerByNumber(2).resetToNewRound();
+                CNinjas.getObjectManager().getPlayerByNumber(1).resetToNewRound();
+                CNinjas.getObjectManager().getPlayerByNumber(2).resetToNewRound();
                 break;
                 default:
                 break;
             }
         }
+    }
+
+    public TiledMap getMap() {
+        return map;
     }
 
     public int getRoundsToWin() {
@@ -186,7 +193,7 @@ public class Map extends GameObject{
     }
 
     public boolean isPassable(int[] coords){
-        Tile tile = FHeroes.getObjectManager().getTile(coords);
+        Tile tile = CNinjas.getObjectManager().getTile(coords);
         if(tile != null){
             return tile.isPassable();
         }

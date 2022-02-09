@@ -4,10 +4,18 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.lang.Math;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL30;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.forgottenheroes.main.FHeroes;
+import com.forgottenheroes.main.CNinjas;
 import com.forgottenheroes.main.GameState;
 import com.forgottenheroes.main.Pickup;
 import com.forgottenheroes.main.objects.tiles.Floor;
@@ -16,8 +24,23 @@ public class Player extends GameEntity{
     private int playerNumber;
     private String name;
     private Color color;
+    private PlayerColor playerColor;
     private State state;
     private Direction currentDirection;
+    private TextureAtlas charAtlas;
+    private Array<AtlasRegion> walkupArray;
+    private Array<AtlasRegion> walkdownArray;
+    private Array<AtlasRegion> walkleftArray;
+    private Array<AtlasRegion> walkrightArray;
+    private Animation<TextureRegion> walkup;
+    private Animation<TextureRegion> walkdown;
+    private Animation<TextureRegion> walkleft;
+    private Animation<TextureRegion> walkright;
+    private TextureRegion attackup;
+    private TextureRegion attackdown;
+    private TextureRegion attackleft;
+    private TextureRegion attackright;
+    private float timeElapsed;
 
     private int[] initPos;
     private int score;
@@ -33,6 +56,7 @@ public class Player extends GameEntity{
     private long lastDamagedTime;
     private int[] currentGridCoord;
     private boolean visible;
+    private boolean walking;
 
     private final int ATTACKCDMS = 500;
     private final int REVEALMS = 1000;
@@ -49,6 +73,14 @@ public class Player extends GameEntity{
         DEFEATED
     }
 
+    public enum PlayerColor{
+        RED,
+        BLUE,
+        GREEN,
+        YELLOW,
+        NONE
+    }
+
     public enum Direction{
         N,
         NE,
@@ -62,8 +94,8 @@ public class Player extends GameEntity{
 
     public Player(int playerNumber){
         super();
-        setHeight(40);
-        setWidth(40);
+        setHeight(48);
+        setWidth(48);
         setMaxHP(200);
         setHp(getMaxHP());
         setScore(0);
@@ -73,24 +105,29 @@ public class Player extends GameEntity{
         setAtkWidth(50);
         setMoveSpeed(5);
         setState(State.IDLE);
+        setCurrentDirection(Direction.S);
         switch(playerNumber){
             case 1:
             color = Color.RED;
+            playerColor = PlayerColor.RED;
             setName("Player 1");
             break;
             case 2:
             color = Color.BLUE;
+            playerColor = PlayerColor.BLUE;
             setName("Player 2");
             break;
         }
         this.playerNumber = playerNumber;
+        timeElapsed = 0;
+        prepareAnimation(playerColor);
     }
 
-    public Player(int[] spawncoords, Color color, int playerNumber){
+    public Player(int[] spawncoords, PlayerColor color, int playerNumber){
         super(spawncoords);
         //setGridCoords(spawncoords);
-        setHeight(40);
-        setWidth(40);
+        setHeight(48);
+        setWidth(48);
         setMaxHP(200);
         setHp(getMaxHP());
         setName("player");
@@ -101,56 +138,171 @@ public class Player extends GameEntity{
         setAtkWidth(40);
         setMoveSpeed(5);
         setState(State.IDLE);
-        this.color = color;
+        setCurrentDirection(Direction.S);
+        playerColor = color;
+        switch(color){
+            case BLUE:
+            this.color = Color.BLUE;
+                break;
+            case GREEN:
+            this.color = Color.GREEN;
+                break;
+            case RED:
+            this.color = Color.RED;
+                break;
+            case YELLOW:
+            this.color = Color.YELLOW;
+                break;
+            default:
+                break;
+            
+        }
         this.playerNumber = playerNumber;
+        timeElapsed = 0;
+        prepareAnimation(playerColor);
     }
 
     @Override
     public void render(float delta) {
-        if(FHeroes.getGameState() != GameState.MAINMENU){
+        timeElapsed += delta;
+        if(CNinjas.getGameState() != GameState.MAINMENU){
             autoHidePlayer();
             if(getState() != State.DEFEATED){
+                walking = false;
                 if(isValidXMovement()) updateXPos();
                 if(isValidYMovement()) updateYPos();
                 convertTile();
                 if(visible){
-                    FHeroes.getObjectManager().getShapeRenderer().begin();
-                    FHeroes.getObjectManager().getShapeRenderer().setColor(Color.BLACK);
-                    FHeroes.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
-                    FHeroes.getObjectManager().getShapeRenderer().circle(getAbsoluteX(), getAbsoluteY(), getHeight() / 2);
-                    FHeroes.getObjectManager().getShapeRenderer().setColor(color);
-                    FHeroes.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
-                    FHeroes.getObjectManager().getShapeRenderer().circle(getAbsoluteX(), getAbsoluteY(), getHeight() / 2 - 2);
-                    FHeroes.getObjectManager().getShapeRenderer().end();
+                    CNinjas.getObjectManager().getShapeRenderer().begin();
+                    CNinjas.getObjectManager().getShapeRenderer().setColor(Color.BLACK);
+                    CNinjas.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
+                    //FHeroes.getObjectManager().getShapeRenderer().circle(getAbsoluteX(), getAbsoluteY(), getHeight() / 2);
+                    CNinjas.getObjectManager().getShapeRenderer().setColor(color);
+                    CNinjas.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
+                    //FHeroes.getObjectManager().getShapeRenderer().circle(getAbsoluteX(), getAbsoluteY(), getHeight() / 2 - 2);
+                    CNinjas.getObjectManager().getShapeRenderer().end();
+                    CNinjas.getObjectManager().getSpriteBatch().begin();
+                    if(walking){
+                        switch(currentDirection){
+                            case E:
+                            CNinjas.getObjectManager().getSpriteBatch().draw(walkright.getKeyFrame(timeElapsed, true), getAbsoluteX() - getWidth()/2, getAbsoluteY() - getHeight()/2, 48, 48);
+                                break;
+                            case N:
+                            CNinjas.getObjectManager().getSpriteBatch().draw(walkup.getKeyFrame(timeElapsed, true), getAbsoluteX() - getWidth()/2, getAbsoluteY() - getHeight()/2, 48, 48);
+                                break;
+                            case NE:
+                            CNinjas.getObjectManager().getSpriteBatch().draw(walkright.getKeyFrame(timeElapsed, true), getAbsoluteX() - getWidth()/2, getAbsoluteY() - getHeight()/2, 48, 48);
+                                break;
+                            case NW:
+                            CNinjas.getObjectManager().getSpriteBatch().draw(walkleft.getKeyFrame(timeElapsed, true), getAbsoluteX() - getWidth()/2, getAbsoluteY() - getHeight()/2, 48, 48);
+                                break;
+                            case S:
+                            CNinjas.getObjectManager().getSpriteBatch().draw(walkdown.getKeyFrame(timeElapsed, true), getAbsoluteX() - getWidth()/2, getAbsoluteY() - getHeight()/2, 48, 48);
+                                break;
+                            case SE:
+                            CNinjas.getObjectManager().getSpriteBatch().draw(walkright.getKeyFrame(timeElapsed, true), getAbsoluteX() - getWidth()/2, getAbsoluteY() - getHeight()/2, 48, 48);
+                                break;
+                            case SW:
+                            CNinjas.getObjectManager().getSpriteBatch().draw(walkleft.getKeyFrame(timeElapsed, true), getAbsoluteX() - getWidth()/2, getAbsoluteY() - getHeight()/2, 48, 48);
+                                break;
+                            case W:
+                            CNinjas.getObjectManager().getSpriteBatch().draw(walkleft.getKeyFrame(timeElapsed, true), getAbsoluteX() - getWidth()/2, getAbsoluteY() - getHeight()/2, 48, 48);
+                                break;
+                            default:
+                                break;
+                            
+                        }
+                    }
+                    else if(isAttacking()){
+                        switch(currentDirection){
+                            case E:
+                            CNinjas.getObjectManager().getSpriteBatch().draw(attackright, getAbsoluteX() - getWidth()/2, getAbsoluteY() - getHeight()/2, 48, 48);
+                                break;
+                            case N:
+                            CNinjas.getObjectManager().getSpriteBatch().draw(attackup, getAbsoluteX() - getWidth()/2, getAbsoluteY() - getHeight()/2, 48, 48);
+                                break;
+                            case NE:
+                            CNinjas.getObjectManager().getSpriteBatch().draw(attackright, getAbsoluteX() - getWidth()/2, getAbsoluteY() - getHeight()/2, 48, 48);
+                                break;
+                            case NW:
+                            CNinjas.getObjectManager().getSpriteBatch().draw(attackleft, getAbsoluteX() - getWidth()/2, getAbsoluteY() - getHeight()/2, 48, 48);
+                                break;
+                            case S:
+                            CNinjas.getObjectManager().getSpriteBatch().draw(attackdown, getAbsoluteX() - getWidth()/2, getAbsoluteY() - getHeight()/2, 48, 48);
+                                break;
+                            case SE:
+                            CNinjas.getObjectManager().getSpriteBatch().draw(attackright, getAbsoluteX() - getWidth()/2, getAbsoluteY() - getHeight()/2, 48, 48);
+                                break;
+                            case SW:
+                            CNinjas.getObjectManager().getSpriteBatch().draw(attackleft, getAbsoluteX() - getWidth()/2, getAbsoluteY() - getHeight()/2, 48, 48);
+                                break;
+                            case W:
+                            CNinjas.getObjectManager().getSpriteBatch().draw(attackleft, getAbsoluteX() - getWidth()/2, getAbsoluteY() - getHeight()/2, 48, 48);
+                                break;
+                            default:
+                                break;
+                            
+                        }
+                    }
+                    else{
+                        switch(currentDirection){
+                            case E:
+                            CNinjas.getObjectManager().getSpriteBatch().draw(walkrightArray.get(0), getAbsoluteX() - getWidth()/2, getAbsoluteY() - getHeight()/2, 48, 48);
+                                break;
+                            case N:
+                            CNinjas.getObjectManager().getSpriteBatch().draw(walkupArray.get(0), getAbsoluteX() - getWidth()/2, getAbsoluteY() - getHeight()/2, 48, 48);
+                                break;
+                            case NE:
+                            CNinjas.getObjectManager().getSpriteBatch().draw(walkrightArray.get(0), getAbsoluteX() - getWidth()/2, getAbsoluteY() - getHeight()/2, 48, 48);
+                                break;
+                            case NW:
+                            CNinjas.getObjectManager().getSpriteBatch().draw(walkleftArray.get(0), getAbsoluteX() - getWidth()/2, getAbsoluteY() - getHeight()/2, 48, 48);
+                                break;
+                            case S:
+                            CNinjas.getObjectManager().getSpriteBatch().draw(walkdownArray.get(0), getAbsoluteX() - getWidth()/2, getAbsoluteY() - getHeight()/2, 48, 48);
+                                break;
+                            case SE:
+                            CNinjas.getObjectManager().getSpriteBatch().draw(walkrightArray.get(0), getAbsoluteX() - getWidth()/2, getAbsoluteY() - getHeight()/2, 48, 48);
+                                break;
+                            case SW:
+                            CNinjas.getObjectManager().getSpriteBatch().draw(walkleftArray.get(0), getAbsoluteX() - getWidth()/2, getAbsoluteY() - getHeight()/2, 48, 48);
+                                break;
+                            case W:
+                            CNinjas.getObjectManager().getSpriteBatch().draw(walkleftArray.get(0), getAbsoluteX() - getWidth()/2, getAbsoluteY() - getHeight()/2, 48, 48);
+                                break;
+                            default:
+                                break;
+
+                        }
+                    }
+                    CNinjas.getObjectManager().getSpriteBatch().end();
                 }
             }
         }
     }
     
     public boolean isValidXMovement(){
-        if(!checkPlayerDefeated() && !isAttacking()){
+        if(getVelX() != 0 && !checkPlayerDefeated() && !isAttacking()){
             int newX = getAbsoluteX() + getVelX();
             int newY = getAbsoluteY();
             int[] coords = getGridCoords(newX, newY);
-            if(coords != null) return FHeroes.getObjectManager().getMap().isPassable(coords);
-            else return false;
+            walking = true;
+            if(coords != null){
+                return CNinjas.getObjectManager().getMap().isPassable(coords);
+            }
         }
-        else {
-            return false;
-        }
+        return false;
     }
 
     public boolean isValidYMovement(){
-        if(!checkPlayerDefeated() && !isAttacking()){
+        if(getVelY() != 0 && !checkPlayerDefeated() && !isAttacking()){
             int newX = getAbsoluteX();
             int newY = getAbsoluteY() + getVelY();
             int[] coords = getGridCoords(newX, newY);
-            if(coords != null) return FHeroes.getObjectManager().getMap().isPassable(coords);
-            else return false;
+            walking = true;
+            if(coords != null) return CNinjas.getObjectManager().getMap().isPassable(coords);
         }
-        else {
-            return false;
-        }
+        return false;
     }
 
     public void updateDirection(){
@@ -202,12 +354,12 @@ public class Player extends GameEntity{
         setGridCoords(getInitPos());
         setHp(getMaxHP());
         setScore(0);
-        FHeroes.getObjectManager().getPlayerByNumber(1).revealPlayer();
-        FHeroes.getObjectManager().getPlayerByNumber(1).setCurrentGridCoord(new int[] {-1,-1});
-        FHeroes.getObjectManager().getPlayerByNumber(2).revealPlayer();
-        FHeroes.getObjectManager().getPlayerByNumber(2).setCurrentGridCoord(new int[] {-1,-1});
-        FHeroes.getObjectManager().setLastScoring(TimeUtils.millis());
-        FHeroes.getObjectManager().resetTileOwners();
+        CNinjas.getObjectManager().getPlayerByNumber(1).revealPlayer();
+        CNinjas.getObjectManager().getPlayerByNumber(1).setCurrentGridCoord(new int[] {-1,-1});
+        CNinjas.getObjectManager().getPlayerByNumber(2).revealPlayer();
+        CNinjas.getObjectManager().getPlayerByNumber(2).setCurrentGridCoord(new int[] {-1,-1});
+        CNinjas.getObjectManager().setLastScoring(TimeUtils.millis());
+        CNinjas.getObjectManager().resetTileOwners();
     }
 
     public void resetToNewGame(){
@@ -215,12 +367,20 @@ public class Player extends GameEntity{
         setHp(getMaxHP());
         setScore(0);
         setWins(0);
-        FHeroes.getObjectManager().getPlayerByNumber(1).revealPlayer();
-        FHeroes.getObjectManager().getPlayerByNumber(1).setCurrentGridCoord(new int[] {-1,-1});
-        FHeroes.getObjectManager().getPlayerByNumber(2).revealPlayer();
-        FHeroes.getObjectManager().getPlayerByNumber(2).setCurrentGridCoord(new int[] {-1,-1});
-        FHeroes.getObjectManager().setLastScoring(TimeUtils.millis());
-        FHeroes.getObjectManager().resetTileOwners();
+        CNinjas.getObjectManager().getPlayerByNumber(1).revealPlayer();
+        CNinjas.getObjectManager().getPlayerByNumber(1).setCurrentGridCoord(new int[] {-1,-1});
+        CNinjas.getObjectManager().getPlayerByNumber(2).revealPlayer();
+        CNinjas.getObjectManager().getPlayerByNumber(2).setCurrentGridCoord(new int[] {-1,-1});
+        CNinjas.getObjectManager().setLastScoring(TimeUtils.millis());
+        CNinjas.getObjectManager().resetTileOwners();
+    }
+
+    public PlayerColor getPlayerColor() {
+        return playerColor;
+    }
+
+    public void setPlayerColor(PlayerColor playerColor) {
+        this.playerColor = playerColor;
     }
 
     public String getName() {
@@ -352,6 +512,10 @@ public class Player extends GameEntity{
         this.currentGridCoord = currentGridCoord;
     }
 
+    public Array<AtlasRegion> getWalkdownArray() {
+        return walkdownArray;
+    }
+
     public void performAttack(Direction dir){
         if(!isAttacking() && TimeUtils.millis() - lastDamagedTime > STUNMS){
             startAttackCD();
@@ -389,7 +553,7 @@ public class Player extends GameEntity{
                     break;
             }
             double[] orthodirv = {-dirv[1], dirv[0]};
-            ArrayList<Player> playerList = FHeroes.getObjectManager().getPlayerList();
+            ArrayList<Player> playerList = CNinjas.getObjectManager().getPlayerList();
             double magdirv = Math.sqrt(Math.pow(dirv[0], 2) + Math.pow(dirv[1], 2));
             double[] unitdirv = {dirv[0] / magdirv, dirv[1] / magdirv};
             double magorthodirv = Math.sqrt(Math.pow(orthodirv[0], 2) + Math.pow(orthodirv[1], 2));
@@ -418,8 +582,8 @@ public class Player extends GameEntity{
                         }
                     }
                     if(target.checkPlayerDefeated()){
-                        if(FHeroes.getObjectManager().checkRoundOver()){
-                            FHeroes.getObjectManager().setRoundOver();
+                        if(CNinjas.getObjectManager().checkRoundOver()){
+                            CNinjas.getObjectManager().setRoundOver();
                         }
                         
                     }
@@ -472,7 +636,7 @@ public class Player extends GameEntity{
         }
         
         if(temp[1] != currentGridCoord[1] || temp[0] != currentGridCoord[0]){
-            Floor floor = FHeroes.getObjectManager().getTile(currentGridCoord).getFloor();
+            Floor floor = CNinjas.getObjectManager().getTile(currentGridCoord).getFloor();
             if(floor != null){
                 floor.changeOwner(playerNumber);
             }
@@ -493,5 +657,43 @@ public class Player extends GameEntity{
     public void damageStun(){
         revealPlayer();
         lastDamagedTime = TimeUtils.millis();
+    }
+
+    public void prepareAnimation(PlayerColor color){
+        String atlasFile = null;
+        switch(color){
+            case BLUE:
+            atlasFile = "player/BluePlayer.atlas";
+                break;
+            case GREEN:
+            atlasFile = "player/GreenPlayer.atlas";
+                break;
+            case NONE:
+                break;
+            case RED:
+            atlasFile = "player/RedPlayer.atlas";
+                break;
+            case YELLOW:
+            atlasFile = "player/YellowPlayer.atlas";
+                break;
+            default:
+                break;
+            
+        }
+        if(atlasFile != null){
+            charAtlas = new TextureAtlas(Gdx.files.internal(atlasFile));
+            walkupArray = charAtlas.findRegions("up");
+            walkdownArray = charAtlas.findRegions("down");
+            walkleftArray = charAtlas.findRegions("left");
+            walkrightArray = charAtlas.findRegions("right");
+            walkup = new Animation<TextureRegion>(1f/10f, walkupArray, PlayMode.LOOP);
+            walkdown = new Animation<TextureRegion>(1f/10f, walkdownArray, PlayMode.LOOP);
+            walkleft = new Animation<TextureRegion>(1f/10f, walkleftArray, PlayMode.LOOP);
+            walkright = new Animation<TextureRegion>(1f/10f, walkrightArray, PlayMode.LOOP);
+            attackup = charAtlas.findRegion("upattack");
+            attackdown = charAtlas.findRegion("downattack");
+            attackleft = charAtlas.findRegion("leftattack");
+            attackright = charAtlas.findRegion("rightattack");
+        }
     }
 }

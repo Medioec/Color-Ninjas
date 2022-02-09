@@ -1,7 +1,7 @@
 package com.forgottenheroes.main.objects;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.forgottenheroes.main.FHeroes;
+import com.forgottenheroes.main.CNinjas;
 
 public abstract class GameObject {
 
@@ -28,7 +28,7 @@ public abstract class GameObject {
 
     public void setAbsoluteX(int absoluteX) {
         this.absoluteX = absoluteX;
-        relativeX = absoluteX - FHeroes.getxOffsetOrigin();
+        relativeX = absoluteX - CNinjas.getxOffsetOrigin();
     }
 
     public int getAbsoluteY() {
@@ -37,7 +37,7 @@ public abstract class GameObject {
 
     public void setAbsoluteY(int absoluteY) {
         this.absoluteY = absoluteY;
-        relativeY = absoluteY - FHeroes.getyOffsetOrigin();
+        relativeY = absoluteY - CNinjas.getyOffsetOrigin();
     }
 
     public int getRelativeX(){
@@ -50,12 +50,12 @@ public abstract class GameObject {
 
     public void setRelativeX(int x){
         this.relativeX = x;
-        absoluteX = relativeX + FHeroes.getxOffsetOrigin();
+        absoluteX = relativeX + CNinjas.getxOffsetOrigin();
     }
 
     public void setRelativeY(int y){
         this.relativeY = y;
-        absoluteY = relativeY + FHeroes.getyOffsetOrigin();
+        absoluteY = relativeY + CNinjas.getyOffsetOrigin();
     }
 
     public int getWidth(){
@@ -91,7 +91,7 @@ public abstract class GameObject {
     }
 
     public int[] getGridCoords(){
-        Map map = FHeroes.getObjectManager().getMap();
+        Map map = CNinjas.getObjectManager().getMap();
         if(map.getRelativeX() < getRelativeX() && getRelativeX() < map.getRelativeX() + map.getWidth() && map.getRelativeY() < getRelativeY() && getRelativeY() < map.getRelativeY() + map.getHeight()){
             int[] coords = new int[2];
             coords[0] = (relativeX - map.getRelativeX()) / map.getGridSize();
@@ -103,7 +103,7 @@ public abstract class GameObject {
 
     //input of absolute coordinates
     public static int[] getGridCoords(int x, int y){
-        Map map = FHeroes.getObjectManager().getMap();
+        Map map = CNinjas.getObjectManager().getMap();
         if(map.getAbsoluteX() < x && x < map.getAbsoluteX() + map.getWidth() && map.getAbsoluteY() < y && y < map.getAbsoluteY() + map.getHeight()){
             int[] coords = new int[2];
             coords[0] = (x - map.getAbsoluteX()) / map.getGridSize();
@@ -114,7 +114,7 @@ public abstract class GameObject {
     }
 
     public void setGridCoords(int[] coords){
-        Map map = FHeroes.getObjectManager().getMap();
+        Map map = CNinjas.getObjectManager().getMap();
         setRelativeX((coords[0] * map.getGridSize() + map.getRelativeX() + map.getGridSize() / 2));
         setRelativeY((coords[1] * map.getGridSize() + map.getRelativeY() + map.getGridSize() / 2));
     }

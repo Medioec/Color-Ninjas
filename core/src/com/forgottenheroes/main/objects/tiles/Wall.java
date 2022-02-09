@@ -2,14 +2,14 @@ package com.forgottenheroes.main.objects.tiles;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.forgottenheroes.main.FHeroes;
+import com.forgottenheroes.main.CNinjas;
 import com.forgottenheroes.main.objects.Map;
 
 public class Wall extends TileObject{
 
     public Wall(Tile tile) {
         super(tile);
-        Map map = FHeroes.getObjectManager().getMap();
+        Map map = CNinjas.getObjectManager().getMap();
         setWidth(map.getGridSize());
         setHeight(map.getGridSize());
         setDisplayPriority(0);
@@ -18,14 +18,14 @@ public class Wall extends TileObject{
     //to replace shaperenderer shapes with actual textures
     @Override
     public void render(float delta) {
-        FHeroes.getObjectManager().getShapeRenderer().begin();
-        FHeroes.getObjectManager().getShapeRenderer().setColor(Color.GRAY);
-        FHeroes.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
-        FHeroes.getObjectManager().getShapeRenderer().rect(getAbsoluteX(), getAbsoluteY(), getWidth(), getHeight());
-        FHeroes.getObjectManager().getShapeRenderer().setColor(Color.BLACK);
-        FHeroes.getObjectManager().getShapeRenderer().set(ShapeType.Line);
-        FHeroes.getObjectManager().getShapeRenderer().rect(getAbsoluteX(), getAbsoluteY(), getWidth(), getHeight());
-        FHeroes.getObjectManager().getShapeRenderer().end();
+        CNinjas.getObjectManager().getShapeRenderer().begin();
+        CNinjas.getObjectManager().getShapeRenderer().setColor(Color.GRAY);
+        CNinjas.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
+        CNinjas.getObjectManager().getShapeRenderer().rect(getAbsoluteX(), getAbsoluteY(), getWidth(), getHeight());
+        CNinjas.getObjectManager().getShapeRenderer().setColor(Color.BLACK);
+        CNinjas.getObjectManager().getShapeRenderer().set(ShapeType.Line);
+        CNinjas.getObjectManager().getShapeRenderer().rect(getAbsoluteX(), getAbsoluteY(), getWidth(), getHeight());
+        CNinjas.getObjectManager().getShapeRenderer().end();
     }
     
 }

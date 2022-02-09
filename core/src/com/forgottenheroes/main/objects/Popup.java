@@ -1,11 +1,13 @@
 package com.forgottenheroes.main.objects;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.forgottenheroes.main.FHeroes;
+import com.forgottenheroes.main.CNinjas;
 
 public class Popup extends GameObject{
 
@@ -24,43 +26,46 @@ public class Popup extends GameObject{
         setTitle(title);
         setText(text);
         setSmallText(smallText);
-        setWidth(FHeroes.INIT_WIDTH / 2);
-        setHeight(FHeroes.INIT_HEIGHT / 5);
-        setRelativeX((FHeroes.INIT_WIDTH - getWidth()) / 2);
-        setRelativeY((FHeroes.INIT_HEIGHT - getHeight()) / 2);
+        setWidth(CNinjas.INIT_WIDTH / 2);
+        setHeight(CNinjas.INIT_HEIGHT / 5);
+        setRelativeX((CNinjas.INIT_WIDTH - getWidth()) / 2);
+        setRelativeY((CNinjas.INIT_HEIGHT - getHeight()) / 2);
         setTitleScale(3);
         setTextScale(2);
         setSmallTextScale(1.5f);
         setTextYOffset(0);
-        FHeroes.getObjectManager().getBitmapFont().getData().setScale(getTitleScale());
-        GlyphLayout layout = new GlyphLayout(FHeroes.getObjectManager().getBitmapFont(), title);
+        CNinjas.getObjectManager().getBitmapFont().getData().setScale(getTitleScale());
+        GlyphLayout layout = new GlyphLayout(CNinjas.getObjectManager().getBitmapFont(), title);
         setTitleWidth(layout.width);
-        FHeroes.getObjectManager().getBitmapFont().getData().setScale(getTextScale());
-        layout = new GlyphLayout(FHeroes.getObjectManager().getBitmapFont(), text);
+        CNinjas.getObjectManager().getBitmapFont().getData().setScale(getTextScale());
+        layout = new GlyphLayout(CNinjas.getObjectManager().getBitmapFont(), text);
         setTextWidth(layout.width);
-        FHeroes.getObjectManager().getBitmapFont().getData().setScale(getSmallTextScale());
-        layout = new GlyphLayout(FHeroes.getObjectManager().getBitmapFont(), smallText);
+        CNinjas.getObjectManager().getBitmapFont().getData().setScale(getSmallTextScale());
+        layout = new GlyphLayout(CNinjas.getObjectManager().getBitmapFont(), smallText);
         setSmallTextWidth(layout.width);
-        FHeroes.getObjectManager().addToObjectList(this);
+        CNinjas.getObjectManager().addToObjectList(this);
     }
 
     @Override
     public void render(float delta) {
-        FHeroes.getObjectManager().getShapeRenderer().begin();
+        CNinjas.getObjectManager().getShapeRenderer().begin();
         updateTextWidth();
-        FHeroes.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
-        FHeroes.getObjectManager().getShapeRenderer().setColor(new Color(.2f, .2f, .4f, 1f));
-        FHeroes.getObjectManager().getShapeRenderer().rect(getAbsoluteX(), getAbsoluteY(), getWidth(), getHeight());
-        FHeroes.getObjectManager().getShapeRenderer().end();
-        FHeroes.getObjectManager().getSpriteBatch().begin();
-        FHeroes.getObjectManager().getBitmapFont().setColor(new Color(1,1,1,1));
-        FHeroes.getObjectManager().getBitmapFont().getData().setScale(getTitleScale());
-        FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), getTitle(), getAbsoluteX() + (getWidth() - getTitleWidth()) / 2, getAbsoluteY() + getHeight()/16*12);
-        FHeroes.getObjectManager().getBitmapFont().getData().setScale(getTextScale());
-        FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), getText(), getAbsoluteX() + (getWidth() - getTextWidth()) / 2, getAbsoluteY() + getTextYOffset() + getHeight()/16*6);
-        FHeroes.getObjectManager().getBitmapFont().getData().setScale(getSmallTextScale());
-        FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), getSmallText(), getAbsoluteX() + (getWidth() - getSmallTextWidth()) / 2, getAbsoluteY() + getHeight()/16*3);
-        FHeroes.getObjectManager().getSpriteBatch().end();
+        CNinjas.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
+        Gdx.gl.glEnable(GL30.GL_BLEND);
+		Gdx.gl.glBlendFunc(GL30.GL_SRC_ALPHA, GL30.GL_ONE_MINUS_SRC_ALPHA);
+        CNinjas.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
+        CNinjas.getObjectManager().getShapeRenderer().setColor(new Color(.2f, .2f, .4f, 0.4f));
+        CNinjas.getObjectManager().getShapeRenderer().rect(getAbsoluteX(), getAbsoluteY(), getWidth(), getHeight());
+        CNinjas.getObjectManager().getShapeRenderer().end();
+        CNinjas.getObjectManager().getSpriteBatch().begin();
+        CNinjas.getObjectManager().getBitmapFont().setColor(new Color(1,1,1,1));
+        CNinjas.getObjectManager().getBitmapFont().getData().setScale(getTitleScale());
+        CNinjas.getObjectManager().getBitmapFont().draw(CNinjas.getObjectManager().getSpriteBatch(), getTitle(), getAbsoluteX() + (getWidth() - getTitleWidth()) / 2, getAbsoluteY() + getHeight()/16*12);
+        CNinjas.getObjectManager().getBitmapFont().getData().setScale(getTextScale());
+        CNinjas.getObjectManager().getBitmapFont().draw(CNinjas.getObjectManager().getSpriteBatch(), getText(), getAbsoluteX() + (getWidth() - getTextWidth()) / 2, getAbsoluteY() + getTextYOffset() + getHeight()/16*6);
+        CNinjas.getObjectManager().getBitmapFont().getData().setScale(getSmallTextScale());
+        CNinjas.getObjectManager().getBitmapFont().draw(CNinjas.getObjectManager().getSpriteBatch(), getSmallText(), getAbsoluteX() + (getWidth() - getSmallTextWidth()) / 2, getAbsoluteY() + getHeight()/16*3);
+        CNinjas.getObjectManager().getSpriteBatch().end();
     }
 
     public void setText(String title, String text, String smallText){
@@ -150,15 +155,15 @@ public class Popup extends GameObject{
     }
 
     public void updateTextWidth(){
-        BitmapFont font = FHeroes.getObjectManager().getBitmapFont();
+        BitmapFont font = CNinjas.getObjectManager().getBitmapFont();
         font.getData().setScale(getTitleScale());
-        GlyphLayout layout = new GlyphLayout(FHeroes.getObjectManager().getBitmapFont(), title);
+        GlyphLayout layout = new GlyphLayout(CNinjas.getObjectManager().getBitmapFont(), title);
         setTitleWidth(layout.width);
         font.getData().setScale(getTextScale());
-        layout = new GlyphLayout(FHeroes.getObjectManager().getBitmapFont(), text);
+        layout = new GlyphLayout(CNinjas.getObjectManager().getBitmapFont(), text);
         setTextWidth(layout.width);
         font.getData().setScale(getSmallTextScale());
-        layout = new GlyphLayout(FHeroes.getObjectManager().getBitmapFont(), smallText);
+        layout = new GlyphLayout(CNinjas.getObjectManager().getBitmapFont(), smallText);
         setSmallTextWidth(layout.width);
     }
 }

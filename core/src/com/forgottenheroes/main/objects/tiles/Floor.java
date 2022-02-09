@@ -1,47 +1,68 @@
 package com.forgottenheroes.main.objects.tiles;
 
+import javax.xml.namespace.QName;
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.forgottenheroes.main.FHeroes;
+import com.forgottenheroes.main.CNinjas;
 import com.forgottenheroes.main.objects.Map;
+import com.forgottenheroes.main.objects.Player.PlayerColor;
 
 public class Floor extends TileObject{
     private int owner;
     private Color tileColor;
     public Floor(Tile tile){
         super(tile);
-        Map map = FHeroes.getObjectManager().getMap();
+        Map map = CNinjas.getObjectManager().getMap();
         setWidth(map.getGridSize());
         setHeight(map.getGridSize());
         setDisplayPriority(0);
         setPassable(true);
         owner = -1;
-        tileColor = Color.WHITE;
+        tileColor = new Color(1,1,1,0);
     }
     //to replace shaperenderer shapes with actual textures
     @Override
     public void render(float delta) {
-        FHeroes.getObjectManager().getShapeRenderer().begin();
-        FHeroes.getObjectManager().getShapeRenderer().setColor(tileColor);
-        FHeroes.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
-        FHeroes.getObjectManager().getShapeRenderer().rect(getAbsoluteX(), getAbsoluteY(), getWidth(), getHeight());
-        FHeroes.getObjectManager().getShapeRenderer().setColor(Color.BLACK);
-        FHeroes.getObjectManager().getShapeRenderer().set(ShapeType.Line);
-        FHeroes.getObjectManager().getShapeRenderer().rect(getAbsoluteX(), getAbsoluteY(), getWidth(), getHeight());
-        FHeroes.getObjectManager().getShapeRenderer().end();
+        CNinjas.getObjectManager().getShapeRenderer().begin();
+        Gdx.gl.glEnable(GL30.GL_BLEND);
+		Gdx.gl.glBlendFunc(GL30.GL_SRC_ALPHA, GL30.GL_ONE_MINUS_SRC_ALPHA);
+        CNinjas.getObjectManager().getShapeRenderer().setColor(tileColor);
+        CNinjas.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
+        CNinjas.getObjectManager().getShapeRenderer().rect(getAbsoluteX(), getAbsoluteY(), getWidth(), getHeight());
+        CNinjas.getObjectManager().getShapeRenderer().setColor(Color.BLACK);
+        CNinjas.getObjectManager().getShapeRenderer().set(ShapeType.Line);
+        //FHeroes.getObjectManager().getShapeRenderer().rect(getAbsoluteX(), getAbsoluteY(), getWidth(), getHeight());
+        CNinjas.getObjectManager().getShapeRenderer().end();
     }
     
     public void changeOwner(int player){
         owner = player;
-        switch(owner){
-            case 1:
-            tileColor = FHeroes.getObjectManager().getPlayerByNumber(1).getColor();
-            break;
-            case 2:
-            tileColor = FHeroes.getObjectManager().getPlayerByNumber(2).getColor();
-            break;
+        PlayerColor playerColor;
+        if(player != 0){
+            playerColor = CNinjas.getObjectManager().getPlayerByNumber(player).getPlayerColor();
+        }
+        else {
+            playerColor = PlayerColor.NONE;
+        }
+        switch(playerColor){
+            case RED:
+                tileColor = new Color(1, 0, 0, 0.3f);
+                break;
+            case BLUE:
+                tileColor = new Color(0, 0, 1, 0.3f);
+                break;
+            case GREEN:
+                tileColor = new Color(0, 1, 0, 0.3f);
+                break;
+            case YELLOW:
+                tileColor = new Color(1, 1, 0, 0.3f);
+                break;
             default:
-            tileColor = Color.WHITE;
+                tileColor = new Color(1,1,1,0);
+                break;
         }
     }
 

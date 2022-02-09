@@ -2,36 +2,40 @@ package com.forgottenheroes.main.objects;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.forgottenheroes.main.FHeroes;
+import com.forgottenheroes.main.CNinjas;
 
 public class Scoreboard extends GameObject{
 
     private ArrayList<Player> players;
 
     public Scoreboard(){
-        setWidth(300);
+        setWidth(270);
         setHeight(200);
-        setRelativeX(FHeroes.INIT_WIDTH - getWidth());
-        setRelativeY(FHeroes.INIT_HEIGHT / 32 * 12);
+        setRelativeX(CNinjas.INIT_WIDTH - getWidth() - 20);
+        setRelativeY(CNinjas.INIT_HEIGHT / 32 * 12);
         players = new ArrayList<Player>();
-        FHeroes.getObjectManager().addToObjectList(this);
+        CNinjas.getObjectManager().addToObjectList(this);
     }
 
     @Override
     public void render(float delta) {
-        FHeroes.getObjectManager().getShapeRenderer().begin();
-        FHeroes.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
-        FHeroes.getObjectManager().getShapeRenderer().setColor(new Color(.2f, .2f, .4f, 0.1f));
-        FHeroes.getObjectManager().getShapeRenderer().rect(getAbsoluteX(), getAbsoluteY(), getWidth(), getHeight());
-        FHeroes.getObjectManager().getShapeRenderer().end();
-        FHeroes.getObjectManager().getSpriteBatch().begin();
-        FHeroes.getObjectManager().getBitmapFont().setColor(new Color(1, 1, 1, 1));
-        FHeroes.getObjectManager().getBitmapFont().getData().setScale(2);
-        FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), "Score:", getAbsoluteX() + getWidth()/16*2, getAbsoluteY() + getHeight()/16*15);
+        CNinjas.getObjectManager().getShapeRenderer().begin();
+        Gdx.gl.glEnable(GL30.GL_BLEND);
+		Gdx.gl.glBlendFunc(GL30.GL_SRC_ALPHA, GL30.GL_ONE_MINUS_SRC_ALPHA);
+        CNinjas.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
+        CNinjas.getObjectManager().getShapeRenderer().setColor(new Color(.2f, .2f, .4f, 0.4f));
+        CNinjas.getObjectManager().getShapeRenderer().rect(getAbsoluteX(), getAbsoluteY(), getWidth(), getHeight());
+        CNinjas.getObjectManager().getShapeRenderer().end();
+        CNinjas.getObjectManager().getSpriteBatch().begin();
+        CNinjas.getObjectManager().getBitmapFont().setColor(new Color(1, 1, 1, 1));
+        CNinjas.getObjectManager().getBitmapFont().getData().setScale(2);
+        CNinjas.getObjectManager().getBitmapFont().draw(CNinjas.getObjectManager().getSpriteBatch(), "Score:", getAbsoluteX() + getWidth()/16*2, getAbsoluteY() + getHeight()/16*15);
         showPlayerScores();
-        FHeroes.getObjectManager().getSpriteBatch().end();
+        CNinjas.getObjectManager().getSpriteBatch().end();
     }
 
     public void addPlayerToScoreBoard(Player player){
@@ -45,10 +49,10 @@ public class Scoreboard extends GameObject{
     public void showPlayerScores(){
         for(int i = 0; i < players.size(); i++){
             Player player = players.get(i);
-            FHeroes.getObjectManager().getBitmapFont().getData().setScale(1.4f);
-            FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), player.getName(), getAbsoluteX() + getWidth()/16*2, getAbsoluteY() + getHeight()/16*(15 - 3*(i+1)));
-            FHeroes.getObjectManager().getBitmapFont().draw(FHeroes.getObjectManager().getSpriteBatch(), String.format("%-10d", player.getScore()), getAbsoluteX() + getWidth()/16*8, getAbsoluteY() + getHeight()/16*(15 - 3*(i+1)));
-            FHeroes.getObjectManager().getBitmapFont().getData().setScale(2);
+            CNinjas.getObjectManager().getBitmapFont().getData().setScale(1.4f);
+            CNinjas.getObjectManager().getBitmapFont().draw(CNinjas.getObjectManager().getSpriteBatch(), player.getName(), getAbsoluteX() + getWidth()/16*2, getAbsoluteY() + getHeight()/16*(15 - 3*(i+1)));
+            CNinjas.getObjectManager().getBitmapFont().draw(CNinjas.getObjectManager().getSpriteBatch(), String.format("%-10d", player.getScore()), getAbsoluteX() + getWidth()/16*8, getAbsoluteY() + getHeight()/16*(15 - 3*(i+1)));
+            CNinjas.getObjectManager().getBitmapFont().getData().setScale(2);
         }
     }
     

@@ -8,10 +8,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.forgottenheroes.main.objects.ObjectManager;
 
-public class FHeroes extends Game {
+public class CNinjas extends Game {
 
 	private static GameState gameState;
-	private static FHeroes game;
+	private static CNinjas game;
 
 	private static ObjectManager objectManager;
 
@@ -33,11 +33,11 @@ public class FHeroes extends Game {
 		objectManager.getCamera().setToOrtho(false, INIT_WIDTH, INIT_HEIGHT);
 		objectManager.setViewport(new FitViewport(INIT_WIDTH, INIT_HEIGHT, objectManager.getCamera()));
 		
-		//objectManager.setMainMenuScreen(new MainMenuScreen());
-		objectManager.setGameScreen(new GameScreen());
-		//setScreen(objectManager.getMainMenuScreen());
-		setScreen(objectManager.getGameScreen());
-		setGameState(GameState.GAMERUNNING);
+		objectManager.setMainMenuScreen(new MainMenuScreen());
+		//objectManager.setGameScreen(new GameScreen());
+		setScreen(objectManager.getMainMenuScreen());
+		//setScreen(objectManager.getGameScreen());
+		setGameState(GameState.MAINMENU);
 	}
 
 	public void render() {
@@ -56,7 +56,7 @@ public class FHeroes extends Game {
 		objectManager = om;
 	}
 
-	public static FHeroes getGame() {
+	public static CNinjas getGame() {
 		return game;
 	}
 
@@ -79,7 +79,7 @@ public class FHeroes extends Game {
 	}
 
 	public static void setxOffsetOrigin(int xOffsetOrigin) {
-		FHeroes.xOffsetOrigin = xOffsetOrigin;
+		CNinjas.xOffsetOrigin = xOffsetOrigin;
 	}
 
 	public static int getyOffsetOrigin() {
@@ -87,6 +87,6 @@ public class FHeroes extends Game {
 	}
 
 	public static void setyOffsetOrigin(int yOffsetOrigin) {
-		FHeroes.yOffsetOrigin = yOffsetOrigin;
+		CNinjas.yOffsetOrigin = yOffsetOrigin;
 	}
 }

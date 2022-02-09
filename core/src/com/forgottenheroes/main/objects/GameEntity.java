@@ -1,6 +1,6 @@
 package com.forgottenheroes.main.objects;
 
-import com.forgottenheroes.main.FHeroes;
+import com.forgottenheroes.main.CNinjas;
 import com.forgottenheroes.main.interfaces.MoveableInterface;
 
 public abstract class GameEntity extends GameObject implements MoveableInterface{
@@ -11,7 +11,7 @@ public abstract class GameEntity extends GameObject implements MoveableInterface
         super();
         velX = 0;
         velY = 0;
-        FHeroes.getObjectManager().addToEntityList(this);
+        CNinjas.getObjectManager().addToEntityList(this);
     }
 
     public GameEntity(int[] coords){
@@ -19,7 +19,7 @@ public abstract class GameEntity extends GameObject implements MoveableInterface
         velX = 0;
         velY = 0;
         this.setGridCoords(coords);
-        FHeroes.getObjectManager().addToEntityList(this);
+        CNinjas.getObjectManager().addToEntityList(this);
     }
 
     public GameEntity(int x, int y, int velX, int velY){

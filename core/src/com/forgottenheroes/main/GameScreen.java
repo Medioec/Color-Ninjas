@@ -18,31 +18,34 @@ public class GameScreen implements Screen, ScreenInterface {
 	private static final int TILEDHEIGHT = 13 * 16 * 4;
 
 	public GameScreen() {
-		FHeroes.setxOffsetOrigin((TILEDWIDTH - WORLDWIDTH) / 2);
-		FHeroes.setyOffsetOrigin((TILEDHEIGHT - WORLDHEIGHT) / 2);
+		CNinjas.setxOffsetOrigin((TILEDWIDTH - WORLDWIDTH) / 2);
+		CNinjas.setyOffsetOrigin((TILEDHEIGHT - WORLDHEIGHT) / 2);
 		changeViewportWorldSize(WORLDWIDTH, WORLDHEIGHT);
         setCameraPosition(TILEDWIDTH, TILEDHEIGHT);
-		FHeroes.getObjectManager().setMap(new Map());
-		FHeroes.getObjectManager().setLeaderboard(new Leaderboard());
-		FHeroes.getObjectManager().setScoreboard(new Scoreboard());
-		FHeroes.getObjectManager().getMap().generateMap1();
-		//FHeroes.getObjectManager().getMap().resetMap(1, Reset.NEWGAME);
+		CNinjas.getObjectManager().setMap(new Map());
+		CNinjas.getObjectManager().setLeaderboard(new Leaderboard());
+		CNinjas.getObjectManager().setScoreboard(new Scoreboard());
+		CNinjas.getObjectManager().getMap().generateMap1();
+		CNinjas.getObjectManager().getMap().resetMap(1, Reset.NEWGAME);
 	}
 
 	@Override
 	public void render(float delta) {
 		preRenderPrep();
-		FHeroes.getObjectManager().getShapeRenderer().begin();
-		FHeroes.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
-		FHeroes.getObjectManager().getShapeRenderer().setColor(0.4f, 0.6f, 1, 1);
-		FHeroes.getObjectManager().getShapeRenderer().rect(FHeroes.getxOffsetOrigin(), FHeroes.getyOffsetOrigin(), WORLDWIDTH, WORLDHEIGHT);
-		FHeroes.getObjectManager().getShapeRenderer().end();
-		FHeroes.getObjectManager().render(delta);
+		CNinjas.getObjectManager().getMapRenderer().setView(CNinjas.getObjectManager().getCamera());
+		//FHeroes.getObjectManager().getMapRenderer().render();
+		CNinjas.getObjectManager().getShapeRenderer().begin();
+		CNinjas.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
+		CNinjas.getObjectManager().getShapeRenderer().setColor(0.4f, 0.6f, 1, 1);
+		CNinjas.getObjectManager().getShapeRenderer().rect(CNinjas.getxOffsetOrigin(), CNinjas.getyOffsetOrigin(), WORLDWIDTH, WORLDHEIGHT);
+		CNinjas.getObjectManager().getShapeRenderer().end();
+		CNinjas.getObjectManager().getMapRenderer().render();
+		CNinjas.getObjectManager().render(delta);
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		FHeroes.getObjectManager().getViewport().update(width, height);
+		CNinjas.getObjectManager().getViewport().update(width, height);
 	}
 
 	@Override
@@ -63,26 +66,29 @@ public class GameScreen implements Screen, ScreenInterface {
 
 	@Override
 	public void dispose() {
+		CNinjas.getObjectManager().getMap().getMap().dispose();
 	}
 
 	@Override
 	public void preRenderPrep() {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glEnable(GL30.GL_BLEND);
+		Gdx.gl.glBlendFunc(GL30.GL_SRC_ALPHA, GL30.GL_ONE_MINUS_SRC_ALPHA);
 		Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
-		FHeroes.getObjectManager().getViewport().apply();
-		FHeroes.getObjectManager().getCamera().update();
-		FHeroes.getObjectManager().getSpriteBatch().setProjectionMatrix(FHeroes.getObjectManager().getCamera().combined);
-		FHeroes.getObjectManager().getShapeRenderer().setProjectionMatrix(FHeroes.getObjectManager().getCamera().combined);
+		CNinjas.getObjectManager().getViewport().apply();
+		CNinjas.getObjectManager().getCamera().update();
+		CNinjas.getObjectManager().getSpriteBatch().setProjectionMatrix(CNinjas.getObjectManager().getCamera().combined);
+		CNinjas.getObjectManager().getShapeRenderer().setProjectionMatrix(CNinjas.getObjectManager().getCamera().combined);
 	}
 
     @Override
     public void changeViewportWorldSize(float width, float height) {
-        FHeroes.getObjectManager().getViewport().setWorldSize(width, height);
+        CNinjas.getObjectManager().getViewport().setWorldSize(width, height);
     }
 
     @Override
     public void setCameraPosition(float width, float height) {
-        FHeroes.getObjectManager().getCamera().setToOrtho(false, width, height);
+        CNinjas.getObjectManager().getCamera().setToOrtho(false, width, height);
     }
 
 	public static int getWORLDHEIGHT() {
