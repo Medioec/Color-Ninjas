@@ -74,6 +74,7 @@ public class MainMenuScreen implements Screen, ScreenInterface{
         player1Box.setRelativeY(MENUHEIGHT/16*7);
         player1Box.setRelativeX((MENUWIDTH/16*2) - player1Box.getWidth()/2);
         player1Box.addTextLine(player1.getName(), 2, player1.getColor());
+        CNinjas.getObjectManager().removeObject(player1Box);
 
         player2Box = new TextBox();
         player2Box.setBgEnabled(false);
@@ -81,6 +82,8 @@ public class MainMenuScreen implements Screen, ScreenInterface{
         player2Box.setRelativeY(MENUHEIGHT/16*7);
         player2Box.setRelativeX((MENUWIDTH/16*14) - player2Box.getWidth()/2);
         player2Box.addTextLine(player2.getName(), 2, player2.getColor());
+        CNinjas.getObjectManager().removeObject(player2Box);
+
         
         input = "";
         response = "";
@@ -115,6 +118,8 @@ public class MainMenuScreen implements Screen, ScreenInterface{
         CNinjas.getObjectManager().getSpriteBatch().draw(player1.getWalkdownArray().get(0), player1Box.getAbsoluteX() + player1Box.getWidth()/2 - 64/2, player1Box.getAbsoluteY() + MENUHEIGHT/16*2, 64, 64);
         CNinjas.getObjectManager().getSpriteBatch().draw(player2.getWalkdownArray().get(0), player2Box.getAbsoluteX() + player2Box.getWidth()/2 - 64/2, player2Box.getAbsoluteY() + MENUHEIGHT/16*2, 64, 64);
         CNinjas.getObjectManager().getSpriteBatch().end();
+        player1Box.render(delta);
+        player2Box.render(delta);
         checkTemporalResponse();
         if(inputReady){
             chatbot.getLock().lock();
@@ -356,7 +361,7 @@ public class MainMenuScreen implements Screen, ScreenInterface{
 
     public void prepareBG(){
         TmxMapLoader loader = new TmxMapLoader();
-        TiledMap map = loader.load("map/map.tmx");
+        TiledMap map = loader.load("map/mainmenu.tmx");
         int tiledMapGridSize = 16;
         int gridSize = 64;
         float scaleFactor = gridSize / tiledMapGridSize;

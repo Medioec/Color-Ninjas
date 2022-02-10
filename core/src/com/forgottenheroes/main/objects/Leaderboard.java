@@ -27,7 +27,7 @@ public class Leaderboard extends GameObject{
         Gdx.gl.glEnable(GL30.GL_BLEND);
 		Gdx.gl.glBlendFunc(GL30.GL_SRC_ALPHA, GL30.GL_ONE_MINUS_SRC_ALPHA);
         CNinjas.getObjectManager().getShapeRenderer().set(ShapeType.Filled);
-        CNinjas.getObjectManager().getShapeRenderer().setColor(new Color(.2f, .2f, .4f, 0.4f));
+        CNinjas.getObjectManager().getShapeRenderer().setColor(new Color(.2f, .2f, .4f, 0.6f));
         CNinjas.getObjectManager().getShapeRenderer().rect(getAbsoluteX(), getAbsoluteY(), getWidth(), getHeight());
         CNinjas.getObjectManager().getShapeRenderer().end();
         CNinjas.getObjectManager().getSpriteBatch().begin();

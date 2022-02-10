@@ -19,7 +19,7 @@ public class TextBox extends GameObject{
     public static final int LINESPACING = (int)CNinjas.getObjectManager().getMainMenuScreen().getMENUHEIGHT()/32*1;
     public static final int DEFAULT_FONT_SIZE = 1;
     public static final Color DEFAULT_TEXT_COLOR = Color.WHITE;
-    public static final Color DEFAULT_BG_COLOR = new Color(.2f, .2f, .4f, 0.7f);
+    public static final Color DEFAULT_BG_COLOR = new Color(.2f, .2f, .4f, 0.8f);
 
     public TextBox(){
         super();
