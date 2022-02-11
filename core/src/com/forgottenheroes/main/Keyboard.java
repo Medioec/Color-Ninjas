@@ -28,19 +28,15 @@ public class Keyboard implements InputProcessor{
             if(!player1.checkPlayerDefeated()){
                 if(Gdx.input.isKeyPressed(Keys.UP)){
                     player1.addVelXY(0, player1.getMoveSpeed());
-                    //player1.updateDirection();
                 }
                 if(Gdx.input.isKeyPressed(Keys.DOWN)){
                     player1.addVelXY(0, -player1.getMoveSpeed());
-                    //player1.updateDirection();
                 }
                 if(Gdx.input.isKeyPressed(Keys.LEFT)){
                     player1.addVelXY(-player1.getMoveSpeed(), 0);
-                    //player1.updateDirection();
                 }
                 if(Gdx.input.isKeyPressed(Keys.RIGHT)){
                     player1.addVelXY(player1.getMoveSpeed(), 0);
-                    //player1.updateDirection();
                 }
                 if(!player1.isAttacking()){
                     if(Gdx.input.isKeyPressed(Keys.SLASH)){
@@ -52,19 +48,15 @@ public class Keyboard implements InputProcessor{
             if(!player2.checkPlayerDefeated()){
                 if(Gdx.input.isKeyPressed(Keys.W)){
                     player2.addVelXY(0, player2.getMoveSpeed());
-                    //player2.updateDirection();
                 }
                 if(Gdx.input.isKeyPressed(Keys.S)){
                     player2.addVelXY(0, -player2.getMoveSpeed());
-                    //player2.updateDirection();
                 }
                 if(Gdx.input.isKeyPressed(Keys.A)){
                     player2.addVelXY(-player2.getMoveSpeed(), 0);
-                    //player2.updateDirection();
                 }
                 if(Gdx.input.isKeyPressed(Keys.D)){
                     player2.addVelXY(player2.getMoveSpeed(), 0);
-                    ///player2.updateDirection();
                 }
                 if(!player2.isAttacking()){
                     if(Gdx.input.isKeyPressed(Keys.V)){

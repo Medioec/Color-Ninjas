@@ -2,7 +2,6 @@ package com.forgottenheroes.main.objects;
 
 import java.util.ArrayList;
 
-
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.Gdx;

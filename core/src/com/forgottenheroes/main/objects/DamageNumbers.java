@@ -1,7 +1,6 @@
 package com.forgottenheroes.main.objects;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.forgottenheroes.main.CNinjas;
 
