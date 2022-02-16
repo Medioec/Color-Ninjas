@@ -3,7 +3,7 @@ package com.forgottenheroes.main.desktop;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.forgottenheroes.main.CNinjas;
+import com.colorninjas.main.CNinjas;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
