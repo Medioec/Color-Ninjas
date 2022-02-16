@@ -1,7 +1,6 @@
 package com.forgottenheroes.main.objects;
 
 import java.util.ArrayList;
-import java.util.Objects;
 import java.lang.Math;
 
 import com.badlogic.gdx.Gdx;
