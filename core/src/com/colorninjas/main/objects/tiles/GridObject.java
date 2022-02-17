@@ -1,7 +1,6 @@
 package com.colorninjas.main.objects.tiles;
 
 import com.colorninjas.main.CNinjas;
-import com.colorninjas.main.GameScreen;
 import com.colorninjas.main.objects.GameObject;
 import com.colorninjas.main.objects.Map;
 

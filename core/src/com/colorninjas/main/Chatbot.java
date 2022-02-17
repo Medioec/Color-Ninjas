@@ -5,7 +5,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.colorninjas.main.MainMenuScreen.CurrentChat;
 import com.colorninjas.main.objects.Player.PlayerColor;
 

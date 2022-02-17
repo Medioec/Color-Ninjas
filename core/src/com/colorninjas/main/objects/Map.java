@@ -2,7 +2,6 @@ package com.colorninjas.main.objects;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -12,7 +11,6 @@ import com.colorninjas.main.Reset;
 import com.colorninjas.main.objects.Player.PlayerColor;
 import com.colorninjas.main.objects.tiles.Floor;
 import com.colorninjas.main.objects.tiles.Tile;
-import com.colorninjas.main.objects.tiles.Wall;
 
 public class Map extends GameObject{
 
