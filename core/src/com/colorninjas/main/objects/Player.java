@@ -580,10 +580,9 @@ public class Player extends GameEntity{
                         }
                     }
                     if(target.checkPlayerDefeated()){
-                        if(CNinjas.getObjectManager().checkRoundOver()){
+                        if(CNinjas.getObjectManager().checkRemainingPlayers() <= 1){
                             CNinjas.getObjectManager().setRoundOver();
                         }
-                        
                     }
                 }
             }

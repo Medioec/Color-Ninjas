@@ -10,6 +10,7 @@ import com.colorninjas.main.GameState;
 import com.colorninjas.main.Keyboard;
 import com.colorninjas.main.MainMenuScreen;
 import com.colorninjas.main.Reset;
+import com.colorninjas.main.objects.Player.Direction;
 import com.colorninjas.main.objects.tiles.Tile;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -316,7 +317,7 @@ public class ObjectManager {
         objectList.clear();
     }
 
-    public boolean checkRoundOver(){
+    public int checkRemainingPlayers(){
         int remainingPlayers = 0;
         for(int i = 0; i < entityList.size(); i++){
             GameEntity entity = entityList.get(i);
@@ -324,42 +325,52 @@ public class ObjectManager {
                 Player player = (Player) entity;
                 if(!player.checkPlayerDefeated()){
                     remainingPlayers ++;
-                };
+                }
             }
             catch (ClassCastException e){
                 continue;
             }
         }
-        if(remainingPlayers > 0){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return remainingPlayers;
     }
 
     public void setRoundOver(){
         int highestScore = -1;
         Player winningPlayer = null;
-        for(int i = 0; i < entityList.size(); i++){
-            GameEntity entity = entityList.get(i);
-            try{
-                Player player = (Player) entity;
-                if(player.getScore() == highestScore){
+        if(checkRemainingPlayers() == 1){
+            for(int i = 0; i < entityList.size(); i++){
+                GameEntity entity = entityList.get(i);
+                try{
+                    Player player = (Player) entity;
                     if(!player.checkPlayerDefeated()){
+                        winningPlayer = player;
+                    }
+                }
+                catch (ClassCastException e){
+                    continue;
+                }
+            }
+        }
+        else{
+            for(int i = 0; i < entityList.size(); i++){
+                GameEntity entity = entityList.get(i);
+                try{
+                    Player player = (Player) entity;
+                    if(player.getScore() == highestScore){
+                        highestScore = player.getScore();
+                        winningPlayer = null;
+                    }
+                    else if(player.getScore() > highestScore){
                         highestScore = player.getScore();
                         winningPlayer = player;
                     }
                 }
-                else if(player.getScore() > highestScore){
-                    highestScore = player.getScore();
-                    winningPlayer = player;
+                catch (ClassCastException e){
+                    continue;
                 }
             }
-            catch (ClassCastException e){
-                continue;
-            }
         }
+        
         if(winningPlayer != null){
             winningPlayer.setWins(winningPlayer.getWins() + 1);
         }
@@ -382,6 +393,17 @@ public class ObjectManager {
             map.resetMap(map.getCurrentMap(), Reset.NEWROUND);
             CNinjas.setGameState(GameState.GAMERUNNING);
             removeObject(getPopup());
+            //reset direction of all players
+            for(int i = 0; i < entityList.size(); i++){
+                GameEntity entity = entityList.get(i);
+                try{
+                    Player player = (Player) entity;
+                    player.setCurrentDirection(Direction.S);
+                }
+                catch (ClassCastException e){
+                    continue;
+                }
+            }
         }
     }
 
